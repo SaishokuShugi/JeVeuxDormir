@@ -29,8 +29,8 @@ public abstract class Interactible {
         this.body = GameScreen.world.createBody(bd);
 
         PolygonShape box = new PolygonShape();
-        TextureRegion img = this.images[0];
-        box.setAsBox(img.getU2(), img.getV2());
+        Texture img = this.images[0].getTexture();
+        box.setAsBox(img.getHeight(), img.getWidth());
 
 
         if (friction == 0 && restitution == 0) {

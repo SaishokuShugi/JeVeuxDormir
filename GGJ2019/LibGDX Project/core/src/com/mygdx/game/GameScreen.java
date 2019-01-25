@@ -51,7 +51,7 @@ public class GameScreen implements Screen  {
 		Box2D.init();
 		world = new World(new Vector2(0,-9.81f),true);
 		debugRenderer = new Box2DDebugRenderer();
-		Block block = new Block("Singe Astronaute.png",1,1,0,0,0,0,0);
+		Block block = new Block("Singe Astronaute.png",1,1,50,50,0,0,0);
 	}
 
 	
