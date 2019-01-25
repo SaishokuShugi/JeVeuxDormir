@@ -128,7 +128,6 @@ public class GameScreen implements Screen  {
 		   }
 
 	      camera.position.set(monkey.x+monkey.width/2,camera.position.y, 0);
-	      camera.rotate(2);
 	}
 
 	@Override
