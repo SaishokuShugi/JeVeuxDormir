@@ -26,6 +26,7 @@ public class MainMenuScreen implements Screen {
 	
 	BitmapFont TitreFont = createFont(ftfg, 55);
 	BitmapFont SousTitreFont = createFont(ftfg, 20);
+	BitmapFont ButtonFont = createFont(ftfg, 30);
 
 	public MainMenuScreen(final MyGdxGame game) {
 		this.game = game;
@@ -89,6 +90,8 @@ public class MainMenuScreen implements Screen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		game.batch.dispose();
+		TitreFont.dispose();
+		SousTitreFont.dispose();
 		
 	}
 
