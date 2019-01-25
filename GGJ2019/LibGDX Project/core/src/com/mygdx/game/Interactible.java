@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public abstract class Interactible {
     private TextureRegion[] images;
     private Body body;
+    private Fixture fixture;
 
     public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, int x, int y, float friction, float density, float restitution) {
         Texture animSheet = new Texture(image);
@@ -31,13 +32,18 @@ public abstract class Interactible {
         TextureRegion img = this.images[0];
         box.setAsBox(img.getU2(), img.getV2());
 
-        FixtureDef fd = new FixtureDef();
-        fd.shape = box;
-        fd.density = density;
-        fd.friction = friction;
-        fd.restitution = restitution;
 
-        Fixture fixture = body.createFixture(fd);
+        if (friction == 0 && restitution == 0) {
+            body.createFixture(box, density);
+        } else {
+            FixtureDef fd = new FixtureDef();
+            fd.shape = box;
+            fd.density = density;
+            fd.friction = friction;
+            fd.restitution = restitution;
+
+            this.fixture = body.createFixture(fd);
+        }
     }
 
     public abstract void action();
