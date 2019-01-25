@@ -20,12 +20,12 @@ public class MainMenuScreen implements Screen {
 		parameter.size = taille;
 		parameter.borderColor = Color.BLACK;
 		parameter.color = Color.WHITE;
-		parameter.borderWidth = 0.5f;
+		parameter.borderWidth = 3f;
 	    return ftfg.generateFont(parameter);
 	}
 	
-	BitmapFont TitreFont = createFont(ftfg, 50);
-	BitmapFont SousTitreFont = createFont(ftfg, 25);
+	BitmapFont TitreFont = createFont(ftfg, 55);
+	BitmapFont SousTitreFont = createFont(ftfg, 20);
 
 	public MainMenuScreen(final MyGdxGame game) {
 		this.game = game;
