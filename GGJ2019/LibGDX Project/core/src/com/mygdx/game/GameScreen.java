@@ -35,7 +35,7 @@ public class GameScreen implements Screen  {
 	
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
-	Block block;
+	public Block block;
 	public GameScreen (final MyGdxGame game) {
 		this.game = game;
 		// load the images for the monkeys
