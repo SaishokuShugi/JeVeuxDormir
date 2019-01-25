@@ -35,8 +35,8 @@ public class MainMenuScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
-		game.font.draw(game.batch, "Je Veux Dormir ", 100, 150);
-		game.font.draw(game.batch, "", 100, 100);
+		game.font.draw(game.batch, "Je Veux Dormir ", 100, 700);
+		game.font.draw(game.batch, "GGJ 2019", 100, 650);
 		game.batch.end();
 
 		if (Gdx.input.isTouched()) {
