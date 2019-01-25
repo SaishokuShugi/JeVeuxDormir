@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,16 +13,19 @@ public class MainMenuScreen implements Screen {
 
 	final MyGdxGame game;
 	OrthographicCamera camera;
-	FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("Sleepy_Time.otf"));
+	FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("SleeplessCity.ttf"));
 	BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille)
 	{
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = taille;
+		parameter.borderColor = Color.BLACK;
+		parameter.color = Color.WHITE;
+		parameter.borderWidth = 0.5f;
 	    return ftfg.generateFont(parameter);
 	}
 	
 	BitmapFont TitreFont = createFont(ftfg, 50);
-	BitmapFont SousTitreFont = createFont(ftfg, 35);
+	BitmapFont SousTitreFont = createFont(ftfg, 25);
 
 	public MainMenuScreen(final MyGdxGame game) {
 		this.game = game;
@@ -48,7 +52,7 @@ public class MainMenuScreen implements Screen {
 
 		game.batch.begin();
 		TitreFont.draw(game.batch, "Je Veux Dormir ", 100, 700);
-		SousTitreFont.draw(game.batch, "GGJ 2019", 100, 650);
+		SousTitreFont.draw(game.batch, "A Vegan Product", 100, 650);
 		game.batch.end();
 
 		if (Gdx.input.isTouched()) {
