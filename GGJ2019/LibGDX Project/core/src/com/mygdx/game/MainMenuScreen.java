@@ -4,12 +4,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class MainMenuScreen implements Screen {
 
 	final MyGdxGame game;
-
 	OrthographicCamera camera;
+	FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("Sleepy_Time.otf"));
+	BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille)
+	{
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = taille;
+	    return ftfg.generateFont(parameter);
+	}
+	
+	BitmapFont TitreFont = createFont(ftfg, 50);
+	BitmapFont SousTitreFont = createFont(ftfg, 35);
 
 	public MainMenuScreen(final MyGdxGame game) {
 		this.game = game;
@@ -35,8 +47,8 @@ public class MainMenuScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
-		game.font.draw(game.batch, "Je Veux Dormir ", 100, 700);
-		game.font.draw(game.batch, "GGJ 2019", 100, 650);
+		TitreFont.draw(game.batch, "Je Veux Dormir ", 100, 700);
+		SousTitreFont.draw(game.batch, "GGJ 2019", 100, 650);
 		game.batch.end();
 
 		if (Gdx.input.isTouched()) {
@@ -72,6 +84,7 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+		game.batch.dispose();
 		
 	}
 
