@@ -35,7 +35,7 @@ public class GameScreen implements Screen  {
 	
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
-	
+	Block block;
 	public GameScreen (final MyGdxGame game) {
 		this.game = game;
 		// load the images for the monkeys
@@ -44,14 +44,14 @@ public class GameScreen implements Screen  {
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, 1280, 720);
 	
 
 		cont = Controllers.getControllers().get(0);
 		Box2D.init();
 		world = new World(new Vector2(0,-9.81f),true);
 		debugRenderer = new Box2DDebugRenderer();
-		Block block = new Block("Singe Astronaute.png",1,1,50,50,0,0,0);
+		block = new Block("Singe Astronaute.png",1,1,150,0,0,0,0);
 	}
 
 	
@@ -66,12 +66,15 @@ public class GameScreen implements Screen  {
 		float deltat =Gdx.graphics.getDeltaTime();
 
 		
-		// clear the screen with a dark blue color. The
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		debugRenderer.render(world, camera.combined);
-
+		batch.begin();
+		batch.draw(block.getImages()[0].getTexture(),block.getBody().getPosition().x-block.getImages()[0].getTexture().getWidth()/2,block.getBody().getPosition().y-block.getImages()[0].getTexture().getHeight()/2);
 		world.step(Math.min(.015f,deltat), 6, 2);
+		
+		batch.end();
 	}
 
 	@Override
