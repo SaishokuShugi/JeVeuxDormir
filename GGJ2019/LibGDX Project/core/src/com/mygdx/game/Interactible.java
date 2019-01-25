@@ -46,5 +46,29 @@ public abstract class Interactible {
         }
     }
 
+    public TextureRegion[] getImages() {
+        return images;
+    }
+
+    public void setImages(TextureRegion[] images) {
+        this.images = images;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
+    public Fixture getFixture() {
+        return fixture;
+    }
+
+    public void setFixture(Fixture fixture) {
+        this.fixture = fixture;
+    }
+
     public abstract void action();
 }
