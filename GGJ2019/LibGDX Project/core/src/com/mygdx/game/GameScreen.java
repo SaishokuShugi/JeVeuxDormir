@@ -31,7 +31,7 @@ public class GameScreen implements Screen  {
 	Texture img;
 	Texture img2;
 
-	World world;
+	public World world;
 	
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
