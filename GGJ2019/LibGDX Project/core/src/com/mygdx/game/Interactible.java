@@ -10,7 +10,7 @@ public abstract class Interactible {
     private Fixture fixture;
     private float echelle;
 
-    public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, int x, int y, float friction, float density, float restitution, float echelle) {
+    public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution, float echelle) {
         Texture animSheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(animSheet,
                 animSheet.getWidth() / frame_cols,
@@ -26,13 +26,13 @@ public abstract class Interactible {
 
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
-        bd.position.set(x, y);
+        bd.position.set(x * 32, y * 32);
 
         this.body = GameScreen.world.createBody(bd);
 
         PolygonShape box = new PolygonShape();
         Texture img = this.images[0].getTexture();
-        box.setAsBox(img.getHeight() / 2 * this.echelle, img.getWidth() / 2 * this.echelle);
+        box.setAsBox(img.getWidth() / 2 * this.echelle, img.getHeight() / 2 * this.echelle);
 
 
         if (friction == 0 && restitution == 0) {
@@ -78,6 +78,22 @@ public abstract class Interactible {
 
     public void setEchelle(float echelle) {
         this.echelle = echelle;
+    }
+
+    public float getScaledImageWidth() {
+        return this.images[0].getTexture().getWidth() * echelle;
+    }
+
+    public float getScaledImageHeight() {
+        return this.images[0].getTexture().getHeight() * echelle;
+    }
+
+    public float getBodyXToImage() {
+        return this.body.getPosition().x - this.images[0].getTexture().getWidth() / 2 * echelle;
+    }
+
+    public float getBodyYToImage() {
+        return this.body.getPosition().y - this.images[0].getTexture().getHeight() / 2 * echelle;
     }
 
     public abstract void action();

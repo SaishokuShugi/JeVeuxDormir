@@ -8,12 +8,6 @@ public class Personnage {
     private Rectangle hitbox;
     private float vitesse;
 
-    public Personnage(float stamina, float froid, Rectangle hitbox) {
-        this.stamina = stamina;
-        this.froid = froid;
-        this.hitbox = hitbox;
-    }
-
     public Personnage(float stamina, float froid, int x, int y) {
         this.stamina = stamina;
         this.froid = froid;
