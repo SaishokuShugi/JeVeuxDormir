@@ -16,6 +16,7 @@ public class Personnage {
     private Fixture fixture;
     private Animation<TextureRegion> anim;
     private float animTime;
+    private int flip=1;
 
     public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution, float frameDuration) {
         this.staminaMax = staminaMax;
@@ -147,9 +148,9 @@ public class Personnage {
         this.anim = loadAnim(image, frame_cols, frame_rows, nbFrames, frameDuration);
     }
 
-    public void run(float frameDuration) {
+    public void run(float frameDuration,float xImpulse) {
         changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
-        this.body.applyLinearImpulse(1000000.0f, 0, this.body.getPosition().x, this.body.getPosition().y, true);
+        this.body.applyLinearImpulse(xImpulse, 0, this.body.getPosition().x, this.body.getPosition().y, true);
     }
 
     public void idle(float frameDuration) {
@@ -180,8 +181,15 @@ public class Personnage {
 
         System.out.println(this.body.getLinearVelocity());
 
-        if (isRightPressed)
-            run(.2f);
+        if (isRightPressed) {
+            run(.2f,100000f);
+            setFlip(1);
+        }
+        
+        if (isLeftPressed) {
+        	run(.2f,-100000f);
+        	setFlip(-1);
+        }
         if (!(isRightPressed || isLeftPressed || !(this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)))
             idle(.5f);
         if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
@@ -189,5 +197,13 @@ public class Personnage {
         }
 
     }
+
+	public int getFlip() {
+		return flip;
+	}
+
+	public void setFlip(int flip) {
+		this.flip = flip;
+	}
 
 }

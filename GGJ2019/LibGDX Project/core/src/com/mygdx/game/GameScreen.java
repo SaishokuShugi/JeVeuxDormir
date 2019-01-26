@@ -173,7 +173,7 @@ public class GameScreen implements Screen {
 		}
 		perso.setAnimTime(time+=deltat);
 		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage(), perso.getBodyYToImage()
-				,perso.getCurrentFrame().getRegionWidth() * scale_factor,perso.getCurrentFrame().getRegionHeight() * scale_factor);
+				,perso.getCurrentFrame().getRegionWidth() * scale_factor*perso.getFlip(),perso.getCurrentFrame().getRegionHeight() * scale_factor);
 		
 		batch.draw(staminaE_L, 10, Gdx.graphics.getBackBufferHeight()-50);
 		for(int i =0;i<32*9;batch.draw(staminaE_C, 10+(i+=32), Gdx.graphics.getBackBufferHeight()-50));
