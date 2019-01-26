@@ -56,13 +56,43 @@ public class GameScreen implements Screen {
 	
 	ShaderProgram shader;
 	
+	void generateMap2() {
+		//Mur et sol
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 15f, i++, 0f, 1, 0,false)));
+		
+		//Fleurs
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 5f, 3f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 7f, 3f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 6f, 4f, 0, 1, 0,false));
+		
+		//Tapis*
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 4f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 6f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 7f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 6f, 3f, 0.1f,1, 0,false));
+		
+		//Static
+		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 10f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
+		
+		//Personnage
+        perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
+	}
+	void cleanMap() {
+		blocks.clear();
+	}
 	void generateMap() {
-		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0, 0, 0)));
-		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f));
-		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0));
-		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0));
-		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0));
-		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0,1, 0));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0,false)));
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f,false));
+		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0,true));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0,false));
+		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f,1, 0,false));
         perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
 	}
 	String gameShader0;
@@ -156,7 +186,7 @@ public class GameScreen implements Screen {
 		Box2D.init();
 		world = new World(new Vector2(0, -9.81f ), true);
 		debugRenderer = new Box2DDebugRenderer();
-		generateMap();
+		generateMap2();
 		
 		Frameb = new FrameBuffer(Format.RGBA8888,Gdx.graphics.getWidth() , Gdx.graphics.getHeight(), false);
 		loadShader(gameShader0);
