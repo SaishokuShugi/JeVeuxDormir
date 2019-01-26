@@ -9,7 +9,7 @@ public class CollectStatic extends Interactible {
     }
 
     @Override
-    public void action() {
+    public void action(Personnage perso) {
 
     }
 }

@@ -7,7 +7,7 @@ public class Tombant extends Movable {
     }
 
     @Override
-    public void action() {
+    public void action(Personnage perso) {
 
     }
 }

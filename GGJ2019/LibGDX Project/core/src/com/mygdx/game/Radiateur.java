@@ -10,6 +10,6 @@ public class Radiateur extends Block {
     }
 
     @Override
-    public void action() {
+    public void action(Personnage perso) {
     }
 }

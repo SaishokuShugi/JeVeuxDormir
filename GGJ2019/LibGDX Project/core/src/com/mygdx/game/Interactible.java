@@ -91,5 +91,5 @@ public abstract class Interactible {
         return this.body.getPosition().y - this.images[0].getRegionHeight() / 2 * GameScreen.scale_factor;
     }
 
-    public abstract void action();
+    public abstract void action(Personnage perso);
 }
