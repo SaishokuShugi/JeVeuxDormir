@@ -95,7 +95,7 @@ public class GameScreen implements Screen {
                   "void main()                                  \n" + 
                   "{                                            \n"
                   + "vec2 uv = v_texCoords;"
-                  + "uv.x+=.1*sin(uv.y*100.-time*.2);"
+                  + "uv.y+=.01*sin(uv.x*100.-time);"
                   +"vec4 color = texture2D(u_texture, uv);\n"+
                   "float avg =(color.x+color.y+color.z)/3.; \n"+
                   "  gl_FragColor = vec4(mix(vec3(v_texCoords,avg),color.rgb, 1),color.a) ;\n" +
