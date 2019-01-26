@@ -77,6 +77,42 @@ public class Personnage {
         this.fixture = fixture;
     }
 
+    public float getStaminaMax() {
+        return staminaMax;
+    }
+
+    public void setStaminaMax(float staminaMax) {
+        this.staminaMax = staminaMax;
+    }
+
+    public float getFroidMax() {
+        return froidMax;
+    }
+
+    public void setFroidMax(float froidMax) {
+        this.froidMax = froidMax;
+    }
+
+    public Animation<TextureRegion> getAnim() {
+        return anim;
+    }
+
+    public void setAnim(Animation<TextureRegion> anim) {
+        this.anim = anim;
+    }
+
+    public float getAnimTime() {
+        return animTime;
+    }
+
+    public void setAnimTime(float animTime) {
+        this.animTime = animTime;
+    }
+
+    public TextureRegion getCurrentFrame() {
+        return this.anim.getKeyFrame(this.animTime, true);
+    }
+
     public static Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
         Texture sheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
@@ -96,9 +132,5 @@ public class Personnage {
     public void changeAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
         this.animTime = 0;
         this.anim = loadAnim(image, frame_cols, frame_rows, frameDuration);
-    }
-
-    public TextureRegion getCurrentFrame() {
-        return this.anim.getKeyFrame(this.animTime, true);
     }
 }
