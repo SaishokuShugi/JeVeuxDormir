@@ -6,6 +6,7 @@ import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -69,6 +70,8 @@ public class MainMenuScreen implements Screen
 	ArrayList<Animation<TextureRegion>> ListAnimation = new ArrayList<Animation<TextureRegion>>();
 	Texture Fall = new Texture(Gdx.files.internal("Personnage/jump2.png"));
 
+	Music BackMusic = Gdx.audio.newMusic(Gdx.files.internal("Back.ogg"));
+	
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
 	static Vector2 PersoPos = new Vector2(-210, 24);
 
@@ -78,7 +81,7 @@ public class MainMenuScreen implements Screen
 	static int yButton = 0;
 	int numAnim = 0;
 
-	float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f;
+	float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f, MusicVolume = 0.5f, sum = 0f;
 
 	public MainMenuScreen(final MyGdxGame game)
 	{
@@ -86,6 +89,9 @@ public class MainMenuScreen implements Screen
 		ListAnimation.add(RunAnim1);
 		ListAnimation.add(RunAnim2);
 		ListAnimation.add(RunAnim3);
+		BackMusic.setLooping(true);
+		BackMusic.setVolume(0);
+		BackMusic.play();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
 
@@ -149,6 +155,13 @@ public class MainMenuScreen implements Screen
 
 		stateTime += Gdx.graphics.getDeltaTime();
 		stateTime2 += Gdx.graphics.getDeltaTime();
+		sum += Gdx.graphics.getDeltaTime()/15;
+		
+		if (sum>1)
+		{
+			sum = 1;
+		}
+		
 		if (numAnim < 3)
 		{
 			TextureRegion currentFrame = ListAnimation.get(numAnim).getKeyFrame(stateTime, true);
@@ -191,6 +204,8 @@ public class MainMenuScreen implements Screen
 				dispose();
 			}
 		}
+		
+		BackMusic.setVolume(MusicVolume*sum);
 	}
 
 	@Override
