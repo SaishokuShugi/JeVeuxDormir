@@ -61,21 +61,22 @@ public class MainMenuScreen implements Screen
 	Texture SolTextureMap = new Texture(Gdx.files.internal("Sol.png"));
 	Texture FondImage = new Texture(Gdx.files.internal("Background.png"));
 	TextureRegion[][] SolImages = TextureRegion.split(SolTextureMap, 64, 32);
+	TextureRegion Fallen = TextureRegion.split(new Texture(Gdx.files.internal("Personnage/ledgeGrab.png")), 20, 40)[1][2];
 	Texture PersoRunTextureMap = new Texture(Gdx.files.internal("Personnage/run.png"));
 	Animation<TextureRegion> RunAnim1 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.0625f);
 	Animation<TextureRegion> RunAnim2 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.125f);
 	Animation<TextureRegion> RunAnim3 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.25f);
-	Animation<TextureRegion> RunAnim4 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.5f);
 	ArrayList<Animation<TextureRegion>> ListAnimation = new ArrayList<Animation<TextureRegion>>();
-	
+	Texture Fall = new Texture(Gdx.files.internal("Personnage/jump2.png"));
+
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
-	Vector2 PersoPos = new Vector2(-320, 24);
+	Vector2 PersoPos = new Vector2(-210, 24);
 
 	Boolean onPlay, onOption;
-	
-	int xButton = 0, yButton =0, numAnim = 0;
-	
-	float stateTime = 0f, stateTime2 = 0f;
+
+	int xButton = 0, yButton = 0, numAnim = 0;
+
+	float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f;
 
 	public MainMenuScreen(final MyGdxGame game)
 	{
@@ -83,7 +84,6 @@ public class MainMenuScreen implements Screen
 		ListAnimation.add(RunAnim1);
 		ListAnimation.add(RunAnim2);
 		ListAnimation.add(RunAnim3);
-		ListAnimation.add(RunAnim4);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
 
@@ -112,55 +112,67 @@ public class MainMenuScreen implements Screen
 		game.batch.begin();
 		game.batch.draw(FondImage, 0, 0, 1280, 720);
 		int i = 0;
-		while (i<1280)
+		while (i < 1280)
 		{
-			game.batch.draw(SolImages[0][0], i*128,-30, 128, 64);
+			game.batch.draw(SolImages[0][0], i * 128, -30, 128, 64);
 			i++;
 		}
 		TitreFont.draw(game.batch, "Je Veux Dormir ", 120, 700);
-//		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 615);
-		SousTitreFont.draw(game.batch, Float.toString(stateTime2), 140, 615);
-		game.batch.draw(ButtonImage, xButton = 0, yButton =24, 320, 320);
-		
-		
-		
+		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 615);
+		game.batch.draw(ButtonImage, xButton = 0, yButton = 24, 320, 320);
+
 		game.batch.draw(LitImage, 1280 - 320, 24, 320, 320);
 
-		if (MousePos.x > xButton+50 && MousePos.x < xButton+270 && MousePos.y > yButton +135 && MousePos.y < yButton+235)
+		if (MousePos.x > xButton + 50 && MousePos.x < xButton + 270 && MousePos.y > yButton + 135
+				&& MousePos.y < yButton + 235)
 		{
-			ButtonFont1.draw(game.batch, "Play", xButton+127, yButton+195);
+			ButtonFont1.draw(game.batch, "Play", xButton + 127, yButton + 195);
 			onPlay = true;
 		} else
 		{
-			ButtonFont2.draw(game.batch, "Play", xButton+127, yButton+195);
+			ButtonFont2.draw(game.batch, "Play", xButton + 127, yButton + 195);
 			onPlay = false;
 		}
 
-		if (MousePos.x > xButton+50 && MousePos.x < xButton+270 && MousePos.y > yButton +35 && MousePos.y < yButton+135)
+		if (MousePos.x > xButton + 50 && MousePos.x < xButton + 270 && MousePos.y > yButton + 35
+				&& MousePos.y < yButton + 135)
 		{
-			ButtonFont1.draw(game.batch, "Option", xButton+105, yButton+95);
+			ButtonFont1.draw(game.batch, "Option", xButton + 105, yButton + 95);
 			onOption = true;
 		} else
 		{
-			ButtonFont2.draw(game.batch, "Option", xButton+105, yButton+95);
+			ButtonFont2.draw(game.batch, "Option", xButton + 105, yButton + 95);
 			onOption = false;
 		}
 
 		stateTime += Gdx.graphics.getDeltaTime();
 		stateTime2 += Gdx.graphics.getDeltaTime();
-		if(numAnim<4)
+		if (numAnim < 3)
 		{
 			TextureRegion currentFrame = ListAnimation.get(numAnim).getKeyFrame(stateTime, true);
 			game.batch.draw(currentFrame, PersoPos.x, PersoPos.y, 210, 330);
-			
+			PersoPos.x += 2f / (numAnim + 1);
+
+		} else
+		{
+			if(fallRotation>=-90)
+			{
+				game.batch.draw(Fall, PersoPos.x, PersoPos.y, 60-fallRotation, 0, 210, 330, 1, 1, fallRotation, 0, 0 , 21, 33, false, false);
+				fallRotation -=5f;	
+				PersoPos.x+=2.5f;
+			}
+			else
+			{
+				game.batch.draw(Fallen, PersoPos.x, PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
+			}
+
 		}
 
 		game.batch.end();
-		
-		PersoPos.x += 2f/(numAnim+1);
-		if(numAnim<4 && stateTime2 >3)
+
+		if (numAnim < 3 && stateTime2 > 2)
 		{
-			stateTime2=0;
+			stateTime2 = 0;
 			numAnim++;
 		}
 
