@@ -35,9 +35,6 @@ public abstract class Interactible {
 
         this.body = GameScreen.world.createBody(bd);
 
-        
-
-
         if (friction == 0 && restitution == 0) {
             body.createFixture(box, density);
         } else {

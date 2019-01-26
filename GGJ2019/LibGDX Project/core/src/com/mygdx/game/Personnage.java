@@ -16,7 +16,7 @@ public class Personnage {
     private Body body;
     private Fixture fixture;
 
-    public Personnage(float staminaMax, float froidMax, float friction, float density, float restitution) {
+    public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution) {
         this.staminaMax = staminaMax;
         this.stamina = staminaMax;
         this.froidMax = froidMax;
@@ -24,6 +24,12 @@ public class Personnage {
         this.friction = friction;
         this.density = density;
         this.restitution = restitution;
+
+        BodyDef bd = new BodyDef();
+        bd.type = BodyDef.BodyType.DynamicBody;
+        bd.position.set(x * (32 * GameScreen.scale_factor), y * (32 * GameScreen.scale_factor));
+
+        this.body = GameScreen.world.createBody(bd);
     }
 
     public float getStamina() {
@@ -82,7 +88,7 @@ public class Personnage {
         this.fixture = fixture;
     }
 
-    public Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, float x, float y, float frameDuration) {
+    public Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
         Texture sheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
                 sheet.getWidth() / frame_cols,
@@ -95,16 +101,15 @@ public class Personnage {
             }
         }
 
-        BodyDef bd = new BodyDef();
-        bd.type = BodyDef.BodyType.DynamicBody;
-        bd.position.set(x * (32 * GameScreen.scale_factor), y * (32 * GameScreen.scale_factor));
+        return new Animation<TextureRegion>(frameDuration, frames);
+    }
 
-        this.body = GameScreen.world.createBody(bd);
+    public void createBodyFromAnim(Animation<TextureRegion> anim) {
+        TextureRegion[] frames = anim.getKeyFrames();
 
         PolygonShape box = new PolygonShape();
-        Texture img = frames[0].getTexture();
-        box.setAsBox(img.getWidth() / 2 * GameScreen.scale_factor, img.getHeight() / 2 * GameScreen.scale_factor);
-
+        TextureRegion img = frames[0];
+        box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
 
         if (this.friction == 0 && this.restitution == 0) {
             this.body.createFixture(box, this.density);
@@ -117,6 +122,5 @@ public class Personnage {
 
             this.fixture = this.body.createFixture(fd);
         }
-        return new Animation<TextureRegion>(frameDuration, frames);
     }
 }
