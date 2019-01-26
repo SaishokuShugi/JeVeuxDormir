@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Radiateur extends Block {
 
@@ -15,8 +15,13 @@ public class Radiateur extends Block {
     public void enable() {
         CircleShape cir = new CircleShape();
         cir.setRadius(range);
-
-        Fixture fixture = this.getBody().createFixture(cir, 0f);
+        FixtureDef fd = new FixtureDef();
+        fd.shape = cir;
+        fd.density = 0;
+        fd.friction = 0;
+        fd.restitution = 0;
+        fd.isSensor = true;
+        this.getBody().createFixture(fd);
     }
 
     public void inRange(Personnage perso, float factor) {
