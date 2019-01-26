@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Personnage {
@@ -150,7 +151,7 @@ public class Personnage {
 
     public void run(float frameDuration,float xImpulse) {
         changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
-        this.body.applyLinearImpulse(xImpulse, 0, this.body.getPosition().x, this.body.getPosition().y, true);
+        this.body.setLinearVelocity(xImpulse,this.body.getLinearVelocity().y);
     }
 
     public void idle(float frameDuration) {
@@ -159,43 +160,52 @@ public class Personnage {
 
     public void jump(float frameDuration) {
         changeAnim("Personnage/jump2.png", 1, 1, 1, frameDuration);
-        this.body.setLinearVelocity(this.body.getLinearVelocity().x, 10000f);
+        this.body.applyLinearImpulse(0, 10000f, this.body.getPosition().x, this.body.getPosition().y, false);
     }
 
+
     public void land(float frameDuration) {
-        changeAnim("Personnage/landing.png", 1, 1, 1, frameDuration);
+        changeAnim("Personnage/landing2.png", 1, 1, 1, frameDuration);
     }
 
     public void ledge(float frameDuration) {
-        changeAnim("Personnage/ledge grab.png", 3, 2, 6, frameDuration);
+        changeAnim("Personnage/ledgeGrab.png", 3, 2, 6, frameDuration);
     }
 
     public void air(float frameDuration) {
-        changeAnim("Personnage/mid air.png", 2, 1, 2, frameDuration);
+        changeAnim("Personnage/midAir.png", 2, 1, 2, frameDuration);
+        this.body.setLinearVelocity(this.body.getLinearVelocity().x, -500f);
     }
 
     void controls() {
         boolean isLeftPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
-
+        boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
+        
         System.out.println(this.body.getLinearVelocity());
-
+        if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
+            jump(.5f);
+        }
+             
+        if (isDownPressed || this.body.getLinearVelocity().y< -10f) {
+            air(.5f);
+        }
         if (isRightPressed) {
             run(.2f,100000f);
             setFlip(1);
         }
-        
-        if (isLeftPressed) {
-        	run(.2f,-100000f);
-        	setFlip(-1);
+        else {
+	        if (isLeftPressed) {
+	        	run(.2f,-100000f);
+	        	setFlip(-1);
+	        }else {
+	            this.body.setLinearVelocity(0, this.body.getLinearVelocity().y);
+	        }
         }
         if (!(isRightPressed || isLeftPressed || !(this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)))
             idle(.5f);
-        if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
-            jump(.5f);
-        }
-
+       
     }
 
 	public int getFlip() {
