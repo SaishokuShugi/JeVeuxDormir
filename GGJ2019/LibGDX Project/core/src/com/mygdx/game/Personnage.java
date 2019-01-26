@@ -126,11 +126,11 @@ public class Personnage {
         TextureRegion[][] tmp = TextureRegion.split(sheet,
                 sheet.getWidth() / frame_cols,
                 sheet.getHeight() / frame_rows);
-        TextureRegion[] frames = new TextureRegion[frame_cols * frame_rows];
+        TextureRegion[] frames = new TextureRegion[nbFrames];
         int index = 0;
         for (int i = 0; i < frame_rows; i++) {
             for (int j = 0; j < frame_cols; j++) {
-                if (i * j < nbFrames) {
+                if (index< nbFrames) {
                     frames[index++] = tmp[i][j];
                 }
             }
