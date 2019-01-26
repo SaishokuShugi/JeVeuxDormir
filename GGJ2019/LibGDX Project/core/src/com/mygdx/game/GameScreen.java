@@ -68,7 +68,7 @@ public class GameScreen implements Screen {
                   "{                                            \n" + 
                   "vec4 color = texture2D(u_texture, v_texCoords);\n"+
                   "float avg =(color.x+color.y+color.z)/3.; \n"+
-                  "  gl_FragColor = vec4(mix(vec3(avg),color.rgb, .5+.5*sin(time)),color.a) ;\n" +
+                  "  gl_FragColor = vec4(mix(vec3(avg),color.rgb*mat3(cos(time),-sin(time),0,sin(time),cos(time),0,0,0,1), .5+.5*sin(time*1.9)),color.a) ;\n" +
                   "}";
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
@@ -180,7 +180,6 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		// dispose of all the native resources
 		batch.dispose();
-		// img.dispose();
 		img2.dispose();
 	}
 }
