@@ -62,20 +62,20 @@ public class MainMenuScreen implements Screen
 	Texture FondImage = new Texture(Gdx.files.internal("Background.png"));
 	TextureRegion[][] SolImages = TextureRegion.split(SolTextureMap, 64, 32);
 	Texture PersoRunTextureMap = new Texture(Gdx.files.internal("Personnage/run.png"));
-	Animation<TextureRegion> RunAnim1 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.25f);
-	Animation<TextureRegion> RunAnim2 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.5f);
-	Animation<TextureRegion> RunAnim3 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.75f);
-	Animation<TextureRegion> RunAnim4 = Personnage.loadAnim("Personnage/run.png", 4, 2, 1f);
+	Animation<TextureRegion> RunAnim1 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.0625f);
+	Animation<TextureRegion> RunAnim2 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.125f);
+	Animation<TextureRegion> RunAnim3 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.25f);
+	Animation<TextureRegion> RunAnim4 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.5f);
 	ArrayList<Animation<TextureRegion>> ListAnimation = new ArrayList<Animation<TextureRegion>>();
 	
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
-	Vector2 PersoPos = new Vector2(-320, 10);
+	Vector2 PersoPos = new Vector2(-320, 24);
 
 	Boolean onPlay, onOption;
 	
-	int xButton = 0, yButton =0;
+	int xButton = 0, yButton =0, numAnim = 0;
 	
-	float stateTime = 0f;
+	float stateTime = 0f, stateTime2 = 0f;
 
 	public MainMenuScreen(final MyGdxGame game)
 	{
@@ -118,12 +118,13 @@ public class MainMenuScreen implements Screen
 			i++;
 		}
 		TitreFont.draw(game.batch, "Je Veux Dormir ", 120, 700);
-		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 615);
-		game.batch.draw(ButtonImage, xButton = 0, yButton =10, 320, 320);
+//		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 615);
+		SousTitreFont.draw(game.batch, Float.toString(stateTime2), 140, 615);
+		game.batch.draw(ButtonImage, xButton = 0, yButton =24, 320, 320);
 		
 		
 		
-		game.batch.draw(LitImage, 1280 - 320, 10, 320, 320);
+		game.batch.draw(LitImage, 1280 - 320, 24, 320, 320);
 
 		if (MousePos.x > xButton+50 && MousePos.x < xButton+270 && MousePos.y > yButton +135 && MousePos.y < yButton+235)
 		{
@@ -146,13 +147,22 @@ public class MainMenuScreen implements Screen
 		}
 
 		stateTime += Gdx.graphics.getDeltaTime();
-		
-		TextureRegion currentFrame = RunAnim1.getKeyFrame(stateTime, true);
-		game.batch.draw(currentFrame, PersoPos.x, PersoPos.y, 210, 330);
-		
+		stateTime2 += Gdx.graphics.getDeltaTime();
+		if(numAnim<4)
+		{
+			TextureRegion currentFrame = ListAnimation.get(numAnim).getKeyFrame(stateTime, true);
+			game.batch.draw(currentFrame, PersoPos.x, PersoPos.y, 210, 330);
+			
+		}
+
 		game.batch.end();
 		
-		PersoPos.x += 2.5f;
+		PersoPos.x += 2f/(numAnim+1);
+		if(numAnim<4 && stateTime2 >3)
+		{
+			stateTime2=0;
+			numAnim++;
+		}
 
 		if (Gdx.input.isTouched())
 		{
