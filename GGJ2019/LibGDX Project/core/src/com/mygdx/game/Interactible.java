@@ -80,5 +80,21 @@ public abstract class Interactible {
         this.echelle = echelle;
     }
 
+    public float getScaledImageWidth() {
+        return this.images[0].getTexture().getWidth() * echelle;
+    }
+
+    public float getScaledImageHeight() {
+        return this.images[0].getTexture().getHeight() * echelle;
+    }
+
+    public float getBodyXToImage() {
+        return this.body.getPosition().x - this.images[0].getTexture().getWidth() / 2 * echelle;
+    }
+
+    public float getBodyYToImage() {
+        return this.body.getPosition().y - this.images[0].getTexture().getHeight() / 2 * echelle;
+    }
+
     public abstract void action();
 }
