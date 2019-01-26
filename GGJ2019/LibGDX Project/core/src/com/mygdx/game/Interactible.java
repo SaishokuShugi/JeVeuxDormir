@@ -32,7 +32,7 @@ public abstract class Interactible {
 
         PolygonShape box = new PolygonShape();
         Texture img = this.images[0].getTexture();
-        box.setAsBox(img.getHeight() / 2 * this.echelle, img.getWidth() / 2 * this.echelle);
+        box.setAsBox(img.getWidth() / 2 * this.echelle, img.getHeight() / 2 * this.echelle);
 
 
         if (friction == 0 && restitution == 0) {
