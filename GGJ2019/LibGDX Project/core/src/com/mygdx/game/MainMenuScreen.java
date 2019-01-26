@@ -51,8 +51,8 @@ public class MainMenuScreen implements Screen
 		return ftfg.generateFont(parameter);
 	}
 
-	BitmapFont TitreFont = createFont(ftfg, 55, false, true);
-	BitmapFont SousTitreFont = createFont(ftfg, 15, false, true);
+	BitmapFont TitreFont = createFont(ftfg, 90, false, true);
+	BitmapFont SousTitreFont = createFont(ftfg, 25, false, true);
 	BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
 	BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
 
@@ -68,19 +68,22 @@ public class MainMenuScreen implements Screen
 	Animation<TextureRegion> RunAnim4 = Personnage.loadAnim("Personnage/run.png", 4, 2, 1f);
 	ArrayList<Animation<TextureRegion>> ListAnimation = new ArrayList<Animation<TextureRegion>>();
 	
-
-	
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
 	Vector2 PersoPos = new Vector2(-320, 10);
 
 	Boolean onPlay, onOption;
+	
+	int xButton = 0, yButton =0;
 	
 	float stateTime = 0f;
 
 	public MainMenuScreen(final MyGdxGame game)
 	{
 		this.game = game;
-
+		ListAnimation.add(RunAnim1);
+		ListAnimation.add(RunAnim2);
+		ListAnimation.add(RunAnim3);
+		ListAnimation.add(RunAnim4);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
 
@@ -108,36 +111,37 @@ public class MainMenuScreen implements Screen
 
 		game.batch.begin();
 		game.batch.draw(FondImage, 0, 0, 1280, 720);
-		TitreFont.draw(game.batch, "Je Veux Dormir ", 120, 700);
-		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 625);
-		game.batch.draw(ButtonImage, 0, 255, 320, 320);
-		
-		
 		int i = 0;
 		while (i<1280)
 		{
 			game.batch.draw(SolImages[0][0], i*128,-30, 128, 64);
 			i++;
 		}
+		TitreFont.draw(game.batch, "Je Veux Dormir ", 120, 700);
+		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 615);
+		game.batch.draw(ButtonImage, xButton = 0, yButton =10, 320, 320);
+		
+		
+		
 		game.batch.draw(LitImage, 1280 - 320, 10, 320, 320);
 
-		if (MousePos.x > 50 && MousePos.x < 270 && MousePos.y > 390 && MousePos.y < 490)
+		if (MousePos.x > xButton+50 && MousePos.x < xButton+270 && MousePos.y > yButton +135 && MousePos.y < yButton+235)
 		{
-			ButtonFont1.draw(game.batch, "Play", 127, 450);
+			ButtonFont1.draw(game.batch, "Play", xButton+127, yButton+195);
 			onPlay = true;
 		} else
 		{
-			ButtonFont2.draw(game.batch, "Play", 127, 450);
+			ButtonFont2.draw(game.batch, "Play", xButton+127, yButton+195);
 			onPlay = false;
 		}
 
-		if (MousePos.x > 50 && MousePos.x < 270 && MousePos.y > 290 && MousePos.y < 390)
+		if (MousePos.x > xButton+50 && MousePos.x < xButton+270 && MousePos.y > yButton +35 && MousePos.y < yButton+135)
 		{
-			ButtonFont1.draw(game.batch, "Option", 105, 350);
+			ButtonFont1.draw(game.batch, "Option", xButton+105, yButton+95);
 			onOption = true;
 		} else
 		{
-			ButtonFont2.draw(game.batch, "Option", 105, 350);
+			ButtonFont2.draw(game.batch, "Option", xButton+105, yButton+95);
 			onOption = false;
 		}
 
