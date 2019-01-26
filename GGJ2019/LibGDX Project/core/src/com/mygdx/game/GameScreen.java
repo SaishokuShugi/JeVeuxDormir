@@ -29,7 +29,10 @@ public class GameScreen implements Screen {
 	SpriteBatch batch;
 	TextureRegion img;
 	Texture img2;
-	Texture stamianatrrzeauityofzsdjki;
+	Texture staminaC;
+	Texture staminaL;
+	Texture staminaR;
+
 	Texture froisdq;
 
 	Personnage perso;
@@ -66,7 +69,7 @@ public class GameScreen implements Screen {
                 "void main()                  \n" + 
                 "{                            \n" +
                 "   v_texCoords = a_texCoord0; \n" + 
-                "   gl_Position = ftransform();  \n"      + 
+                "   gl_Position =  u_projTrans * a_position;  \n"      + 
                 "}" ;
 		String fragmentShader ="#version 120 \n"+
                 "uniform float time;\n"+
@@ -82,7 +85,7 @@ public class GameScreen implements Screen {
                   "{                                            \n"
                   +"vec4 color = texture2D(u_texture, v_texCoords);\n"+
                   "float avg =(color.x+color.y+color.z)/3.; \n"+
-                  "  gl_FragColor = vec4(mix(vec3(v_texCoords,avg),color.rgb, 0),1) ;\n" +
+                  "  gl_FragColor = vec4(mix(vec3(v_texCoords,avg),color.rgb, 0),color.a) ;\n" +
                   "}";	
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
@@ -99,7 +102,10 @@ public class GameScreen implements Screen {
 		// load the images for the monkeys
 		img = new TextureRegion();
 		img2 =new Texture("Background.png");
-		stamianatrrzeauityofzsdjki = new Texture("Empty Stamina Center.png");
+		staminaC = new Texture("EmptyStaminaCenter.png");
+		staminaL = new Texture("EmptyStaminaLeft.png");
+		staminaR = new Texture("EmptyStaminaRight.png");
+
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -147,17 +153,19 @@ public class GameScreen implements Screen {
 		perso.setAnimTime(time+=deltat);
 		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage(), perso.getBodyYToImage()
 				,perso.getCurrentFrame().getRegionWidth() * scale_factor,perso.getCurrentFrame().getRegionHeight() * scale_factor);
+		batch.draw(staminaL, 0, Gdx.graphics.getBackBufferHeight()-50);
+		for(int i =0;i<32*9;batch.draw(staminaC, i+=32, Gdx.graphics.getBackBufferHeight()-50));
+		batch.draw(staminaR, 32*10, Gdx.graphics.getBackBufferHeight()-50);
 
-		batch.draw(stamianatrrzeauityofzsdjki, 0, Gdx.graphics.getBackBufferHeight()-50);
 		batch.end();
 		Frameb.end();
 		
 		batch.begin();
-		batch.setShader(null);
+		//batch.setShader(shader);
+
+		
 		batch.draw(Fbtex, 0, 0);
-
 		/*shader.begin();
-
 		float[] t = new float[1];
 		t[0]=time;
 	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
@@ -213,7 +221,10 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		// dispose of all the native resources
 		batch.dispose();
-		stamianatrrzeauityofzsdjki.dispose();
+		staminaC.dispose();
+		staminaL.dispose();
+		staminaR.dispose();
+
 		img2.dispose();
 	}
 }
