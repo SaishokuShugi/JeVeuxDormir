@@ -88,28 +88,27 @@ public class GameScreen implements Screen {
                   +"vec4 color = texture2D(u_texture, uv);\n"+
                   "  gl_FragColor = vec4(mix(blur(fc),vec3(.5*smoothstep(1.5,0.,distance(uv,vec2(.5)))),.7),1) ;\n" +
                   "}";
-		gameShader0="#version 120 \n"+
-                "uniform float time;\n"+
-				"varying vec2 v_texCoords;\n" + 
-                  "uniform sampler2D u_texture;\n"
-                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
-                  "void main()                                  \n" + 
-                  "{                                            \n"
-                  + "vec2 uv = v_texCoords;"
-                  +"vec4 color = texture2D(u_texture, uv);\n"+
-                  "  gl_FragColor = vec4(color.rgb,1) ;\n" +
-                  "}";
+		gameShader0="#version 120 																			\n"
+                  + "uniform float time;																	\n"
+				  + "varying vec2 v_texCoords;																\n" 
+                  + "uniform sampler2D u_texture;															\n"
+                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");	\n"
+                  + "void main(){                                 											\n"
+                  + "vec2 uv = v_texCoords;																	\n"
+                  + "vec4 color = texture2D(u_texture, uv);													\n"
+                  + "gl_FragColor = vec4(color.rgb,1) ;														\n"
+                  + "}";
 	}
 	void  loadShader(String frag) {
-		String vertexShader = "attribute vec4 a_position;    \n" + 
-                "attribute vec4 a_color;\n" +
-                "attribute vec2 a_texCoord0;\n" + 
-                "uniform mat4 u_projTrans;\n" + 
-                "varying vec2 v_texCoords;" + 
-                "void main()                  \n" + 
-                "{                            \n" +
-                "   v_texCoords = a_texCoord0; \n" + 
-                "   gl_Position =  u_projTrans * a_position;  \n"      + 
+		String vertexShader = "attribute vec4 a_position;    	\n" + 
+                "attribute vec4 a_color;						\n" +
+                "attribute vec2 a_texCoord0;					\n" + 
+                "uniform mat4 u_projTrans;						\n" + 
+                "varying vec2 v_texCoords;						\n" + 
+                "void main()                  					\n" + 
+                "{                            					\n" +
+                "   v_texCoords = a_texCoord0; 					\n" + 
+                "   gl_Position =  u_projTrans * a_position;  	\n" + 
                 "}" ;
 		String fragmentShader =	frag;
 		shader = new ShaderProgram(vertexShader, fragmentShader);
