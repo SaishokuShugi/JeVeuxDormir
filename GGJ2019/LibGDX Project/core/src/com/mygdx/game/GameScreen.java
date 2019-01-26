@@ -58,36 +58,36 @@ public class GameScreen implements Screen {
 	
 	void generateMap() {
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0, 0, 0)));
-		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 2f, 0, .5f, .5f));
-		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, .5f, 0));
-		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, .5f, 0));
-		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, .5f, 0));
-		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0, .5f, 0));
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 2f, 0, 0, .5f));
+		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0));
+		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0));
+		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0, 0, 0));
         perso = new Personnage(10, 10, 0f, 2f, 0, 0, 0, .5f);
 	}
 	String gameShader0;
 	String backMenuShader;
 	
 	void DeclareFragStrings() {
-		backMenuShader ="#version 120 \n"+
-                "uniform float time;\n"+
-				"varying vec2 v_texCoords;\n" + 
-                  "uniform sampler2D u_texture;\n"
-                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
-                  "vec3 blur(vec2 fc){\n"+
-                  "vec3 c= vec3(0);\n"
-                  + "for(int i =-6;i<=6;i++){\n"
-                  + "for(int j =-6;j<=6;j++){"
-                  + "c+=texture2D(u_texture,(fc+vec2(i,j)*2.)/resolution).rgb;}}"
-                  + "return c/169.;"+
-                  "}"+
-                  "void main()                                  \n" + 
-                  "{                                            \n"
-                  + "vec2 uv = v_texCoords;"
-                  + "vec2 fc = floor(uv*resolution);"
-                  +"vec4 color = texture2D(u_texture, uv);\n"+
-                  "  gl_FragColor = vec4(mix(blur(fc),vec3(.5*smoothstep(1.5,0.,distance(uv,vec2(.5)))),.7),1) ;\n" +
-                  "}";
+		backMenuShader ="#version 120 																			\n"
+                  + "uniform float time;																		\n"
+				  + "varying vec2 v_texCoords;																	\n" 
+                  + "uniform sampler2D u_texture;																\n"
+                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");		\n" 
+                  + "vec3 blur(vec2 fc){																		\n"
+                  + "vec3 c= vec3(0);																			\n"
+                  + "for(int i =-6;i<=6;i++){																	\n"
+                  + "for(int j =-6;j<=6;j++){																	\n"
+                  + "c+=texture2D(u_texture,(fc+vec2(i,j)*2.)/resolution).rgb;}}								\n"
+                  + "return c/169.;																				\n"
+                  + "}																							\n"
+                  + "void main()                                  												\n"
+                  + "{     												                                       	\n"
+                  + "vec2 uv = v_texCoords;																		\n"
+                  + "vec2 fc = floor(uv*resolution);															\n"
+                  + "vec4 color = texture2D(u_texture, uv);														\n"
+                  + "gl_FragColor = vec4(mix(blur(fc),vec3(.5*smoothstep(1.5,0.,distance(uv,vec2(.5)))),.7),1);	\n"
+                  + "}";
 		gameShader0="#version 120 																			\n"
                   + "uniform float time;																	\n"
 				  + "varying vec2 v_texCoords;																\n" 
