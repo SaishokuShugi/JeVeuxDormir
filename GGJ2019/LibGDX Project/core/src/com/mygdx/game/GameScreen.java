@@ -76,7 +76,8 @@ public class GameScreen implements Screen  {
 		debugRenderer.render(world, camera.combined);
 		batch.begin();
 		img = block.getImages()[0].getTexture();
-		batch.draw(img,block.getBody().getPosition().x-block.getImages()[0].getTexture().getWidth()/2,block.getBody().getPosition().y-block.getImages()[0].getTexture().getHeight()/2
+		batch.draw(img,block.getBody().getPosition().x-block.getImages()[0].getTexture().getWidth()/2*scale_factor,
+				block.getBody().getPosition().y-block.getImages()[0].getTexture().getHeight()/2*scale_factor
 				,img.getWidth()*scale_factor,img.getHeight()*scale_factor);
 		world.step(Math.min(.015f,deltat), 6, 2);
 		
