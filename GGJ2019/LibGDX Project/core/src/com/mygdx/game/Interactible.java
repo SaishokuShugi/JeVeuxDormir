@@ -8,9 +8,8 @@ public abstract class Interactible {
     private TextureRegion[] images;
     private Body body;
     private Fixture fixture;
-    private float echelle;
 
-    public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution, float echelle) {
+    public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution) {
         Texture animSheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(animSheet,
                 animSheet.getWidth() / frame_cols,
@@ -22,17 +21,16 @@ public abstract class Interactible {
                 this.images[index++] = tmp[i][j];
             }
         }
-        this.echelle = echelle;
 
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
-        bd.position.set(x * 32, y * 32);
+        bd.position.set(x * (32 * GameScreen.scale_factor), y * (32 * GameScreen.scale_factor));
 
         this.body = GameScreen.world.createBody(bd);
 
         PolygonShape box = new PolygonShape();
         Texture img = this.images[0].getTexture();
-        box.setAsBox(img.getWidth() / 2 * this.echelle, img.getHeight() / 2 * this.echelle);
+        box.setAsBox(img.getWidth() / 2 * GameScreen.scale_factor, img.getHeight() / 2 * GameScreen.scale_factor);
 
 
         if (friction == 0 && restitution == 0) {
@@ -72,28 +70,20 @@ public abstract class Interactible {
         this.fixture = fixture;
     }
 
-    public float getEchelle() {
-        return echelle;
-    }
-
-    public void setEchelle(float echelle) {
-        this.echelle = echelle;
-    }
-
     public float getScaledImageWidth() {
-        return this.images[0].getTexture().getWidth() * echelle;
+        return this.images[0].getTexture().getWidth() * GameScreen.scale_factor;
     }
 
     public float getScaledImageHeight() {
-        return this.images[0].getTexture().getHeight() * echelle;
+        return this.images[0].getTexture().getHeight() * GameScreen.scale_factor;
     }
 
     public float getBodyXToImage() {
-        return this.body.getPosition().x - this.images[0].getTexture().getWidth() / 2 * echelle;
+        return this.body.getPosition().x - this.images[0].getTexture().getWidth() / 2 * GameScreen.scale_factor;
     }
 
     public float getBodyYToImage() {
-        return this.body.getPosition().y - this.images[0].getTexture().getHeight() / 2 * echelle;
+        return this.body.getPosition().y - this.images[0].getTexture().getHeight() / 2 * GameScreen.scale_factor;
     }
 
     public abstract void action();
