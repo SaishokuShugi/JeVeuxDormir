@@ -156,6 +156,8 @@ public class GameScreen implements Screen {
 		
 		if(isRightPressed)
 			perso.run(.2f);
+		if(!(isRightPressed||isLeftPressed))
+			perso.idle(.5f);
 		if(isUpPressed)
 			perso.jump(.5f);
 	}
