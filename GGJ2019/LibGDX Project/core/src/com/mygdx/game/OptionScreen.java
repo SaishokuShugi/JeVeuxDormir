@@ -7,9 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
-import static com.mygdx.game.MainMenuScreen.createFont;
-import static com.mygdx.game.MainMenuScreen.ftfg;
-
 public class OptionScreen implements Screen
 {
 	final MyGdxGame game;
@@ -19,7 +16,7 @@ public class OptionScreen implements Screen
     static int xButton = 0;
     static int yButton = 0;
     Vector3 MousePos = new Vector3(0f, 0f, 0f);
-    Boolean onRetour;
+    Boolean onRetour, onUp, onDown;
 
 	
 	public OptionScreen (final MyGdxGame game) {
@@ -71,6 +68,26 @@ public class OptionScreen implements Screen
             MainMenuScreen.ButtonFont2.draw(game.batch, "Retour", xButton + 127, yButton + 195);
             onRetour = false;
         }
+        xButton = (int) (Gdx.graphics.getWidth() * 0.6);
+        yButton = (int) (Gdx.graphics.getHeight() * 0.6);
+        if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
+                && MousePos.y < yButton + 25) {
+            MainMenuScreen.ButtonFont1.draw(game.batch, "<", xButton, yButton);
+            onDown = true;
+        } else {
+            MainMenuScreen.ButtonFont2.draw(game.batch, "<", xButton, yButton);
+            onDown = false;
+        }
+        xButton = (int) (Gdx.graphics.getWidth() * 0.7);
+        yButton = (int) (Gdx.graphics.getHeight() * 0.6);
+        if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
+                && MousePos.y < yButton + 25) {
+            MainMenuScreen.ButtonFont1.draw(game.batch, ">", xButton, yButton);
+            onUp = true;
+        } else {
+            MainMenuScreen.ButtonFont2.draw(game.batch, ">", xButton, yButton);
+            onUp = false;
+        }
 		game.batch.end();
 
         if (Gdx.input.isTouched()) {
@@ -114,8 +131,6 @@ public class OptionScreen implements Screen
 	public void dispose()
 	{
 		// TODO Auto-generated method stub
-        MainMenuScreen.ButtonFont1.dispose();
-        MainMenuScreen.ButtonFont2.dispose();
 
 	}
 
