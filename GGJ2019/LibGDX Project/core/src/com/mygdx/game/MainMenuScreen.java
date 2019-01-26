@@ -25,9 +25,9 @@ public class MainMenuScreen implements Screen
 
 	final MyGdxGame game;
 	OrthographicCamera camera;
-	FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("SleeplessCity.ttf"));
+	static FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("SleeplessCity.ttf"));
 
-	BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille, boolean inverseCouleur, boolean border)
+	static BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille, boolean inverseCouleur, boolean border)
 	{
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = taille;
@@ -52,10 +52,10 @@ public class MainMenuScreen implements Screen
 		return ftfg.generateFont(parameter);
 	}
 
-	BitmapFont TitreFont = createFont(ftfg, 83, false, true);
-	BitmapFont SousTitreFont = createFont(ftfg, 25, false, true);
-	BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
-	BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
+	static BitmapFont TitreFont = createFont(ftfg, 83, false, true);
+	static BitmapFont SousTitreFont = createFont(ftfg, 25, false, true);
+	static BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
+	static BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
 
 	static Texture LitImage = new Texture(Gdx.files.internal("Lit.png"));
 	static Texture ButtonImage = new Texture(Gdx.files.internal("Commode.png"));
