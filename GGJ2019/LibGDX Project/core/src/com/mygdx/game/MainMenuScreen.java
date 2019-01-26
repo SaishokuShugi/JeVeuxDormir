@@ -2,20 +2,37 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class MainMenuScreen implements Screen {
 
 	final MyGdxGame game;
-
 	OrthographicCamera camera;
+	FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("SleeplessCity.ttf"));
+	BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille)
+	{
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = taille;
+		parameter.borderColor = Color.BLACK;
+		parameter.color = Color.WHITE;
+		parameter.borderWidth = 3f;
+	    return ftfg.generateFont(parameter);
+	}
+	
+	BitmapFont TitreFont = createFont(ftfg, 55);
+	BitmapFont SousTitreFont = createFont(ftfg, 15);
+	BitmapFont ButtonFont = createFont(ftfg, 30);
 
 	public MainMenuScreen(final MyGdxGame game) {
 		this.game = game;
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, 1280, 720);
 
 	}
 
@@ -35,8 +52,10 @@ public class MainMenuScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
-		game.font.draw(game.batch, "Welcome to GDX c'est de la merde!!! ", 100, 150);
-		game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+		TitreFont.draw(game.batch, "Je Veux Dormir ", 100, 700);
+		SousTitreFont.draw(game.batch, "A Vegan Product", 100, 625);
+		ButtonFont.draw(game.batch, "Play", 100, 450);
+		ButtonFont.draw(game.batch, "Option", 100, 400);
 		game.batch.end();
 
 		if (Gdx.input.isTouched()) {
@@ -72,6 +91,9 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+		//game.batch.dispose();
+		TitreFont.dispose();
+		SousTitreFont.dispose();
 		
 	}
 

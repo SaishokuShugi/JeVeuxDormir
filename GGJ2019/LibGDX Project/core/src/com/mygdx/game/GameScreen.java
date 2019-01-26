@@ -8,13 +8,19 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -24,51 +30,31 @@ public class GameScreen implements Screen  {
 	SpriteBatch batch;
 	Texture img;
 	Texture img2;
-	private Rectangle monkey;
-    Vector3 touchPos = new Vector3();
-    private Array<Rectangle> raindrops;
-    private long lastDropTime;
+
+	public static World world;
 	
+	Controller cont;
+	Box2DDebugRenderer debugRenderer;
+	public Block block;
 	public GameScreen (final MyGdxGame game) {
 		this.game = game;
 		// load the images for the monkeys
-		img = new Texture("Singe Astronaute.png");
-		img2 = new Texture("Singe Astronaute Roland.png");
+		img = new Texture("Lit.png");
+		img2 = new Texture("Objet.png");
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
-		// create a Rectangle to logically represent the monkey, the width and height of the monkey doesn't correspond 
-		monkey = new Rectangle();
-		monkey.x = 800 / 2 - 64 / 2; // center the monkey horizontally
-		monkey.y = 20;  // bottom left corner of the bucket is 20 pixels above the bottom screen edge
-		monkey.width = 64;
-		monkey.height = 64;
-		// create the raindrops array and spawn the first raindrop
-		raindrops = new Array<Rectangle>();
-		spawnRaindrop();
-	}
+		camera.setToOrtho(false,Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
 	
-	@Override
-	public void dispose () {
-		// dispose of all the native resources
-		batch.dispose();
-		img.dispose();
-		img2.dispose();
-		
+		if(!Controllers.getControllers().isEmpty())
+			cont = Controllers.getControllers().get(0);
+		Box2D.init();
+		world = new World(new Vector2(0,-9.81f),true);
+		debugRenderer = new Box2DDebugRenderer();
+		block = new Block("Chaise.png",1,1,150,150,0,0,0);
 	}
-	
-	//It's a Method for trying simple asset and basic mechanics
-	private void spawnRaindrop() {
-	      Rectangle raindrop = new Rectangle();
-	      raindrop.x = MathUtils.random(0, 800-64);
-	      raindrop.y = 480;
-	      raindrop.width = 64;
-	      raindrop.height = 64;
-	      raindrops.add(raindrop);
-	      lastDropTime = TimeUtils.nanoTime();
-	   }
 
+	
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
@@ -77,56 +63,18 @@ public class GameScreen implements Screen  {
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
-		// clear the screen with a dark blue color. The
-	    // arguments to glClearColor are the red, green
-	    // blue and alpha component in the range [0,1]
-	    // of the color to be used to clear the screen.
+		float deltat =Gdx.graphics.getDeltaTime();
+
+		
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		// tell the camera to update its matrices.
-		camera.update();
-		// tell the SpriteBatch to render in the
-	      // coordinate system specified by the camera.
-		batch.setProjectionMatrix(camera.combined);
-		// begin a new batch and draw the bucket and
-	    // all drops
+		
+		debugRenderer.render(world, camera.combined);
 		batch.begin();
-		batch.draw(img, monkey.x, monkey.y);
-		for(Rectangle raindrop: raindrops) {
-		      batch.draw(img2, raindrop.x, raindrop.y);
-		   }
+		batch.draw(block.getImages()[0].getTexture(),block.getBody().getPosition().x-block.getImages()[0].getTexture().getWidth()/2,block.getBody().getPosition().y-block.getImages()[0].getTexture().getHeight()/2);
+		world.step(Math.min(.015f,deltat), 6, 2);
+		
 		batch.end();
-		// process user input
-		if(Gdx.input.isTouched()) {
-		      touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-		      camera.unproject(touchPos);
-		      monkey.x = touchPos.x - monkey.width / 2;
-		   }
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-			monkey.x -= 200 * Gdx.graphics.getDeltaTime();
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-			monkey.x += 200 * Gdx.graphics.getDeltaTime();
-		// make sure the bucket stays within the screen bounds
-		if(monkey.x < 0) 
-			monkey.x = 0;
-		if(monkey.x > 800 - monkey.width*2) 
-			monkey.x = 800 - monkey.width*2;
-		// check if we need to create a new raindrop
-		if(TimeUtils.nanoTime() - lastDropTime > 1000000000) 
-			spawnRaindrop();
-		// move the raindrops, remove any that are beneath the bottom edge of
-	    // the screen or that hit the bucket. In the latter case we play back
-	    // a sound effect as well.
-		for (Iterator<Rectangle> iter = raindrops.iterator(); iter.hasNext(); ) {
-		      Rectangle raindrop = iter.next();
-		      raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-		      if(raindrop.y + 64 < 0) iter.remove();
-		      if(raindrop.overlaps(monkey)) {
-			         iter.remove();
-			      }
-		   }
-
 	}
 
 	@Override
@@ -151,5 +99,14 @@ public class GameScreen implements Screen  {
 	public void hide() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	@Override
+	public void dispose () {
+		// dispose of all the native resources
+		batch.dispose();
+		img.dispose();
+		img2.dispose();		
 	}
 }
