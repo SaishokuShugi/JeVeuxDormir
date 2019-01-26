@@ -4,14 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+
+import static com.mygdx.game.MainMenuScreen.createFont;
+import static com.mygdx.game.MainMenuScreen.ftfg;
 
 public class OptionScreen implements Screen
 {
 	final MyGdxGame game;
 	private OrthographicCamera camera;
 	SpriteBatch batch;
+
+    static int xButton = 0;
+    static int yButton = 0;
+    Vector3 MousePos = new Vector3(0f, 0f, 0f);
+    Boolean onRetour;
+
 	
 	public OptionScreen (final MyGdxGame game) {
 		this.game = game;
@@ -32,8 +41,16 @@ public class OptionScreen implements Screen
 	public void render(float delta)
 	{
 		// TODO Auto-generated method stub
+        MousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+
+
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        camera.update();
+        camera.unproject(MousePos);
+        game.batch.setProjectionMatrix(camera.combined);
+
 		game.batch.begin();
 		game.batch.draw(MainMenuScreen.FondImage, 0, 0, 1280, 720);
 		int i = 0;
@@ -43,9 +60,29 @@ public class OptionScreen implements Screen
 			i++;
 		}
 		game.batch.draw(MainMenuScreen.LitImage, 1280 - 320, 24, 320, 320);
-		game.batch.draw(MainMenuScreen.ButtonImage, MainMenuScreen.xButton, MainMenuScreen.yButton = 24, 320, 320);
+        game.batch.draw(MainMenuScreen.ButtonImage, xButton = 0, yButton = 24, 320, 320);
 		game.batch.draw(MainMenuScreen.Fallen, MainMenuScreen.PersoPos.x, MainMenuScreen.PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
+
+        MainMenuScreen.ButtonFont1 = createFont(ftfg, 30, true, true);
+        MainMenuScreen.ButtonFont2 = createFont(ftfg, 30, false, false);
+
+        if (MousePos.x > xButton + 50 && MousePos.x < xButton + 270 && MousePos.y > yButton + 135
+                && MousePos.y < yButton + 235) {
+            MainMenuScreen.ButtonFont1.draw(game.batch, "Retour", xButton + 127, yButton + 195);
+            onRetour = true;
+        } else {
+            MainMenuScreen.ButtonFont2.draw(game.batch, "Retour", xButton + 127, yButton + 195);
+            onRetour = false;
+        }
 		game.batch.end();
+
+        if (Gdx.input.isTouched()) {
+            if (onRetour) {
+                MainMenuScreen.BackMusic.setVolume(MainMenuScreen.MusicVolume);
+                game.setScreen(new MainMenuScreen(game));
+                dispose();
+            }
+        }
 	}
 
 	@Override
@@ -80,6 +117,8 @@ public class OptionScreen implements Screen
 	public void dispose()
 	{
 		// TODO Auto-generated method stub
+        MainMenuScreen.ButtonFont1.dispose();
+        MainMenuScreen.ButtonFont2.dispose();
 
 	}
 
