@@ -25,7 +25,7 @@ public class MainMenuScreen implements Screen {
 	}
 	
 	BitmapFont TitreFont = createFont(ftfg, 55);
-	BitmapFont SousTitreFont = createFont(ftfg, 20);
+	BitmapFont SousTitreFont = createFont(ftfg, 15);
 	BitmapFont ButtonFont = createFont(ftfg, 30);
 
 	public MainMenuScreen(final MyGdxGame game) {
@@ -53,7 +53,9 @@ public class MainMenuScreen implements Screen {
 
 		game.batch.begin();
 		TitreFont.draw(game.batch, "Je Veux Dormir ", 100, 700);
-		SousTitreFont.draw(game.batch, "A Vegan Product", 100, 650);
+		SousTitreFont.draw(game.batch, "A Vegan Product", 100, 625);
+		ButtonFont.draw(game.batch, "Play", 100, 450);
+		ButtonFont.draw(game.batch, "Option", 100, 400);
 		game.batch.end();
 
 		if (Gdx.input.isTouched()) {
