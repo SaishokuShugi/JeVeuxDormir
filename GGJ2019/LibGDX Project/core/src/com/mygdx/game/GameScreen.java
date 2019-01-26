@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
@@ -64,11 +65,17 @@ public class GameScreen implements Screen {
                 "uniform float time;\n"+
 				"varying vec2 v_texCoords;\n" + 
                   "uniform sampler2D u_texture;\n" + 
+                  "vec3 blur(vec2 uv){\n"+
+                  "vec3 c= vec3(0);\n"
+                  + "for(int i =-1;i<1;i++){\n"
+                  + "c+=texture(u_texture,uv+i/2.).rgb;}"
+                  + "return c/3.;"+
+                  "}"+
                   "void main()                                  \n" + 
                   "{                                            \n" + 
                   "vec4 color = texture2D(u_texture, v_texCoords);\n"+
                   "float avg =(color.x+color.y+color.z)/3.; \n"+
-                  "  gl_FragColor = vec4(mix(vec3(avg),color.rgb*mat3(cos(time),-sin(time),0,sin(time),cos(time),0,0,0,1), .5+.5*sin(time*1.9)),color.a) ;\n" +
+                  "  gl_FragColor = vec4(mix(vec3(avg),color.rgb, .7),color.a) ;\n" +
                   "}";
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
@@ -138,8 +145,19 @@ public class GameScreen implements Screen {
 
 	    shader.end();
 		world.step(Math.min(.015f, deltat), 6, 2);
-		//controls();
+		controls();
 
+	}
+	
+	void controls() {
+		boolean isLeftPressed = Gdx.input.isKeyPressed(Keys.Q);
+		boolean isRightPressed = Gdx.input.isKeyPressed(Keys.D);
+		boolean isUpPressed = Gdx.input.isKeyPressed(Keys.SPACE);
+		
+		if(isRightPressed)
+			perso.run(.2f);
+		if(isUpPressed)
+			perso.jump(.5f);
 	}
 
 	@Override
