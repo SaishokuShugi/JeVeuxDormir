@@ -7,6 +7,7 @@ import javax.swing.text.StyledEditorKit.ForegroundAction;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -71,6 +72,7 @@ public class MainMenuScreen implements Screen
 	Texture Fall = new Texture(Gdx.files.internal("Personnage/jump2.png"));
 
 	static Music BackMusic = Gdx.audio.newMusic(Gdx.files.internal("Back.ogg"));
+	Sound RonfleSound = Gdx.audio.newSound(Gdx.files.internal("Ronflement.ogg"));
 	
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
 	static Vector2 PersoPos = new Vector2(-210, 24);
@@ -81,7 +83,7 @@ public class MainMenuScreen implements Screen
 	static int yButton = 0;
 	int numAnim = 0;
 
-	static float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f, MusicVolume = 0.5f, sum = 0f;
+	static float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f, MusicVolume = 0.5f, SoundVolume = 0.5f, sum = 0f;
 
 	public MainMenuScreen(final MyGdxGame game)
 	{
@@ -145,11 +147,11 @@ public class MainMenuScreen implements Screen
 		if (MousePos.x > xButton + 50 && MousePos.x < xButton + 270 && MousePos.y > yButton + 35
 				&& MousePos.y < yButton + 135)
 		{
-			ButtonFont1.draw(game.batch, "Option", xButton + 105, yButton + 95);
+			ButtonFont1.draw(game.batch, "Options", xButton + 100, yButton + 95);
 			onOption = true;
 		} else
 		{
-			ButtonFont2.draw(game.batch, "Option", xButton + 105, yButton + 95);
+			ButtonFont2.draw(game.batch, "Options", xButton + 100, yButton + 95);
 			onOption = false;
 		}
 
@@ -179,6 +181,7 @@ public class MainMenuScreen implements Screen
 			else
 			{
 				game.batch.draw(Fallen, PersoPos.x, PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
+				RonfleSound.loop(SoundVolume);
 			}
 
 		}
