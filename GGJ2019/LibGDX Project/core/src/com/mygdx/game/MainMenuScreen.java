@@ -77,7 +77,7 @@ public class MainMenuScreen implements Screen
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
 	static Vector2 PersoPos = new Vector2(-210, 24);
 
-	Boolean onPlay, onOption;
+	Boolean onPlay, onOption, IsRonfle = false;
 
 	static int xButton = 0;
 	static int yButton = 0;
@@ -181,7 +181,12 @@ public class MainMenuScreen implements Screen
 			else
 			{
 				game.batch.draw(Fallen, PersoPos.x, PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
-				RonfleSound.loop(SoundVolume);
+				if (!IsRonfle)
+				{
+					RonfleSound.loop(SoundVolume, 2, 0);
+					IsRonfle = true;
+				}
+				
 			}
 
 		}
@@ -246,10 +251,6 @@ public class MainMenuScreen implements Screen
 	{
 		// TODO Auto-generated method stub
 		// game.batch.dispose();
-		TitreFont.dispose();
-		SousTitreFont.dispose();
-		ButtonFont1.dispose();
-		ButtonFont2.dispose();
 
 
 	}
