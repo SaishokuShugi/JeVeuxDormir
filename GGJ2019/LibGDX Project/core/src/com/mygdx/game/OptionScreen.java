@@ -16,7 +16,7 @@ public class OptionScreen implements Screen
     static int xButton = 0;
     static int yButton = 0;
     Vector3 MousePos = new Vector3(0f, 0f, 0f);
-    Boolean onRetour, onUp, onDown;
+    Boolean onRetour, onMusicUp, onMusicDown, onSoundUp, onSoundDown;
 
 	
 	public OptionScreen (final MyGdxGame game) {
@@ -68,25 +68,53 @@ public class OptionScreen implements Screen
             MainMenuScreen.ButtonFont2.draw(game.batch, "Retour", xButton + 127, yButton + 195);
             onRetour = false;
         }
-        xButton = (int) (Gdx.graphics.getWidth() * 0.6);
+
+        xButton = (int) (Gdx.graphics.getWidth() * 0.3);
         yButton = (int) (Gdx.graphics.getHeight() * 0.6);
+        MainMenuScreen.SousTitreFont.draw(game.batch, "Volume de la musique", xButton, yButton);
+        xButton = (int) (Gdx.graphics.getWidth() * 0.6);
         if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
                 && MousePos.y < yButton + 25) {
             MainMenuScreen.ButtonFont1.draw(game.batch, "<", xButton, yButton);
-            onDown = true;
+            onMusicDown = true;
         } else {
             MainMenuScreen.ButtonFont2.draw(game.batch, "<", xButton, yButton);
-            onDown = false;
+            onMusicDown = false;
         }
+        xButton = (int) (Gdx.graphics.getWidth() * 0.65);
+        MainMenuScreen.SousTitreFont.draw(game.batch, String.format("%.0f", MainMenuScreen.MusicVolume * 100), xButton, yButton);
         xButton = (int) (Gdx.graphics.getWidth() * 0.7);
-        yButton = (int) (Gdx.graphics.getHeight() * 0.6);
         if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
                 && MousePos.y < yButton + 25) {
             MainMenuScreen.ButtonFont1.draw(game.batch, ">", xButton, yButton);
-            onUp = true;
+            onMusicUp = true;
         } else {
             MainMenuScreen.ButtonFont2.draw(game.batch, ">", xButton, yButton);
-            onUp = false;
+            onMusicUp = false;
+        }
+
+        xButton = (int) (Gdx.graphics.getWidth() * 0.3);
+        yButton = (int) (Gdx.graphics.getHeight() * 0.5);
+        MainMenuScreen.SousTitreFont.draw(game.batch, "Volume des sons", xButton, yButton);
+        xButton = (int) (Gdx.graphics.getWidth() * 0.6);
+        if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
+                && MousePos.y < yButton + 25) {
+            MainMenuScreen.ButtonFont1.draw(game.batch, "<", xButton, yButton);
+            onSoundDown = true;
+        } else {
+            MainMenuScreen.ButtonFont2.draw(game.batch, "<", xButton, yButton);
+            onSoundDown = false;
+        }
+        xButton = (int) (Gdx.graphics.getWidth() * 0.65);
+        MainMenuScreen.SousTitreFont.draw(game.batch, String.format("%.0f", MainMenuScreen.SoundVolume * 100), xButton, yButton);
+        xButton = (int) (Gdx.graphics.getWidth() * 0.7);
+        if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
+                && MousePos.y < yButton + 25) {
+            MainMenuScreen.ButtonFont1.draw(game.batch, ">", xButton, yButton);
+            onSoundUp = true;
+        } else {
+            MainMenuScreen.ButtonFont2.draw(game.batch, ">", xButton, yButton);
+            onSoundUp = false;
         }
 		game.batch.end();
 
@@ -95,6 +123,28 @@ public class OptionScreen implements Screen
                 MainMenuScreen.BackMusic.setVolume(MainMenuScreen.MusicVolume);
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
+            }
+        }
+        if (Gdx.input.isTouched()) {
+            if (onMusicUp) {
+                if (MainMenuScreen.MusicVolume < 0.99f) {
+                    MainMenuScreen.MusicVolume += 0.01;
+                }
+            }
+            if (onMusicDown) {
+                if (MainMenuScreen.MusicVolume > 0.01f) {
+                    MainMenuScreen.MusicVolume -= 0.01;
+                }
+            }
+            if (onSoundUp) {
+                if (MainMenuScreen.SoundVolume < 0.99f) {
+                    MainMenuScreen.SoundVolume += 0.01;
+                }
+            }
+            if (onSoundDown) {
+                if (MainMenuScreen.SoundVolume > 0.01f) {
+                    MainMenuScreen.SoundVolume -= 0.01;
+                }
             }
         }
 	}
