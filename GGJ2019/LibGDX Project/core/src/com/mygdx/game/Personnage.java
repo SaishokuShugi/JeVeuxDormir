@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Personnage {
+    private float staminaMax;
+    private float froidMax;
     private float stamina;
     private float froid;
     private float friction;
@@ -14,9 +16,11 @@ public class Personnage {
     private Body body;
     private Fixture fixture;
 
-    public Personnage(float stamina, float froid, float friction, float density, float restitution) {
-        this.stamina = stamina;
-        this.froid = froid;
+    public Personnage(float staminaMax, float froidMax, float friction, float density, float restitution) {
+        this.staminaMax = staminaMax;
+        this.stamina = staminaMax;
+        this.froidMax = froidMax;
+        this.froid = froidMax;
         this.friction = friction;
         this.density = density;
         this.restitution = restitution;
