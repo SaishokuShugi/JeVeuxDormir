@@ -17,7 +17,7 @@ public class MainMenuScreen implements Screen {
 	final MyGdxGame game;
 	OrthographicCamera camera;
 	FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("SleeplessCity.ttf"));
-	BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille, boolean inverseCouleur )
+	BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille, boolean inverseCouleur , boolean border)
 	{
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = taille;
@@ -32,17 +32,28 @@ public class MainMenuScreen implements Screen {
 			parameter.borderColor = Color.BLACK;
 			parameter.color = Color.WHITE;
 		}
+		if (border)
+		{
+			parameter.borderWidth = 3f;
+		}
+		else
+		{
+			parameter.borderWidth = 0f;
+		}
 		
-		parameter.borderWidth = 3f;
 	    return ftfg.generateFont(parameter);
 	}
 	
-	BitmapFont TitreFont = createFont(ftfg, 55, false);
-	BitmapFont SousTitreFont = createFont(ftfg, 15, false);
-	BitmapFont ButtonFont = createFont(ftfg, 30, true);
+	BitmapFont TitreFont = createFont(ftfg, 55, false, true);
+	BitmapFont SousTitreFont = createFont(ftfg, 15, false, true);
+	BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
+	BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
 	
 	Texture ButtonImage = new Texture(Gdx.files.internal("Commode.png"));
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
+	
+	Boolean onPlay, 
+			onOption;
 
 	public MainMenuScreen(final MyGdxGame game) {
 		this.game = game;
@@ -71,15 +82,42 @@ public class MainMenuScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
-		TitreFont.draw(game.batch, "Je Veux Dormir ", 100, 700);
-		SousTitreFont.draw(game.batch, "A Vegan Product", 100, 625);
-		game.batch.draw(ButtonImage, 0, 250, 320, 320);
-		ButtonFont.draw(game.batch, "Play", 100, 450);
-		ButtonFont.draw(game.batch, "Option", 100, 350);
+		TitreFont.draw(game.batch, "Je Veux Dormir ", 120, 700);
+		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 625);
+		game.batch.draw(ButtonImage, 0, 255, 320, 320);
+		if(MousePos.x> 50 && MousePos.x < 270 && MousePos.y> 390 && MousePos.y< 490)
+		{
+			ButtonFont1.draw(game.batch, "Play", 127, 450);
+			onPlay = true;
+		}
+		else 
+		{
+			ButtonFont2.draw(game.batch, "Play", 127, 450);
+			onPlay = false;
+		}
+		
+		if(MousePos.x> 50 && MousePos.x < 270 && MousePos.y> 290 && MousePos.y< 390)
+		{
+			ButtonFont1.draw(game.batch, "Option", 105, 350);
+			onOption = true;
+		}
+		else 
+		{
+			ButtonFont2.draw(game.batch, "Option", 105, 350);
+			onOption = false;
+		}
+		
 		game.batch.end();
 
 		if (Gdx.input.isTouched()) {
-			game.setScreen(new GameScreen(game));
+			if (onPlay)
+			{
+				game.setScreen(new GameScreen(game));
+			}
+			else if (onOption)
+			{
+				game.setScreen(new OptionScreen(game));
+			}
 			dispose();
 		}
 	}
