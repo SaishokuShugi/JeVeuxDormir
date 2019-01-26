@@ -90,7 +90,7 @@ public class OptionScreen implements Screen
         }
 		game.batch.end();
 
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.justTouched()) {
             if (onRetour) {
                 MainMenuScreen.BackMusic.setVolume(MainMenuScreen.MusicVolume);
                 game.setScreen(new MainMenuScreen(game));
