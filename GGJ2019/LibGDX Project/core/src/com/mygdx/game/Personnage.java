@@ -141,4 +141,29 @@ public class Personnage {
         this.animTime = 0;
         this.anim = loadAnim(image, frame_cols, frame_rows, frameDuration);
     }
+
+    public void run(float frameDuration) {
+        changeAnim("Personnage/run.png", 4, 2, frameDuration);
+    }
+
+    public void idle(float frameDuration) {
+        changeAnim("Personnage/idle.png", 4, 2, frameDuration);
+    }
+
+    public void jump(float frameDuration) {
+        changeAnim("Personnage/jump2.png", 4, 2, frameDuration);
+    }
+
+    public void land(float frameDuration) {
+        changeAnim("Personnage/landing.png", 4, 2, frameDuration);
+    }
+
+    public void ledge(float frameDuration) {
+        changeAnim("Personnage/ledge grab.png", 4, 2, frameDuration);
+    }
+
+    public void air(float frameDuration) {
+        changeAnim("Personnage/mid air.png", 4, 2, frameDuration);
+    }
+
 }
