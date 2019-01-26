@@ -147,23 +147,23 @@ public class Personnage {
     }
 
     public void idle(float frameDuration) {
-        changeAnim("Personnage/idle.png", 4, 2, frameDuration);
+        changeAnim("Personnage/idle.png", 4, 3, frameDuration);
     }
 
     public void jump(float frameDuration) {
-        changeAnim("Personnage/jump2.png", 4, 2, frameDuration);
+        changeAnim("Personnage/jump2.png", 1, 1, frameDuration);
     }
 
     public void land(float frameDuration) {
-        changeAnim("Personnage/landing.png", 4, 2, frameDuration);
+        changeAnim("Personnage/landing.png", 1, 1, frameDuration);
     }
 
     public void ledge(float frameDuration) {
-        changeAnim("Personnage/ledge grab.png", 4, 2, frameDuration);
+        changeAnim("Personnage/ledge grab.png", 3, 2, frameDuration);
     }
 
     public void air(float frameDuration) {
-        changeAnim("Personnage/mid air.png", 4, 2, frameDuration);
+        changeAnim("Personnage/mid air.png", 2, 1, frameDuration);
     }
 
 }
