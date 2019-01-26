@@ -85,7 +85,8 @@ public class GameScreen implements Screen {
 		String fragmentShader ="#version 120 \n"+
                 "uniform float time;\n"+
 				"varying vec2 v_texCoords;\n" + 
-                  "uniform sampler2D u_texture;\n"+ 
+                  "uniform sampler2D u_texture;\n"
+                  + "const vec2 resolution = vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
                   "vec3 blur(vec2 uv){\n"+
                   "vec3 c= vec3(0);\n"
                   + "for(int i =-1;i<1;i++){\n"
