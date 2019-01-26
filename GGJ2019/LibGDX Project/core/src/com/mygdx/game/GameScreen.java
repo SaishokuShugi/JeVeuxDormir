@@ -46,6 +46,9 @@ public class GameScreen implements Screen {
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, i++, 0f, 0, 0, 0)));
 		blocks.add(new Movable("Chaise.png", 1, 1, 1f, 2f, 0, 0, .5f));
 		blocks.add(new Block("lit.png", 1, 1, 13f, 1f, 0, 0, 0));
+		blocks.add(new Block("armoire.png", 1, 1, 8f, 1f, 0, 0, 0));
+		blocks.add(new Block("table.png", 1, 1, 4f, 1f, 0, 0, 0));
+		blocks.add(new Movable("commode.png", 1, 1, 4f, 2f, 0, 0, 0));
 	}
 	
 	
@@ -84,6 +87,7 @@ public class GameScreen implements Screen {
 
 		debugRenderer.render(world, camera.combined);
 		batch.begin();
+		batch.draw(new Texture("Background.png"),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
 			img = block.getImages()[block.tile];
 			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
