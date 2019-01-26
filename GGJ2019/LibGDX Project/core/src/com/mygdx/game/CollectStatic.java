@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class CollectStatic extends Interactible {
 
-    public CollectStatic(String image, int frame_cols, int frame_rows, int x, int y, float friction, float density, float restitution) {
+    public CollectStatic(String image, int frame_cols, int frame_rows, float x, float y, float friction, float density, float restitution) {
         super(image, frame_cols, frame_rows, BodyDef.BodyType.StaticBody, x, y, friction, density, restitution);
     }
 
