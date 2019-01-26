@@ -8,6 +8,7 @@ public abstract class Interactible {
     private TextureRegion[] images;
     private Body body;
     private Fixture fixture;
+    public int tile;
 
     public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution) {
         Texture animSheet = new Texture(image);
@@ -21,7 +22,7 @@ public abstract class Interactible {
                 this.images[index++] = tmp[i][j];
             }
         }
-
+        tile = MyGdxGame.random.nextInt(frame_cols*frame_rows);
         PolygonShape box = new PolygonShape();
         TextureRegion img = this.images[0];
         box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);

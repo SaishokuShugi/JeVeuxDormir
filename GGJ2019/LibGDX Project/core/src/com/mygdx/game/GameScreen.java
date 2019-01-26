@@ -85,7 +85,7 @@ public class GameScreen implements Screen {
 		debugRenderer.render(world, camera.combined);
 		batch.begin();
 		for (Interactible block : blocks) {
-			img = block.getImages()[0];
+			img = block.getImages()[block.tile];
 			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 			world.step(Math.min(.015f, deltat), 6, 2);
