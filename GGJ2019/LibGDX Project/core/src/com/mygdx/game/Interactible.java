@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public abstract class Interactible {
@@ -9,6 +11,7 @@ public abstract class Interactible {
     private Body body;
     private Fixture fixture;
     public int tile;
+    Vector2 decal;
 
     public Interactible(String image, int frame_cols, int frame_rows, int nbFrames, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution) {
         Texture animSheet = new Texture(image);
@@ -25,15 +28,19 @@ public abstract class Interactible {
             }
         }
         tile = MyGdxGame.random.nextInt(frame_cols*frame_rows);
+        
+        
+        
+        
+        
         PolygonShape box = new PolygonShape();
         TextureRegion img = this.images[0];
-        box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
+        decal = new Vector2(img.getRegionWidth() / 64f, img.getRegionHeight() / 64f);
+        box.setAsBox(decal.x,decal.y);
         
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
-        x = x * 32 + img.getRegionWidth() / 2;
-        y = y * 32 + img.getRegionHeight() / 2;
-        bd.position.set(x*GameScreen.scale_factor, y* GameScreen.scale_factor);
+        bd.position.set(x+decal.x, y+decal.y);
 
         this.body = GameScreen.world.createBody(bd);
 
@@ -79,10 +86,10 @@ public abstract class Interactible {
     }
 
     public float getBodyXToImage() {
-        return this.body.getPosition().x - this.images[0].getRegionWidth() / 2 * GameScreen.scale_factor;
+        return (this.body.getPosition().x-decal.x) *32 * GameScreen.scale_factor;
     }
 
     public float getBodyYToImage() {
-        return this.body.getPosition().y - this.images[0].getRegionHeight() / 2 * GameScreen.scale_factor;
+        return (this.body.getPosition().y-decal.y)*32 * GameScreen.scale_factor;
     }
 }

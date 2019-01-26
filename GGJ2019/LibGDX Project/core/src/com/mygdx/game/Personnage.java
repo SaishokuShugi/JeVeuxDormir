@@ -18,6 +18,7 @@ public class Personnage {
     private Animation<TextureRegion> anim;
     private float animTime;
     private int flip=1;
+    Vector2 decal;
 
     public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution, float frameDuration) {
         this.staminaMax = staminaMax;
@@ -29,17 +30,18 @@ public class Personnage {
 
         TextureRegion img = this.anim.getKeyFrame(0f, true);
 
+        decal = new Vector2(img.getRegionWidth() / 64f, img.getRegionHeight() / 64f);
+
         PolygonShape box = new PolygonShape();
-        box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
+        box.setAsBox(decal.x,decal.y);
 
         BodyDef bd = new BodyDef();
         bd.type = BodyDef.BodyType.DynamicBody;
-        x = x * 32 + img.getRegionWidth() / 2;
-        y = y * 32 + img.getRegionHeight() / 2;
-        bd.position.set(x * GameScreen.scale_factor, y * GameScreen.scale_factor);
+        bd.position.set(x +decal.x, y +decal.y);
 
         this.body = GameScreen.world.createBody(bd);
-        this.body.setGravityScale(0.1f);
+        //this.body.setGravityScale(0.1f);
+        this.body.setFixedRotation(true);
 
         FixtureDef fd = new FixtureDef();
         fd.shape = box;
@@ -119,11 +121,11 @@ public class Personnage {
     }
 
     public float getBodyXToImage() {
-        return this.body.getPosition().x - getCurrentFrame().getRegionWidth() / 2 * GameScreen.scale_factor;
+        return (this.body.getPosition().x-decal.x) *32 * GameScreen.scale_factor;
     }
 
     public float getBodyYToImage() {
-        return this.body.getPosition().y - getCurrentFrame().getRegionHeight() / 2 * GameScreen.scale_factor;
+        return (this.body.getPosition().y-decal.y) * 32 * GameScreen.scale_factor;
     }
 
     public static Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, int nbFrames, float frameDuration) {
@@ -151,7 +153,7 @@ public class Personnage {
 
     public void run(float frameDuration,float xImpulse) {
         changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
-        this.body.applyLinearImpulse(0,-40000f, this.body.getPosition().x, this.body.getPosition().y, false);
+        this.body.applyLinearImpulse(0,-4f, this.body.getPosition().x, this.body.getPosition().y, false);
         this.body.setLinearVelocity(xImpulse,this.body.getLinearVelocity().y);
     }
 
@@ -161,7 +163,7 @@ public class Personnage {
 
     public void jump(float frameDuration) {
         changeAnim("Personnage/jump2.png", 1, 1, 1, frameDuration);
-        this.body.applyLinearImpulse(0, 10000f, this.body.getPosition().x, this.body.getPosition().y, false);
+        this.body.applyLinearImpulse(0,2f, this.body.getPosition().x, this.body.getPosition().y, false);
     }
 
 
@@ -184,8 +186,8 @@ public class Personnage {
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
         boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
         
-        System.out.println(this.body.getLinearVelocity());
-        if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
+        System.out.println(this.body.getPosition());
+        if (isUpPressed && true|(this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
             jump(.5f);
         }
              
@@ -193,12 +195,12 @@ public class Personnage {
             air(.5f);
         }
         if (isRightPressed) {
-            run(.2f,100000f);
+            run(.2f,10f);
             setFlip(1);
         }
         else {
 	        if (isLeftPressed) {
-	        	run(.2f,-100000f);
+	        	run(.2f,-10f);
 	        	setFlip(-1);
 	        }else {
 	            this.body.setLinearVelocity(0, this.body.getLinearVelocity().y);

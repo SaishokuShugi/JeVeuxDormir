@@ -58,12 +58,12 @@ public class GameScreen implements Screen {
 	
 	void generateMap() {
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0, 0, 0)));
-		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 2f, 0, 0, .5f));
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f));
 		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0));
-		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0, 0, 0));
-        perso = new Personnage(10, 10, 0f, 2f, 0, 0, 0, .5f);
+		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0,1, 0));
+        perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
 	}
 	String gameShader0;
 	String backMenuShader;
@@ -143,17 +143,18 @@ public class GameScreen implements Screen {
 		
 		DeclareFragStrings();
 
+		scale_factor = Gdx.graphics.getWidth() / (32 * 15f);
+
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.setToOrtho(false, 15, 15*Gdx.graphics.getHeight()/Gdx.graphics.getWidth());
 
-		scale_factor = Gdx.graphics.getWidth() / (32 * 15f);
 
 		if (!Controllers.getControllers().isEmpty())
 			cont = Controllers.getControllers().get(0);
 		Box2D.init();
-		world = new World(new Vector2(0, -9.81f * scale_factor*32), true);
+		world = new World(new Vector2(0, -9.81f ), true);
 		debugRenderer = new Box2DDebugRenderer();
 		generateMap();
 		
@@ -180,9 +181,11 @@ public class GameScreen implements Screen {
 		Fbtex = new TextureRegion(Frameb.getColorBufferTexture());
 		Fbtex.flip(false,true);
 		Frameb.begin();
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		batch.begin();
 		
-		
+		//debugRenderer.render(world, camera.combined);
 		batch.draw(img2,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
 			img = block.getImages()[block.tile];
@@ -192,8 +195,8 @@ public class GameScreen implements Screen {
 
 
 		perso.setAnimTime(time+=deltat);
-		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage(), perso.getBodyYToImage()
-				,perso.getCurrentFrame().getRegionWidth() * scale_factor*perso.getFlip(),perso.getCurrentFrame().getRegionHeight() * scale_factor);
+		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage()+(1-(perso.getFlip()+1)/2f)*perso.getCurrentFrame().getRegionWidth() * scale_factor, perso.getBodyYToImage()
+				,perso.getCurrentFrame().getRegionWidth()* scale_factor*perso.getFlip(),perso.getCurrentFrame().getRegionHeight() * scale_factor);
 		
 		batch.flush();
 		Frameb.end();
@@ -228,9 +231,9 @@ public class GameScreen implements Screen {
 
 		batch.end();
 
-		world.step(Math.min(.015f, deltat), 6, 2);
         perso.controls();
 
+		world.step(Math.min(deltat,.15f), 6, 2);
 	}
 
 	@Override
