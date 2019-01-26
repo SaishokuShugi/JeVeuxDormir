@@ -46,8 +46,8 @@ public class GameScreen implements Screen  {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
 	
-
-		//cont = Controllers.getControllers().get(0);
+		if(!Controllers.getControllers().isEmpty())
+		cont = Controllers.getControllers().get(0);
 		Box2D.init();
 		world = new World(new Vector2(0,-9.81f),true);
 		debugRenderer = new Box2DDebugRenderer();
