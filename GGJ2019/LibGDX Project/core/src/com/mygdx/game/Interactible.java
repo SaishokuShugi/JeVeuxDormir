@@ -8,8 +8,9 @@ public abstract class Interactible {
     private TextureRegion[] images;
     private Body body;
     private Fixture fixture;
+    private float echelle;
 
-    public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, int x, int y, float friction, float density, float restitution) {
+    public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, int x, int y, float friction, float density, float restitution, float echelle) {
         Texture animSheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(animSheet,
                 animSheet.getWidth() / frame_cols,
@@ -21,10 +22,11 @@ public abstract class Interactible {
                 this.images[index++] = tmp[i][j];
             }
         }
+        this.echelle = echelle;
 
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
-        bd.position.set(x, y);
+        bd.position.set(x * echelle, y * echelle);
 
         this.body = GameScreen.world.createBody(bd);
 
@@ -68,6 +70,14 @@ public abstract class Interactible {
 
     public void setFixture(Fixture fixture) {
         this.fixture = fixture;
+    }
+
+    public float getEchelle() {
+        return echelle;
+    }
+
+    public void setEchelle(float echelle) {
+        this.echelle = echelle;
     }
 
     public abstract void action();
