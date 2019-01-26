@@ -22,6 +22,7 @@ public class GameScreen implements Screen {
 	SpriteBatch batch;
 	TextureRegion img;
 	Texture img2;
+	Personnage perso;
 
 	public static float scale_factor;
 
@@ -30,6 +31,7 @@ public class GameScreen implements Screen {
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
 	public ArrayList<Interactible> blocks = new ArrayList<Interactible>();
+	
 
 	
 	void generateMap() {
@@ -39,6 +41,7 @@ public class GameScreen implements Screen {
 		blocks.add(new Block("Armoire.png", 1, 1, 8f, 1f, 0, 0, 0));
 		blocks.add(new Block("Table.png", 1, 1, 4f, 1f, 0, 0, 0));
 		blocks.add(new Movable("Commode.png", 1, 1, 4f, 2f, 0, 0, 0));
+		perso = new Personnage(10, 10, 0f, 2f, 1, 10, 0, Personnage.loadAnim("Personnage/idle.png", 4, 4, .1f));
 	}
 	
 	
