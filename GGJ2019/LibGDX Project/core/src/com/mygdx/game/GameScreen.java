@@ -38,7 +38,7 @@ public class GameScreen implements Screen  {
 	
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
-	public ArrayList<Block> blocks = new ArrayList<Block>();
+	public ArrayList<Interactible> blocks = new ArrayList<Interactible>();
 	public GameScreen (final MyGdxGame game) {
 		this.game = game;
 		// load the images for the monkeys
@@ -49,15 +49,16 @@ public class GameScreen implements Screen  {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
 		
-		scale_factor = Gdx.graphics.getWidth()/(32*15);
+		scale_factor = Gdx.graphics.getWidth()/(32*15f);
 		
 		if(!Controllers.getControllers().isEmpty())
 			cont = Controllers.getControllers().get(0);
 		Box2D.init();
-		world = new World(new Vector2(0,-9.81f),true);
+		world = new World(new Vector2(0,-9.81f*scale_factor),true);
 		debugRenderer = new Box2DDebugRenderer();
-		blocks.add(new Block("Chaise.png",1,1,0f,2f,0,0,0));
-		blocks.add(new Block("lit.png",1,1,1f,2f,0,0,0));
+		blocks.add(new Block("Table.png",1,1,1f,0f,0,0,0));
+		blocks.add(new Movable("Chaise.png",1,1,1f,2f,0,0,.5f));
+		blocks.add(new Block("lit.png",1,1,13f,1f,0,0,0));
 	}
 
 	
@@ -77,7 +78,7 @@ public class GameScreen implements Screen  {
 		
 		debugRenderer.render(world, camera.combined);
 		batch.begin();
-		for (Block block : blocks) {
+		for (Interactible block : blocks) {
 			img = block.getImages()[0].getTexture();
 			batch.draw(img,block.getBodyXToImage(),block.getBodyYToImage(),img.getWidth()*scale_factor,img.getHeight()*scale_factor);
 			world.step(Math.min(.015f,deltat), 6, 2);
