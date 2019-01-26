@@ -57,12 +57,12 @@ public class GameScreen implements Screen {
 	ShaderProgram shader;
 	
 	void generateMap() {
-		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0, 0, 0)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0)));
 		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f));
 		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0));
-		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0,1, 0));
+		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f,1, 0));
         perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
 	}
 	String gameShader0;

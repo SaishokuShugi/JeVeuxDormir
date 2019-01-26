@@ -153,7 +153,7 @@ public class Personnage {
 
     public void run(float frameDuration,float xImpulse) {
         changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
-        this.body.applyLinearImpulse(0,-4f, this.body.getPosition().x, this.body.getPosition().y, false);
+        //this.body.applyLinearImpulse(0,-4f, this.body.getPosition().x, this.body.getPosition().y, false);
         this.body.setLinearVelocity(xImpulse,this.body.getLinearVelocity().y);
     }
 
@@ -163,7 +163,7 @@ public class Personnage {
 
     public void jump(float frameDuration) {
         changeAnim("Personnage/jump2.png", 1, 1, 1, frameDuration);
-        this.body.applyLinearImpulse(0,2f, this.body.getPosition().x, this.body.getPosition().y, false);
+        this.body.applyLinearImpulse(0,15f, this.body.getPosition().x, this.body.getPosition().y, false);
     }
 
 
@@ -187,7 +187,7 @@ public class Personnage {
         boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
         
         System.out.println(this.body.getPosition());
-        if (isUpPressed && true|(this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
+        if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
             jump(.5f);
         }
              
@@ -195,12 +195,12 @@ public class Personnage {
             air(.5f);
         }
         if (isRightPressed) {
-            run(.2f,10f);
+            run(.2f,2f);
             setFlip(1);
         }
         else {
 	        if (isLeftPressed) {
-	        	run(.2f,-10f);
+	        	run(.2f,-2f); 
 	        	setFlip(-1);
 	        }else {
 	            this.body.setLinearVelocity(0, this.body.getLinearVelocity().y);

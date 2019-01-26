@@ -38,12 +38,12 @@ public abstract class Interactible {
         decal = new Vector2(img.getRegionWidth() / 64f, img.getRegionHeight() / 64f);
         box.setAsBox(decal.x,decal.y);
         
-        BodyDef bd = new BodyDef();
+        BodyDef bd = new BodyDef(); 
         bd.type = bodyType;
         bd.position.set(x+decal.x, y+decal.y);
 
         this.body = GameScreen.world.createBody(bd);
-
+        this.body.setFixedRotation(true);
         FixtureDef fd = new FixtureDef();
         fd.shape = box;
         fd.density = density;
