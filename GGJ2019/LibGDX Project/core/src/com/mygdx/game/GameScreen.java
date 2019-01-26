@@ -84,7 +84,7 @@ public class GameScreen implements Screen {
 		this.game = game;
 		// load the images for the monkeys
 		img = new TextureRegion();
-		img2 = new Texture("Objet.png");
+		img2 =new Texture("Background.png");
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -115,25 +115,15 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
-
-		// this loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
-		for(int i = 4; i < pixels.length; i += 4) {
-		    pixels[i - 1] = (byte) 255;
-		}
-
-
 		shader.begin();
 
 		float[] t = new float[1];
-		
 		t[0]=time;
-		int timeid = shader.getUniformLocation("time");
-	    shader.setUniform1fv(timeid,t, 0, 1);
+	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
 		//debugRenderer.render(world, camera.combined);
 
 		batch.begin();
-		batch.draw(new Texture("Background.png"),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		batch.draw(img2,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
 			img = block.getImages()[block.tile];
 			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
@@ -148,7 +138,7 @@ public class GameScreen implements Screen {
 
 	    shader.end();
 		world.step(Math.min(.015f, deltat), 6, 2);
-		perso.run(.5f);
+		//controls();
 
 	}
 
