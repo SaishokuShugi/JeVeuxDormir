@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -28,8 +29,12 @@ public class GameScreen implements Screen {
 	SpriteBatch batch;
 	TextureRegion img;
 	Texture img2;
+	Texture stamianatrrzeauityofzsdjki;
+	Texture froisdq;
+
 	Personnage perso;
-	FrameBuffer Frameb; 
+	FrameBuffer Frameb;
+	TextureRegion Fbtex;
 
 	public static float scale_factor;
 
@@ -61,7 +66,7 @@ public class GameScreen implements Screen {
                 "void main()                  \n" + 
                 "{                            \n" +
                 "   v_texCoords = a_texCoord0; \n" + 
-                "   gl_Position =  u_projTrans * a_position;  \n"      + 
+                "   gl_Position = ftransform();  \n"      + 
                 "}" ;
 		String fragmentShader ="#version 120 \n"+
                 "uniform float time;\n"+
@@ -77,8 +82,8 @@ public class GameScreen implements Screen {
                   "{                                            \n"
                   +"vec4 color = texture2D(u_texture, v_texCoords);\n"+
                   "float avg =(color.x+color.y+color.z)/3.; \n"+
-                  "  gl_FragColor = vec4(mix(vec3(avg),color.rgb, 1),color.a) ;\n" +
-                  "}";
+                  "  gl_FragColor = vec4(mix(vec3(v_texCoords,avg),color.rgb, 0),1) ;\n" +
+                  "}";	
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
 			System.err.println(shader.getLog());
@@ -94,6 +99,7 @@ public class GameScreen implements Screen {
 		// load the images for the monkeys
 		img = new TextureRegion();
 		img2 =new Texture("Background.png");
+		stamianatrrzeauityofzsdjki = new Texture("Empty Stamina Center.png");
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -108,9 +114,9 @@ public class GameScreen implements Screen {
 		debugRenderer = new Box2DDebugRenderer();
 		generateMap();
 		
-		
+		Frameb = new FrameBuffer(Format.RGBA8888,Gdx.graphics.getWidth() , Gdx.graphics.getHeight(), false);
 		loadShader();
-		batch.setShader(shader);
+		batch.setShader(null);
 	}
 
 	@Override
@@ -123,18 +129,15 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		float deltat = Gdx.graphics.getDeltaTime();
 
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(0, 0, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		shader.begin();
-
-
-		float[] t = new float[1];
-		t[0]=time;
-	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
-		//debugRenderer.render(world, camera.combined);
-
+		Fbtex = new TextureRegion(Frameb.getColorBufferTexture());
+		Fbtex.flip(false,true);
+		Frameb.begin();
 		batch.begin();
+		
+		
 		batch.draw(img2,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
 			img = block.getImages()[block.tile];
@@ -145,10 +148,25 @@ public class GameScreen implements Screen {
 		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage(), perso.getBodyYToImage()
 				,perso.getCurrentFrame().getRegionWidth() * scale_factor,perso.getCurrentFrame().getRegionHeight() * scale_factor);
 
+		batch.draw(stamianatrrzeauityofzsdjki, 0, Gdx.graphics.getBackBufferHeight()-50);
+		batch.end();
+		Frameb.end();
+		
+		batch.begin();
+		batch.setShader(null);
+		batch.draw(Fbtex, 0, 0);
+
+		/*shader.begin();
+
+		float[] t = new float[1];
+		t[0]=time;
+	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
+	    shader.end();*/
+
+		//debugRenderer.render(world, camera.combined);
 
 		batch.end();
 
-	    shader.end();
 		world.step(Math.min(.015f, deltat), 6, 2);
 		controls();
 
@@ -195,6 +213,7 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		// dispose of all the native resources
 		batch.dispose();
+		stamianatrrzeauityofzsdjki.dispose();
 		img2.dispose();
 	}
 }
