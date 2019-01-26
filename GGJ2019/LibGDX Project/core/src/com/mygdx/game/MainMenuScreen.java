@@ -102,7 +102,7 @@ public class MainMenuScreen implements Screen
 		// TODO Auto-generated method stub
 		MousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(0, 0, 0.3f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
@@ -227,6 +227,7 @@ public class MainMenuScreen implements Screen
 		SousTitreFont.dispose();
 		ButtonFont1.dispose();
 		ButtonFont2.dispose();
+
 
 	}
 
