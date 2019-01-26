@@ -183,7 +183,7 @@ public class MainMenuScreen implements Screen
 				game.batch.draw(Fallen, PersoPos.x, PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
 				if (!IsRonfle)
 				{
-					RonfleSound.loop(SoundVolume, 2, 0);
+					RonfleSound.loop(SoundVolume, 1.5f, 0f);
 					IsRonfle = true;
 				}
 				
