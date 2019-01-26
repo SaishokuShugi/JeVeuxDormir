@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,12 +11,14 @@ public class MyGdxGame extends Game {
 	
 	public SpriteBatch batch;
 	public BitmapFont font;
+	public static Random random;
 
 	public void create() {
 		batch = new SpriteBatch();
 		//Use LibGDX's default Arial font.
 		font = new BitmapFont();
 		this.setScreen(new MainMenuScreen(this));
+		random = new Random();
 	}
 
 	public void render() {

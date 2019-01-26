@@ -8,6 +8,7 @@ public abstract class Interactible {
     private TextureRegion[] images;
     private Body body;
     private Fixture fixture;
+    public int tile;
 
     public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution) {
         Texture animSheet = new Texture(image);
@@ -21,17 +22,18 @@ public abstract class Interactible {
                 this.images[index++] = tmp[i][j];
             }
         }
-
+        tile = MyGdxGame.random.nextInt(frame_cols*frame_rows);
+        PolygonShape box = new PolygonShape();
+        TextureRegion img = this.images[0];
+        box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
+        
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
-        bd.position.set(x * (32 * GameScreen.scale_factor), y * (32 * GameScreen.scale_factor));
+        x = x * 32 + img.getRegionWidth() / 2;
+        y = y * 32 + img.getRegionHeight() / 2;
+        bd.position.set(x*GameScreen.scale_factor, y* GameScreen.scale_factor);
 
         this.body = GameScreen.world.createBody(bd);
-
-        PolygonShape box = new PolygonShape();
-        Texture img = this.images[0].getTexture();
-        box.setAsBox(img.getWidth() / 2 * GameScreen.scale_factor, img.getHeight() / 2 * GameScreen.scale_factor);
-
 
         if (friction == 0 && restitution == 0) {
             body.createFixture(box, density);
@@ -71,20 +73,20 @@ public abstract class Interactible {
     }
 
     public float getScaledImageWidth() {
-        return this.images[0].getTexture().getWidth() * GameScreen.scale_factor;
+        return this.images[0].getRegionWidth() * GameScreen.scale_factor;
     }
 
     public float getScaledImageHeight() {
-        return this.images[0].getTexture().getHeight() * GameScreen.scale_factor;
+        return this.images[0].getRegionHeight() * GameScreen.scale_factor;
     }
 
     public float getBodyXToImage() {
-        return this.body.getPosition().x - this.images[0].getTexture().getWidth() / 2 * GameScreen.scale_factor;
+        return this.body.getPosition().x - this.images[0].getRegionWidth() / 2 * GameScreen.scale_factor;
     }
 
     public float getBodyYToImage() {
-        return this.body.getPosition().y - this.images[0].getTexture().getHeight() / 2 * GameScreen.scale_factor;
+        return this.body.getPosition().y - this.images[0].getRegionHeight() / 2 * GameScreen.scale_factor;
     }
 
-    public abstract void action();
+    public abstract void action(Personnage perso);
 }
