@@ -22,7 +22,7 @@ public abstract class Interactible {
         int index = 0;
         for (int i = 0; i < frame_rows; i++) {
             for (int j = 0; j < frame_cols; j++) {
-                if (i * j < nbFrames) {
+                if (index < nbFrames) {
                     this.images[index++] = tmp[i][j];
                 }
             }
