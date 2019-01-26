@@ -23,13 +23,13 @@ public abstract class Interactible {
         }
 
         PolygonShape box = new PolygonShape();
-        Texture img = this.images[0].getTexture();
-        box.setAsBox(img.getWidth() / 2 * GameScreen.scale_factor, img.getHeight() / 2 * GameScreen.scale_factor);
+        TextureRegion img = this.images[0];
+        box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
         
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
-        x= x *32 +img.getWidth() / 2 ;
-        y= y*32 +img.getHeight()/2;
+        x = x * 32 + img.getRegionWidth() / 2;
+        y = y * 32 + img.getRegionHeight() / 2;
         bd.position.set(x*GameScreen.scale_factor, y* GameScreen.scale_factor);
 
         this.body = GameScreen.world.createBody(bd);
@@ -75,19 +75,19 @@ public abstract class Interactible {
     }
 
     public float getScaledImageWidth() {
-        return this.images[0].getTexture().getWidth() * GameScreen.scale_factor;
+        return this.images[0].getRegionWidth() * GameScreen.scale_factor;
     }
 
     public float getScaledImageHeight() {
-        return this.images[0].getTexture().getHeight() * GameScreen.scale_factor;
+        return this.images[0].getRegionHeight() * GameScreen.scale_factor;
     }
 
     public float getBodyXToImage() {
-        return this.body.getPosition().x - this.images[0].getTexture().getWidth() / 2 * GameScreen.scale_factor;
+        return this.body.getPosition().x - this.images[0].getRegionWidth() / 2 * GameScreen.scale_factor;
     }
 
     public float getBodyYToImage() {
-        return this.body.getPosition().y - this.images[0].getTexture().getHeight() / 2 * GameScreen.scale_factor;
+        return this.body.getPosition().y - this.images[0].getRegionHeight() / 2 * GameScreen.scale_factor;
     }
 
     public abstract void action();
