@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -49,8 +50,11 @@ public class MainMenuScreen implements Screen {
 	BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
 	BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
 	
+	Texture LitImage = new Texture(Gdx.files.internal("Lit.png"));
 	Texture ButtonImage = new Texture(Gdx.files.internal("Commode.png"));
+//	Animation<TextureRegion> = new Animation<TextureRegion>();
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
+	Vector2 PersoPos = new Vector2(-320,0);
 	
 	Boolean onPlay, 
 			onOption;
@@ -85,6 +89,9 @@ public class MainMenuScreen implements Screen {
 		TitreFont.draw(game.batch, "Je Veux Dormir ", 120, 700);
 		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 625);
 		game.batch.draw(ButtonImage, 0, 255, 320, 320);
+		game.batch.draw(LitImage, 1280-320, 0, 320,320);
+		
+		
 		if(MousePos.x> 50 && MousePos.x < 270 && MousePos.y> 390 && MousePos.y< 490)
 		{
 			ButtonFont1.draw(game.batch, "Play", 127, 450);
@@ -113,12 +120,13 @@ public class MainMenuScreen implements Screen {
 			if (onPlay)
 			{
 				game.setScreen(new GameScreen(game));
+				dispose();
 			}
 			else if (onOption)
 			{
 				game.setScreen(new OptionScreen(game));
+				dispose();
 			}
-			dispose();
 		}
 	}
 
@@ -152,6 +160,9 @@ public class MainMenuScreen implements Screen {
 		//game.batch.dispose();
 		TitreFont.dispose();
 		SousTitreFont.dispose();
+		ButtonFont1.dispose();
+		ButtonFont2.dispose();
+		
 		
 	}
 
