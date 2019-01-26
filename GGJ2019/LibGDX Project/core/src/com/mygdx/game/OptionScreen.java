@@ -63,9 +63,6 @@ public class OptionScreen implements Screen
         game.batch.draw(MainMenuScreen.ButtonImage, xButton = 0, yButton = 24, 320, 320);
 		game.batch.draw(MainMenuScreen.Fallen, MainMenuScreen.PersoPos.x, MainMenuScreen.PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
 
-        MainMenuScreen.ButtonFont1 = createFont(ftfg, 30, true, true);
-        MainMenuScreen.ButtonFont2 = createFont(ftfg, 30, false, false);
-
         if (MousePos.x > xButton + 50 && MousePos.x < xButton + 270 && MousePos.y > yButton + 135
                 && MousePos.y < yButton + 235) {
             MainMenuScreen.ButtonFont1.draw(game.batch, "Retour", xButton + 127, yButton + 195);
