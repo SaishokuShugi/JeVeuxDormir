@@ -195,11 +195,13 @@ public class MainMenuScreen implements Screen
 		{
 			if (onPlay)
 			{
+				BackMusic.setVolume(MusicVolume);
 				game.setScreen(new GameScreen(game));
 				dispose();
 			} else if (onOption)
 			{
 				numAnim = 3;
+				BackMusic.setVolume(MusicVolume);
 				game.setScreen(new OptionScreen(game));
 				dispose();
 			}
