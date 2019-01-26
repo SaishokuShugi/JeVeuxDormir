@@ -65,9 +65,42 @@ public class GameScreen implements Screen {
 		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0, 0, 0));
         perso = new Personnage(10, 10, 0f, 2f, 0, 0, 0, .5f);
 	}
+	String gameShader0;
+	String backMenuShader;
 	
-	
-	void  loadShader() {
+	void DeclareFragStrings() {
+		backMenuShader ="#version 120 \n"+
+                "uniform float time;\n"+
+				"varying vec2 v_texCoords;\n" + 
+                  "uniform sampler2D u_texture;\n"
+                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
+                  "vec3 blur(vec2 fc){\n"+
+                  "vec3 c= vec3(0);\n"
+                  + "for(int i =-6;i<=6;i++){\n"
+                  + "for(int j =-6;j<=6;j++){"
+                  + "c+=texture2D(u_texture,(fc+vec2(i,j)*2.)/resolution).rgb;}}"
+                  + "return c/169.;"+
+                  "}"+
+                  "void main()                                  \n" + 
+                  "{                                            \n"
+                  + "vec2 uv = v_texCoords;"
+                  + "vec2 fc = floor(uv*resolution);"
+                  +"vec4 color = texture2D(u_texture, uv);\n"+
+                  "  gl_FragColor = vec4(mix(blur(fc),vec3(.5*smoothstep(1.5,0.,distance(uv,vec2(.5)))),.7),1) ;\n" +
+                  "}";
+		gameShader0="#version 120 \n"+
+                "uniform float time;\n"+
+				"varying vec2 v_texCoords;\n" + 
+                  "uniform sampler2D u_texture;\n"
+                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
+                  "void main()                                  \n" + 
+                  "{                                            \n"
+                  + "vec2 uv = v_texCoords;"
+                  +"vec4 color = texture2D(u_texture, uv);\n"+
+                  "  gl_FragColor = vec4(color.rgb,1) ;\n" +
+                  "}";
+	}
+	void  loadShader(String frag) {
 		String vertexShader = "attribute vec4 a_position;    \n" + 
                 "attribute vec4 a_color;\n" +
                 "attribute vec2 a_texCoord0;\n" + 
@@ -78,26 +111,7 @@ public class GameScreen implements Screen {
                 "   v_texCoords = a_texCoord0; \n" + 
                 "   gl_Position =  u_projTrans * a_position;  \n"      + 
                 "}" ;
-		String fragmentShader ="#version 120 \n"+
-                "uniform float time;\n"+
-				"varying vec2 v_texCoords;\n" + 
-                  "uniform sampler2D u_texture;\n"
-                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
-                  "vec3 blur(vec2 uv){\n"+
-                  "vec3 c= vec3(0);\n"
-                  + "for(int i =-1;i<1;i++){\n"
-                  + "c+=texture2D(u_texture,uv+i/100.).rgb;}"
-                  + "return c/3.;"+
-                  "}"+
-                  "void main()                                  \n" + 
-                  "{                                            \n"
-                  + "vec2 uv = v_texCoords;"
-                  + "vec2 fc = floor(uv*resolution);"
-                  + "uv.y+=.01*sin(uv.x*100.-time);"
-                  +"vec4 color = texture2D(u_texture, uv);\n"+
-                  "float avg =(color.x+color.y+color.z)/3.; \n"+
-                  "  gl_FragColor = vec4((mod(fc.x,2.)==mod(fc.y,2.)?1.:0.)*mix(vec3(v_texCoords,avg),color.rgb, 1),color.a) ;\n" +
-                  "}";	
+		String fragmentShader =	frag;
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
 			System.err.println(shader.getLog());
@@ -113,6 +127,7 @@ public class GameScreen implements Screen {
 		// load the images for the monkeys
 		img = new TextureRegion();
 		img2 =new Texture("Background.png");
+		
 		staminaE_C = new Texture("EmptyStaminaCenter.png");
 		staminaE_L = new Texture("EmptyStaminaLeft.png");
 		staminaE_R = new Texture("EmptyStaminaRight.png");
@@ -126,6 +141,8 @@ public class GameScreen implements Screen {
 		temp_C = new Texture("FullCenter.png");
 		temp_L = new Texture("FullLeft.png");
 		temp_R = new Texture("FullRight.png");
+		
+		DeclareFragStrings();
 
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
@@ -142,7 +159,7 @@ public class GameScreen implements Screen {
 		generateMap();
 		
 		Frameb = new FrameBuffer(Format.RGBA8888,Gdx.graphics.getWidth() , Gdx.graphics.getHeight(), false);
-		loadShader();
+		loadShader(gameShader0);
 		batch.setShader(null);
 	}
 
@@ -173,9 +190,24 @@ public class GameScreen implements Screen {
 			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 		}
+
+
 		perso.setAnimTime(time+=deltat);
 		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage(), perso.getBodyYToImage()
 				,perso.getCurrentFrame().getRegionWidth() * scale_factor*perso.getFlip(),perso.getCurrentFrame().getRegionHeight() * scale_factor);
+		
+		batch.flush();
+		Frameb.end();
+		
+		batch.setShader(shader);
+
+		float[] t = new float[1];
+		t[0]=time;
+	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
+	    
+		batch.draw(Fbtex, 0, 0);
+
+		batch.setShader(null);
 		
 		batch.draw(staminaE_L, 10, Gdx.graphics.getBackBufferHeight()-50);
 		for(int i =0;i<32*9;batch.draw(staminaE_C, 10+(i+=32), Gdx.graphics.getBackBufferHeight()-50));
@@ -192,23 +224,8 @@ public class GameScreen implements Screen {
 		batch.draw(temp_L, 10, Gdx.graphics.getBackBufferHeight()-100);
 		for(int i =32;i<(int)perso.getFroid()/perso.getFroidMax()*290;batch.draw(temp_C, 10+(i++), Gdx.graphics.getBackBufferHeight()-100));
 		if(perso.getFroid()==perso.getFroidMax())batch.draw(temp_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-100);
-		
-		batch.flush();
-		Frameb.end();
-		
-		batch.setShader(shader);
-
-		float[] t = new float[1];
-		t[0]=time;
-	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
-	    
-		batch.draw(Fbtex, 0, 0);
 
 
-
-
-
-		//debugRenderer.render(world, camera.combined);
 
 		batch.end();
 
