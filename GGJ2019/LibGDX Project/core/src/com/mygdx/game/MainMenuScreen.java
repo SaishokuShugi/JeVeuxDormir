@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 import com.badlogic.gdx.Gdx;
@@ -64,6 +66,8 @@ public class MainMenuScreen implements Screen
 	Animation<TextureRegion> RunAnim2 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.5f);
 	Animation<TextureRegion> RunAnim3 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.75f);
 	Animation<TextureRegion> RunAnim4 = Personnage.loadAnim("Personnage/run.png", 4, 2, 1f);
+	ArrayList<Animation<TextureRegion>> ListAnimation = new ArrayList<Animation<TextureRegion>>();
+	
 
 	
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
