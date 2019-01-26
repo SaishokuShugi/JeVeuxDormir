@@ -26,13 +26,13 @@ public abstract class Interactible {
 
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
-        bd.position.set(x * echelle, y * echelle);
+        bd.position.set(x, y);
 
         this.body = GameScreen.world.createBody(bd);
 
         PolygonShape box = new PolygonShape();
         Texture img = this.images[0].getTexture();
-        box.setAsBox(img.getHeight()/2, img.getWidth()/2);
+        box.setAsBox(img.getHeight() / 2 * this.echelle, img.getWidth() / 2 * this.echelle);
 
 
         if (friction == 0 && restitution == 0) {
