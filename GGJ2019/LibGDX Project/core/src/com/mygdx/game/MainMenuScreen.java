@@ -81,7 +81,7 @@ public class MainMenuScreen implements Screen
 	static int yButton = 0;
 	int numAnim = 0;
 
-	float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f, MusicVolume = 0.5f, sum = 0f;
+	static float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f, MusicVolume = 0.5f, sum = 0f;
 
 	public MainMenuScreen(final MyGdxGame game)
 	{
