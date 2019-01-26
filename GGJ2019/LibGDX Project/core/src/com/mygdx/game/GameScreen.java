@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
@@ -28,6 +29,7 @@ public class GameScreen implements Screen {
 	TextureRegion img;
 	Texture img2;
 	Personnage perso;
+	FrameBuffer Frameb; 
 
 	public static float scale_factor;
 
@@ -64,18 +66,18 @@ public class GameScreen implements Screen {
 		String fragmentShader ="#version 120 \n"+
                 "uniform float time;\n"+
 				"varying vec2 v_texCoords;\n" + 
-                  "uniform sampler2D u_texture;\n" + 
+                  "uniform sampler2D u_texture;\n"+ 
                   "vec3 blur(vec2 uv){\n"+
                   "vec3 c= vec3(0);\n"
                   + "for(int i =-1;i<1;i++){\n"
-                  + "c+=texture2D(u_texture,uv+i/20.).rgb;}"
+                  + "c+=texture2D(u_texture,uv+i/100.).rgb;}"
                   + "return c/3.;"+
                   "}"+
                   "void main()                                  \n" + 
-                  "{                                            \n" + 
-                  "vec4 color = texture2D(u_texture, v_texCoords);\n"+
+                  "{                                            \n"
+                  +"vec4 color = texture2D(u_texture, v_texCoords);\n"+
                   "float avg =(color.x+color.y+color.z)/3.; \n"+
-                  "  gl_FragColor = vec4(mix(vec3(avg),color.rgb, .7),color.a) ;\n" +
+                  "  gl_FragColor = vec4(mix(vec3(avg),color.rgb, 1),color.a) ;\n" +
                   "}";
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
@@ -105,6 +107,8 @@ public class GameScreen implements Screen {
 		world = new World(new Vector2(0, -9.81f * scale_factor*32), true);
 		debugRenderer = new Box2DDebugRenderer();
 		generateMap();
+		
+		
 		loadShader();
 		batch.setShader(shader);
 	}
@@ -123,6 +127,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		shader.begin();
+
 
 		float[] t = new float[1];
 		t[0]=time;
