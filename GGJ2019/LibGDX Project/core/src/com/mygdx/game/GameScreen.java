@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
@@ -37,7 +38,7 @@ public class GameScreen implements Screen  {
 	
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
-	public Block block;
+	public ArrayList<Block> blocks = new ArrayList<Block>();
 	public GameScreen (final MyGdxGame game) {
 		this.game = game;
 		// load the images for the monkeys
@@ -55,7 +56,8 @@ public class GameScreen implements Screen  {
 		Box2D.init();
 		world = new World(new Vector2(0,-9.81f),true);
 		debugRenderer = new Box2DDebugRenderer();
-		block = new Block("Chaise.png",1,1,150,150,0,0,0,scale_factor);
+		blocks.add(new Block("Chaise.png",1,1,150,150,0,0,0,scale_factor));
+		blocks.add(new Block("lit.png",1,1,350,150,0,0,0,scale_factor));
 	}
 
 	
@@ -75,11 +77,11 @@ public class GameScreen implements Screen  {
 		
 		debugRenderer.render(world, camera.combined);
 		batch.begin();
-		img = block.getImages()[0].getTexture();
-		batch.draw(img,block.getBody().getPosition().x-block.getImages()[0].getTexture().getWidth()/2*scale_factor,
-				block.getBody().getPosition().y-block.getImages()[0].getTexture().getHeight()/2*scale_factor
-				,img.getWidth()*scale_factor,img.getHeight()*scale_factor);
-		world.step(Math.min(.015f,deltat), 6, 2);
+		for (Block block : blocks) {
+			img = block.getImages()[0].getTexture();
+			batch.draw(img,block.getBodyXToImage(),block.getBodyYToImage(),img.getWidth()*scale_factor,img.getHeight()*scale_factor);
+			world.step(Math.min(.015f,deltat), 6, 2);
+		}
 		
 		batch.end();
 	}
