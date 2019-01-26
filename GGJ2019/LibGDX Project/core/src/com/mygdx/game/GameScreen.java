@@ -127,6 +127,7 @@ public class GameScreen implements Screen {
 		// load the images for the monkeys
 		img = new TextureRegion();
 		img2 =new Texture("Background.png");
+		
 		staminaE_C = new Texture("EmptyStaminaCenter.png");
 		staminaE_L = new Texture("EmptyStaminaLeft.png");
 		staminaE_R = new Texture("EmptyStaminaRight.png");
@@ -225,8 +226,6 @@ public class GameScreen implements Screen {
 		if(perso.getFroid()==perso.getFroidMax())batch.draw(temp_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-100);
 
 
-
-		//debugRenderer.render(world, camera.combined);
 
 		batch.end();
 
