@@ -53,6 +53,7 @@ public class GameScreen implements Screen {
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
 	public ArrayList<Interactible> blocks = new ArrayList<Interactible>();
+	public ArrayList<Sensor> sensors = new ArrayList<Sensor>();
 	
 	ShaderProgram shader;
 	

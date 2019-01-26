@@ -3,11 +3,11 @@ package com.mygdx.game;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-public class Radiateur extends Block {
+public class Sensor extends Block {
 
     public float range;
 
-    public Radiateur(String image, int frame_cols, int frame_rows, int nbFrames, float x, float y, float friction, float density, float restitution, float range, boolean sensor) {
+    public Sensor(String image, int frame_cols, int frame_rows, int nbFrames, float x, float y, float friction, float density, float restitution, float range, boolean sensor) {
         super(image, frame_cols, frame_rows, nbFrames, x, y, friction, density, restitution, sensor);
         this.range = range * (32 * GameScreen.scale_factor);
     }
