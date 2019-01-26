@@ -65,9 +65,42 @@ public class GameScreen implements Screen {
 		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0, 0, 0));
         perso = new Personnage(10, 10, 0f, 2f, 0, 0, 0, .5f);
 	}
+	String gameShader0;
+	String backMenuShader;
 	
-	
-	void  loadShader() {
+	void DeclareFragStrings() {
+		backMenuShader ="#version 120 \n"+
+                "uniform float time;\n"+
+				"varying vec2 v_texCoords;\n" + 
+                  "uniform sampler2D u_texture;\n"
+                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
+                  "vec3 blur(vec2 fc){\n"+
+                  "vec3 c= vec3(0);\n"
+                  + "for(int i =-6;i<=6;i++){\n"
+                  + "for(int j =-6;j<=6;j++){"
+                  + "c+=texture2D(u_texture,(fc+vec2(i,j)*2.)/resolution).rgb;}}"
+                  + "return c/169.;"+
+                  "}"+
+                  "void main()                                  \n" + 
+                  "{                                            \n"
+                  + "vec2 uv = v_texCoords;"
+                  + "vec2 fc = floor(uv*resolution);"
+                  +"vec4 color = texture2D(u_texture, uv);\n"+
+                  "  gl_FragColor = vec4(mix(blur(fc),vec3(.5*smoothstep(1.5,0.,distance(uv,vec2(.5)))),.7),1) ;\n" +
+                  "}";
+		gameShader0="#version 120 \n"+
+                "uniform float time;\n"+
+				"varying vec2 v_texCoords;\n" + 
+                  "uniform sampler2D u_texture;\n"
+                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
+                  "void main()                                  \n" + 
+                  "{                                            \n"
+                  + "vec2 uv = v_texCoords;"
+                  +"vec4 color = texture2D(u_texture, uv);\n"+
+                  "  gl_FragColor = vec4(color.rgb,1) ;\n" +
+                  "}";
+	}
+	void  loadShader(String frag) {
 		String vertexShader = "attribute vec4 a_position;    \n" + 
                 "attribute vec4 a_color;\n" +
                 "attribute vec2 a_texCoord0;\n" + 
@@ -78,26 +111,7 @@ public class GameScreen implements Screen {
                 "   v_texCoords = a_texCoord0; \n" + 
                 "   gl_Position =  u_projTrans * a_position;  \n"      + 
                 "}" ;
-		String fragmentShader ="#version 120 \n"+
-                "uniform float time;\n"+
-				"varying vec2 v_texCoords;\n" + 
-                  "uniform sampler2D u_texture;\n"
-                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
-                  "vec3 blur(vec2 fc){\n"+
-                  "vec3 c= vec3(0);\n"
-                  + "for(int i =-3;i<=3;i++){\n"
-                  + "for(int j =-3;j<=3;j++){"
-                  + "c+=texture2D(u_texture,(fc+vec2(i,j)*2.)/resolution).rgb;}}"
-                  + "return c/49.;"+
-                  "}"+
-                  "void main()                                  \n" + 
-                  "{                                            \n"
-                  + "vec2 uv = v_texCoords;"
-                  + "vec2 fc = floor(uv*resolution);"
-                  + "//uv.y+=.01*sin(uv.x*100.-time);"
-                  +"vec4 color = texture2D(u_texture, uv);\n"+
-                  "  gl_FragColor = vec4(blur(fc),1) ;\n" +
-                  "}";	
+		String fragmentShader =	frag;
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
 			System.err.println(shader.getLog());
@@ -126,6 +140,8 @@ public class GameScreen implements Screen {
 		temp_C = new Texture("FullCenter.png");
 		temp_L = new Texture("FullLeft.png");
 		temp_R = new Texture("FullRight.png");
+		
+		DeclareFragStrings();
 
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
@@ -142,7 +158,7 @@ public class GameScreen implements Screen {
 		generateMap();
 		
 		Frameb = new FrameBuffer(Format.RGBA8888,Gdx.graphics.getWidth() , Gdx.graphics.getHeight(), false);
-		loadShader();
+		loadShader(gameShader0);
 		batch.setShader(null);
 	}
 
