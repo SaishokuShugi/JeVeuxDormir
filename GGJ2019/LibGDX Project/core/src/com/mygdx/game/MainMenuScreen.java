@@ -25,9 +25,9 @@ public class MainMenuScreen implements Screen
 
 	final MyGdxGame game;
 	OrthographicCamera camera;
-	FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("SleeplessCity.ttf"));
+	static FreeTypeFontGenerator ftfg = new FreeTypeFontGenerator(Gdx.files.internal("SleeplessCity.ttf"));
 
-	BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille, boolean inverseCouleur, boolean border)
+	static BitmapFont createFont(FreeTypeFontGenerator ftfg, int taille, boolean inverseCouleur, boolean border)
 	{
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = taille;
@@ -52,10 +52,10 @@ public class MainMenuScreen implements Screen
 		return ftfg.generateFont(parameter);
 	}
 
-	BitmapFont TitreFont = createFont(ftfg, 83, false, true);
-	BitmapFont SousTitreFont = createFont(ftfg, 25, false, true);
-	BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
-	BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
+	static BitmapFont TitreFont = createFont(ftfg, 83, false, true);
+	static BitmapFont SousTitreFont = createFont(ftfg, 25, false, true);
+	static BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
+	static BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
 
 	static Texture LitImage = new Texture(Gdx.files.internal("Lit.png"));
 	static Texture ButtonImage = new Texture(Gdx.files.internal("Commode.png"));
@@ -70,7 +70,7 @@ public class MainMenuScreen implements Screen
 	ArrayList<Animation<TextureRegion>> ListAnimation = new ArrayList<Animation<TextureRegion>>();
 	Texture Fall = new Texture(Gdx.files.internal("Personnage/jump2.png"));
 
-	Music BackMusic = Gdx.audio.newMusic(Gdx.files.internal("Back.ogg"));
+	static Music BackMusic = Gdx.audio.newMusic(Gdx.files.internal("Back.ogg"));
 	
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
 	static Vector2 PersoPos = new Vector2(-210, 24);
@@ -81,7 +81,7 @@ public class MainMenuScreen implements Screen
 	static int yButton = 0;
 	int numAnim = 0;
 
-	float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f, MusicVolume = 0.5f, sum = 0f;
+	static float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f, MusicVolume = 0.5f, sum = 0f;
 
 	public MainMenuScreen(final MyGdxGame game)
 	{
