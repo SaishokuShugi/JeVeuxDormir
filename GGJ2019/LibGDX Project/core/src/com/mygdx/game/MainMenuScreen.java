@@ -57,7 +57,7 @@ public class MainMenuScreen implements Screen
 	BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
 
 	static Texture LitImage = new Texture(Gdx.files.internal("Lit.png"));
-	Texture ButtonImage = new Texture(Gdx.files.internal("Commode.png"));
+	static Texture ButtonImage = new Texture(Gdx.files.internal("Commode.png"));
 	static Texture SolTextureMap = new Texture(Gdx.files.internal("Sol.png"));
 	static Texture FondImage = new Texture(Gdx.files.internal("Background.png"));
 	static TextureRegion[][] SolImages = TextureRegion.split(SolTextureMap, 64, 32);
@@ -74,7 +74,9 @@ public class MainMenuScreen implements Screen
 
 	Boolean onPlay, onOption;
 
-	int xButton = 0, yButton = 0, numAnim = 0;
+	static int xButton = 0;
+	static int yButton = 0;
+	int numAnim = 0;
 
 	float stateTime = 0f, stateTime2 = 0f, fallRotation = 0f;
 

@@ -43,6 +43,7 @@ public class OptionScreen implements Screen
 			i++;
 		}
 		game.batch.draw(MainMenuScreen.LitImage, 1280 - 320, 24, 320, 320);
+		game.batch.draw(MainMenuScreen.ButtonImage, MainMenuScreen.xButton, MainMenuScreen.yButton = 24, 320, 320);
 		game.batch.draw(MainMenuScreen.Fallen, MainMenuScreen.PersoPos.x, MainMenuScreen.PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
 		game.batch.end();
 	}
