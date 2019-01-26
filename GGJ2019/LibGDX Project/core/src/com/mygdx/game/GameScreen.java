@@ -83,20 +83,20 @@ public class GameScreen implements Screen {
 				"varying vec2 v_texCoords;\n" + 
                   "uniform sampler2D u_texture;\n"
                   + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
-                  "vec3 blur(vec2 uv){\n"+
+                  "vec3 blur(vec2 fc){\n"+
                   "vec3 c= vec3(0);\n"
-                  + "for(int i =-1;i<1;i++){\n"
-                  + "c+=texture2D(u_texture,uv+i/100.).rgb;}"
-                  + "return c/3.;"+
+                  + "for(int i =-3;i<=3;i++){\n"
+                  + "for(int j =-3;j<=3;j++){"
+                  + "c+=texture2D(u_texture,(fc+vec2(i,j)*2.)/resolution).rgb;}}"
+                  + "return c/49.;"+
                   "}"+
                   "void main()                                  \n" + 
                   "{                                            \n"
                   + "vec2 uv = v_texCoords;"
                   + "vec2 fc = floor(uv*resolution);"
-                  + "uv.y+=.01*sin(uv.x*100.-time);"
+                  + "//uv.y+=.01*sin(uv.x*100.-time);"
                   +"vec4 color = texture2D(u_texture, uv);\n"+
-                  "float avg =(color.x+color.y+color.z)/3.; \n"+
-                  "  gl_FragColor = vec4((mod(fc.x,2.)==mod(fc.y,2.)?1.:0.)*mix(vec3(v_texCoords,avg),color.rgb, 1),color.a) ;\n" +
+                  "  gl_FragColor = vec4(blur(fc),1) ;\n" +
                   "}";	
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
@@ -173,9 +173,24 @@ public class GameScreen implements Screen {
 			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 		}
+
+
 		perso.setAnimTime(time+=deltat);
 		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage(), perso.getBodyYToImage()
 				,perso.getCurrentFrame().getRegionWidth() * scale_factor,perso.getCurrentFrame().getRegionHeight() * scale_factor);
+		
+		batch.flush();
+		Frameb.end();
+		
+		batch.setShader(shader);
+
+		float[] t = new float[1];
+		t[0]=time;
+	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
+	    
+		batch.draw(Fbtex, 0, 0);
+
+		batch.setShader(null);
 		
 		batch.draw(staminaE_L, 10, Gdx.graphics.getBackBufferHeight()-50);
 		for(int i =0;i<32*9;batch.draw(staminaE_C, 10+(i+=32), Gdx.graphics.getBackBufferHeight()-50));
@@ -192,19 +207,6 @@ public class GameScreen implements Screen {
 		batch.draw(temp_L, 10, Gdx.graphics.getBackBufferHeight()-100);
 		for(int i =32;i<(int)perso.getFroid()/perso.getFroidMax()*290;batch.draw(temp_C, 10+(i++), Gdx.graphics.getBackBufferHeight()-100));
 		if(perso.getFroid()==perso.getFroidMax())batch.draw(temp_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-100);
-		
-		batch.flush();
-		Frameb.end();
-		
-		batch.setShader(shader);
-
-		float[] t = new float[1];
-		t[0]=time;
-	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
-	    
-		batch.draw(Fbtex, 0, 0);
-
-
 
 
 
