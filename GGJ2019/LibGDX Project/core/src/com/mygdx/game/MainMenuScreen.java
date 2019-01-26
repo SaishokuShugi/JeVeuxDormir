@@ -204,6 +204,7 @@ public class MainMenuScreen implements Screen
 			if (onPlay)
 			{
 				BackMusic.setVolume(MusicVolume);
+				RonfleSound.stop();
 				game.setScreen(new GameScreen(game));
 				dispose();
 			} else if (onOption)
