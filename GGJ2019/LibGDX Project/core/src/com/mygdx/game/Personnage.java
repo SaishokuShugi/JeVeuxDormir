@@ -10,26 +10,36 @@ public class Personnage {
     private float froidMax;
     private float stamina;
     private float froid;
-    private float friction;
-    private float density;
-    private float restitution;
     private Body body;
     private Fixture fixture;
 
-    public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution) {
+    public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution, Animation<TextureRegion> anim) {
         this.staminaMax = staminaMax;
         this.stamina = staminaMax;
         this.froidMax = froidMax;
         this.froid = froidMax;
-        this.friction = friction;
-        this.density = density;
-        this.restitution = restitution;
+
+        TextureRegion[] frames = anim.getKeyFrames();
+
+        PolygonShape box = new PolygonShape();
+        TextureRegion img = frames[0];
+        box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
 
         BodyDef bd = new BodyDef();
-        bd.type = BodyDef.BodyType.DynamicBody;
-        bd.position.set(x * (32 * GameScreen.scale_factor), y * (32 * GameScreen.scale_factor));
+        bd.type = BodyDef.BodyType.StaticBody;
+        x = x * 32 + img.getRegionWidth() / 2;
+        y = y * 32 + img.getRegionHeight() / 2;
+        bd.position.set(x * GameScreen.scale_factor, y * GameScreen.scale_factor);
 
         this.body = GameScreen.world.createBody(bd);
+
+        FixtureDef fd = new FixtureDef();
+        fd.shape = box;
+        fd.density = density;
+        fd.friction = friction;
+        fd.restitution = restitution;
+
+        this.fixture = this.body.createFixture(fd);
     }
 
     public float getStamina() {
@@ -46,30 +56,6 @@ public class Personnage {
 
     public void setFroid(float froid) {
         this.froid = froid;
-    }
-
-    public float getFriction() {
-        return friction;
-    }
-
-    public void setFriction(float friction) {
-        this.friction = friction;
-    }
-
-    public float getDensity() {
-        return density;
-    }
-
-    public void setDensity(float density) {
-        this.density = density;
-    }
-
-    public float getRestitution() {
-        return restitution;
-    }
-
-    public void setRestitution(float restitution) {
-        this.restitution = restitution;
     }
 
     public Body getBody() {
@@ -111,16 +97,21 @@ public class Personnage {
         TextureRegion img = frames[0];
         box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
 
-        if (this.friction == 0 && this.restitution == 0) {
-            this.body.createFixture(box, this.density);
-        } else {
-            FixtureDef fd = new FixtureDef();
-            fd.shape = box;
-            fd.density = this.density;
-            fd.friction = this.friction;
-            fd.restitution = this.restitution;
+        FixtureDef fd = new FixtureDef();
+        fd.shape = box;
+        fd.density = this.fixture.getDensity();
+        fd.friction = this.fixture.getFriction();
+        fd.restitution = this.fixture.getRestitution();
 
-            this.fixture = this.body.createFixture(fd);
-        }
+        BodyDef bd = new BodyDef();
+        bd.type = BodyDef.BodyType.StaticBody;
+        this.body.getPosition().x = this.body.getPosition().x * 32 + img.getRegionWidth() / 2;
+        this.body.getPosition().y = this.body.getPosition().y * 32 + img.getRegionHeight() / 2;
+        bd.position.set(this.body.getPosition().x * GameScreen.scale_factor, this.body.getPosition().y * GameScreen.scale_factor);
+
+        GameScreen.world.destroyBody(this.body);
+        this.body = GameScreen.world.createBody(bd);
+
+        this.fixture = this.body.createFixture(fd);
     }
 }

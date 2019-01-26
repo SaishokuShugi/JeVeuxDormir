@@ -35,17 +35,13 @@ public abstract class Interactible {
 
         this.body = GameScreen.world.createBody(bd);
 
-        if (friction == 0 && restitution == 0) {
-            body.createFixture(box, density);
-        } else {
-            FixtureDef fd = new FixtureDef();
-            fd.shape = box;
-            fd.density = density;
-            fd.friction = friction;
-            fd.restitution = restitution;
+        FixtureDef fd = new FixtureDef();
+        fd.shape = box;
+        fd.density = density;
+        fd.friction = friction;
+        fd.restitution = restitution;
 
-            this.fixture = body.createFixture(fd);
-        }
+        this.fixture = this.body.createFixture(fd);
     }
 
     public TextureRegion[] getImages() {
