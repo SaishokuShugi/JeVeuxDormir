@@ -82,7 +82,7 @@ public class GameScreen implements Screen {
                 "uniform float time;\n"+
 				"varying vec2 v_texCoords;\n" + 
                   "uniform sampler2D u_texture;\n"
-                  + "const vec2 resolution = vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
+                  + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");"+ 
                   "vec3 blur(vec2 uv){\n"+
                   "vec3 c= vec3(0);\n"
                   + "for(int i =-1;i<1;i++){\n"
@@ -92,10 +92,11 @@ public class GameScreen implements Screen {
                   "void main()                                  \n" + 
                   "{                                            \n"
                   + "vec2 uv = v_texCoords;"
+                  + "vec2 fc = floor(uv*resolution);"
                   + "uv.y+=.01*sin(uv.x*100.-time);"
                   +"vec4 color = texture2D(u_texture, uv);\n"+
                   "float avg =(color.x+color.y+color.z)/3.; \n"+
-                  "  gl_FragColor = vec4(mix(vec3(v_texCoords,avg),color.rgb, 1),color.a) ;\n" +
+                  "  gl_FragColor = vec4((mod(fc.x,2.)==mod(fc.y,2.)?1.:0.)*mix(vec3(v_texCoords,avg),color.rgb, 1),color.a) ;\n" +
                   "}";	
 		shader = new ShaderProgram(vertexShader, fragmentShader);
 		if (!shader.isCompiled()) {
