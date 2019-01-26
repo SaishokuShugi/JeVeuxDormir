@@ -30,6 +30,8 @@ public class GameScreen implements Screen  {
 	SpriteBatch batch;
 	Texture img;
 	Texture img2;
+	
+	float scale_factor;
 
 	public static World world;
 	
@@ -45,13 +47,15 @@ public class GameScreen implements Screen  {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
-	
+		
+		scale_factor = Gdx.graphics.getWidth()/(32*15);
+		
 		if(!Controllers.getControllers().isEmpty())
 			cont = Controllers.getControllers().get(0);
 		Box2D.init();
 		world = new World(new Vector2(0,-9.81f),true);
 		debugRenderer = new Box2DDebugRenderer();
-		block = new Block("Chaise.png",1,1,150,150,0,0,0);
+		block = new Block("Chaise.png",1,1,150,150,0,0,0,scale_factor);
 	}
 
 	
@@ -71,7 +75,9 @@ public class GameScreen implements Screen  {
 		
 		debugRenderer.render(world, camera.combined);
 		batch.begin();
-		batch.draw(block.getImages()[0].getTexture(),block.getBody().getPosition().x-block.getImages()[0].getTexture().getWidth()/2,block.getBody().getPosition().y-block.getImages()[0].getTexture().getHeight()/2);
+		img = block.getImages()[0].getTexture();
+		batch.draw(img,block.getBody().getPosition().x-block.getImages()[0].getTexture().getWidth()/2,block.getBody().getPosition().y-block.getImages()[0].getTexture().getHeight()/2
+				,img.getWidth()*scale_factor,img.getHeight()*scale_factor);
 		world.step(Math.min(.015f,deltat), 6, 2);
 		
 		batch.end();
