@@ -63,9 +63,9 @@ public class MainMenuScreen implements Screen
 	TextureRegion[][] SolImages = TextureRegion.split(SolTextureMap, 64, 32);
 	TextureRegion Fallen = TextureRegion.split(new Texture(Gdx.files.internal("Personnage/ledgeGrab.png")), 20, 40)[1][2];
 	Texture PersoRunTextureMap = new Texture(Gdx.files.internal("Personnage/run.png"));
-	Animation<TextureRegion> RunAnim1 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.0625f);
-	Animation<TextureRegion> RunAnim2 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.125f);
-	Animation<TextureRegion> RunAnim3 = Personnage.loadAnim("Personnage/run.png", 4, 2, 0.25f);
+	Animation<TextureRegion> RunAnim1 = Personnage.loadAnim("Personnage/run.png", 4, 2, 8, 0.0625f);
+	Animation<TextureRegion> RunAnim2 = Personnage.loadAnim("Personnage/run.png", 4, 2, 8, 0.125f);
+	Animation<TextureRegion> RunAnim3 = Personnage.loadAnim("Personnage/run.png", 4, 2, 8, 0.25f);
 	ArrayList<Animation<TextureRegion>> ListAnimation = new ArrayList<Animation<TextureRegion>>();
 	Texture Fall = new Texture(Gdx.files.internal("Personnage/jump2.png"));
 
