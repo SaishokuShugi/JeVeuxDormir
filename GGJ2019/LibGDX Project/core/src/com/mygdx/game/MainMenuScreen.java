@@ -70,7 +70,7 @@ public class MainMenuScreen implements Screen
 	ArrayList<Animation<TextureRegion>> ListAnimation = new ArrayList<Animation<TextureRegion>>();
 	Texture Fall = new Texture(Gdx.files.internal("Personnage/jump2.png"));
 
-	Music BackMusic = Gdx.audio.newMusic(Gdx.files.internal("Back.ogg"));
+	static Music BackMusic = Gdx.audio.newMusic(Gdx.files.internal("Back.ogg"));
 	
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
 	static Vector2 PersoPos = new Vector2(-210, 24);
