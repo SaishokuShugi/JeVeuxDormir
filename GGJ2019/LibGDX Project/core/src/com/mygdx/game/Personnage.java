@@ -88,7 +88,7 @@ public class Personnage {
         this.fixture = fixture;
     }
 
-    public Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
+    public static Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
         Texture sheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
                 sheet.getWidth() / frame_cols,
