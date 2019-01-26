@@ -193,7 +193,7 @@ public class GameScreen implements Screen {
 
 		perso.setAnimTime(time+=deltat);
 		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage(), perso.getBodyYToImage()
-				,perso.getCurrentFrame().getRegionWidth() * scale_factor,perso.getCurrentFrame().getRegionHeight() * scale_factor);
+				,perso.getCurrentFrame().getRegionWidth() * scale_factor*perso.getFlip(),perso.getCurrentFrame().getRegionHeight() * scale_factor);
 		
 		batch.flush();
 		Frameb.end();
