@@ -21,7 +21,7 @@ public class Personnage {
         this.froidMax = froidMax;
         this.froid = froidMax;
 
-        this.anim = loadAnim("Personnage/idle.png", 4, 3, frameDuration);
+        this.anim = loadAnim("Personnage/idle.png", 4, 3, 11, frameDuration);
 
         TextureRegion img = this.anim.getKeyFrame(0f, true);
 
@@ -121,7 +121,7 @@ public class Personnage {
         return this.body.getPosition().y - getCurrentFrame().getRegionHeight() / 2 * GameScreen.scale_factor;
     }
 
-    public static Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
+    public static Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, int nbFrames, float frameDuration) {
         Texture sheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
                 sheet.getWidth() / frame_cols,
@@ -130,40 +130,42 @@ public class Personnage {
         int index = 0;
         for (int i = 0; i < frame_rows; i++) {
             for (int j = 0; j < frame_cols; j++) {
-                frames[index++] = tmp[i][j];
+                if (i * j < nbFrames) {
+                    frames[index++] = tmp[i][j];
+                }
             }
         }
 
         return new Animation<TextureRegion>(frameDuration, frames);
     }
 
-    public void changeAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
+    public void changeAnim(String image, int frame_cols, int frame_rows, int nbFrames, float frameDuration) {
         this.animTime = 0;
-        this.anim = loadAnim(image, frame_cols, frame_rows, frameDuration);
+        this.anim = loadAnim(image, frame_cols, frame_rows, nbFrames, frameDuration);
     }
 
     public void run(float frameDuration) {
-        changeAnim("Personnage/run.png", 4, 2, frameDuration);
+        changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
     }
 
     public void idle(float frameDuration) {
-        changeAnim("Personnage/idle.png", 4, 3, frameDuration);
+        changeAnim("Personnage/idle.png", 4, 3, 11, frameDuration);
     }
 
     public void jump(float frameDuration) {
-        changeAnim("Personnage/jump2.png", 1, 1, frameDuration);
+        changeAnim("Personnage/jump2.png", 1, 1, 1, frameDuration);
     }
 
     public void land(float frameDuration) {
-        changeAnim("Personnage/landing.png", 1, 1, frameDuration);
+        changeAnim("Personnage/landing.png", 1, 1, 1, frameDuration);
     }
 
     public void ledge(float frameDuration) {
-        changeAnim("Personnage/ledge grab.png", 3, 2, frameDuration);
+        changeAnim("Personnage/ledge grab.png", 3, 2, 6, frameDuration);
     }
 
     public void air(float frameDuration) {
-        changeAnim("Personnage/mid air.png", 2, 1, frameDuration);
+        changeAnim("Personnage/mid air.png", 2, 1, 2, frameDuration);
     }
 
 }
