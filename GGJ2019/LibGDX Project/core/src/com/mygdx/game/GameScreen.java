@@ -40,12 +40,12 @@ public class GameScreen implements Screen {
 	
 	void generateMap() {
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, i++, 0f, 0, 0, 0)));
-		blocks.add(new Movable("Chaise.png", 1, 1, 1f, 2f, 0, 0, .5f));
+		blocks.add(new Movable("Chaise.png", 1, 1, 1.58f, 2f, 0, 0, .5f));
 		blocks.add(new Block("Lit.png", 1, 1, 13f, 1f, 0, 0, 0));
 		blocks.add(new Block("Armoire.png", 1, 1, 8f, 1f, 0, 0, 0));
 		blocks.add(new Block("Table.png", 1, 1, 4f, 1f, 0, 0, 0));
 		blocks.add(new Movable("Commode.png", 1, 1, 4f, 2f, 0, 0, 0));
-		perso = new Personnage(10, 10, 0f, 2f, 1, 10, 0);
+		perso = new Personnage(10, 10, 0f, 2f, 1, 10, 0,.5f);
 	}
 	
 	
@@ -59,14 +59,24 @@ public class GameScreen implements Screen {
                 "{                            \n" +
                 "   v_texCoords = a_texCoord0; \n" + 
                 "   gl_Position =  u_projTrans * a_position;  \n"      + 
-                "}                            \n" ;
-		String fragmentShader ="varying vec2 v_texCoords;\n" + 
+                "}" ;
+		String fragmentShader ="#version 120 \n"+
+                "uniform float time;\n"+
+				"varying vec2 v_texCoords;\n" + 
                   "uniform sampler2D u_texture;\n" + 
                   "void main()                                  \n" + 
                   "{                                            \n" + 
-                  "  gl_FragColor = vec4(1,0,0,1) * texture2D(u_texture, v_texCoords);\n" +
+                  "vec4 color = texture2D(u_texture, v_texCoords);\n"+
+                  "float avg =(color.x+color.y+color.z)/3.; \n"+
+                  "  gl_FragColor = vec4(mix(vec3(avg),color.rgb, .5+.5*sin(time)),color.a) ;\n" +
                   "}";
 		shader = new ShaderProgram(vertexShader, fragmentShader);
+		if (!shader.isCompiled()) {
+			System.err.println(shader.getLog());
+			System.exit(0);
+		}
+		if (shader.getLog().length()!=0)
+			System.out.println(shader.getLog());
 	}
 	
 	
@@ -89,6 +99,7 @@ public class GameScreen implements Screen {
 		debugRenderer = new Box2DDebugRenderer();
 		generateMap();
 		loadShader();
+		batch.setShader(shader);
 	}
 
 	@Override
@@ -104,7 +115,6 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		debugRenderer.render(world, camera.combined);
 		byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
 
 		// this loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
@@ -112,14 +122,16 @@ public class GameScreen implements Screen {
 		    pixels[i - 1] = (byte) 255;
 		}
 
-		Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
-		Texture Frame = new Texture(pixmap);
+
 		shader.begin();
 
-		Gdx.graphics.getGL20().glActiveTexture(GL20.GL_TEXTURE0);
-	     Frame.bind(0);
-	     shader.setUniformi("u_texture", 0);
+		float[] t = new float[1];
 		
+		t[0]=time;
+		int timeid = shader.getUniformLocation("time");
+	    shader.setUniform1fv(timeid,t, 0, 1);
+		//debugRenderer.render(world, camera.combined);
+
 		batch.begin();
 		batch.draw(new Texture("Background.png"),0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
@@ -128,13 +140,15 @@ public class GameScreen implements Screen {
 					img.getRegionHeight() * scale_factor);
 		}
 		perso.setAnimTime(time+=deltat);
-		batch.draw(perso.getCurrentFrame(), perso.getBody().getPosition().x, perso.getBody().getPosition().y);
+		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage(), perso.getBodyYToImage()
+				,perso.getCurrentFrame().getRegionWidth() * scale_factor,perso.getCurrentFrame().getRegionHeight() * scale_factor);
+
 
 		batch.end();
 
 	    shader.end();
 		world.step(Math.min(.015f, deltat), 6, 2);
-
+		perso.run(.5f);
 
 	}
 
