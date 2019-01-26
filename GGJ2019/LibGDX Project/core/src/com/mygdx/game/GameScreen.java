@@ -39,8 +39,8 @@ public class GameScreen implements Screen  {
 	public GameScreen (final MyGdxGame game) {
 		this.game = game;
 		// load the images for the monkeys
-		img = new Texture("Singe Astronaute.png");
-		img2 = new Texture("Singe Astronaute Roland.png");
+		img = new Texture("Lit.png");
+		img2 = new Texture("Objet.png");
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -51,7 +51,7 @@ public class GameScreen implements Screen  {
 		Box2D.init();
 		world = new World(new Vector2(0,-9.81f),true);
 		debugRenderer = new Box2DDebugRenderer();
-		block = new Block("Singe Astronaute.png",1,1,150,150,0,0,0);
+		block = new Block("Chaise.png",1,1,150,150,0,0,0);
 	}
 
 	
