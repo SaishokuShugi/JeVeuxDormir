@@ -34,6 +34,17 @@ public class OptionScreen implements Screen
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		game.batch.begin();
+		game.batch.draw(MainMenuScreen.FondImage, 0, 0, 1280, 720);
+		int i = 0;
+		while (i < 1280)
+		{
+			game.batch.draw(MainMenuScreen.SolImages[0][0], i * 128, -30, 128, 64);
+			i++;
+		}
+		game.batch.draw(MainMenuScreen.LitImage, 1280 - 320, 24, 320, 320);
+		game.batch.draw(MainMenuScreen.Fallen, MainMenuScreen.PersoPos.x, MainMenuScreen.PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
+		game.batch.end();
 	}
 
 	@Override

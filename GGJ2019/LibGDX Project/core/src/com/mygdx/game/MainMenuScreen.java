@@ -56,12 +56,12 @@ public class MainMenuScreen implements Screen
 	BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
 	BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
 
-	Texture LitImage = new Texture(Gdx.files.internal("Lit.png"));
+	static Texture LitImage = new Texture(Gdx.files.internal("Lit.png"));
 	Texture ButtonImage = new Texture(Gdx.files.internal("Commode.png"));
-	Texture SolTextureMap = new Texture(Gdx.files.internal("Sol.png"));
-	Texture FondImage = new Texture(Gdx.files.internal("Background.png"));
-	TextureRegion[][] SolImages = TextureRegion.split(SolTextureMap, 64, 32);
-	TextureRegion Fallen = TextureRegion.split(new Texture(Gdx.files.internal("Personnage/ledgeGrab.png")), 20, 40)[1][2];
+	static Texture SolTextureMap = new Texture(Gdx.files.internal("Sol.png"));
+	static Texture FondImage = new Texture(Gdx.files.internal("Background.png"));
+	static TextureRegion[][] SolImages = TextureRegion.split(SolTextureMap, 64, 32);
+	static TextureRegion Fallen = TextureRegion.split(new Texture(Gdx.files.internal("Personnage/ledgeGrab.png")), 20, 40)[1][2];
 	Texture PersoRunTextureMap = new Texture(Gdx.files.internal("Personnage/run.png"));
 	Animation<TextureRegion> RunAnim1 = Personnage.loadAnim("Personnage/run.png", 4, 2, 8, 0.0625f);
 	Animation<TextureRegion> RunAnim2 = Personnage.loadAnim("Personnage/run.png", 4, 2, 8, 0.125f);
@@ -70,7 +70,7 @@ public class MainMenuScreen implements Screen
 	Texture Fall = new Texture(Gdx.files.internal("Personnage/jump2.png"));
 
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
-	Vector2 PersoPos = new Vector2(-210, 24);
+	static Vector2 PersoPos = new Vector2(-210, 24);
 
 	Boolean onPlay, onOption;
 
@@ -184,6 +184,7 @@ public class MainMenuScreen implements Screen
 				dispose();
 			} else if (onOption)
 			{
+				numAnim = 3;
 				game.setScreen(new OptionScreen(game));
 				dispose();
 			}
