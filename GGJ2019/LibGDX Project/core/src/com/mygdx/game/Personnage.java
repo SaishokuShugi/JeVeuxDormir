@@ -181,6 +181,12 @@ public class Personnage {
     }
 
     void controls() {
+    	//Update Stamina et Température
+    	this.stamina-=0.001f;
+    	this.froid-=0.001f;
+    	
+    	
+    	//Controls
         boolean isLeftPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);

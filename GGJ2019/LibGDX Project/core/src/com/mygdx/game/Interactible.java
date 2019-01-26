@@ -26,7 +26,7 @@ public abstract class Interactible {
                 }
             }
         }
-        tile = MyGdxGame.random.nextInt(frame_cols*frame_rows);
+        tile = MyGdxGame.random.nextInt(nbFrames);
         
         
         
