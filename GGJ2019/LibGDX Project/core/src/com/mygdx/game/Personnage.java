@@ -15,13 +15,13 @@ public class Personnage {
     private Animation<TextureRegion> anim;
     private float animTime;
 
-    public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution) {
+    public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution, float frameDuration) {
         this.staminaMax = staminaMax;
         this.stamina = staminaMax;
         this.froidMax = froidMax;
         this.froid = froidMax;
 
-        this.anim = loadAnim("Personnage/idle.png", 4, 3, .5f);
+        this.anim = loadAnim("Personnage/idle.png", 4, 3, frameDuration);
 
         TextureRegion img = this.anim.getKeyFrame(0f, true);
 
@@ -29,7 +29,7 @@ public class Personnage {
         box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
 
         BodyDef bd = new BodyDef();
-        bd.type = BodyDef.BodyType.StaticBody;
+        bd.type = BodyDef.BodyType.DynamicBody;
         x = x * 32 + img.getRegionWidth() / 2;
         y = y * 32 + img.getRegionHeight() / 2;
         bd.position.set(x * GameScreen.scale_factor, y * GameScreen.scale_factor);
@@ -111,6 +111,14 @@ public class Personnage {
 
     public TextureRegion getCurrentFrame() {
         return this.anim.getKeyFrame(this.animTime, true);
+    }
+
+    public float getBodyXToImage() {
+        return this.body.getPosition().x - getCurrentFrame().getRegionWidth() / 2 * GameScreen.scale_factor;
+    }
+
+    public float getBodyYToImage() {
+        return this.body.getPosition().y - getCurrentFrame().getRegionHeight() / 2 * GameScreen.scale_factor;
     }
 
     public static Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
