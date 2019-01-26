@@ -12,17 +12,20 @@ public class Personnage {
     private float froid;
     private Body body;
     private Fixture fixture;
+    private Animation<TextureRegion> anim;
+    private float animTime;
 
-    public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution, Animation<TextureRegion> anim) {
+    public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution) {
         this.staminaMax = staminaMax;
         this.stamina = staminaMax;
         this.froidMax = froidMax;
         this.froid = froidMax;
 
-        TextureRegion[] frames = anim.getKeyFrames();
+        this.anim = loadAnim("Personnage/idle.png", 4, 3, .5f);
+
+        TextureRegion img = this.anim.getKeyFrame(0f, true);
 
         PolygonShape box = new PolygonShape();
-        TextureRegion img = frames[0];
         box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
 
         BodyDef bd = new BodyDef();
@@ -90,28 +93,12 @@ public class Personnage {
         return new Animation<TextureRegion>(frameDuration, frames);
     }
 
-    public void createBodyFromAnim(Animation<TextureRegion> anim) {
-        TextureRegion[] frames = anim.getKeyFrames();
+    public void changeAnim(String image, int frame_cols, int frame_rows, float frameDuration) {
+        this.animTime = 0;
+        this.anim = loadAnim(image, frame_cols, frame_rows, frameDuration);
+    }
 
-        BodyDef bd = new BodyDef();
-        bd.type = BodyDef.BodyType.StaticBody;
-        this.body.getPosition().x = this.body.getPosition().x;
-        this.body.getPosition().y = this.body.getPosition().y;
-        bd.position.set(this.body.getPosition().x * GameScreen.scale_factor, this.body.getPosition().y * GameScreen.scale_factor);
-
-        GameScreen.world.destroyBody(this.body);
-        this.body = GameScreen.world.createBody(bd);
-
-        PolygonShape box = new PolygonShape();
-        TextureRegion img = frames[0];
-        box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
-
-        FixtureDef fd = new FixtureDef();
-        fd.shape = box;
-        fd.density = this.fixture.getDensity();
-        fd.friction = this.fixture.getFriction();
-        fd.restitution = this.fixture.getRestitution();
-
-        this.fixture = this.body.createFixture(fd);
+    public TextureRegion getCurrentFrame() {
+        return this.anim.getKeyFrame(this.animTime, true);
     }
 }
