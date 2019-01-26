@@ -199,7 +199,7 @@ public class MainMenuScreen implements Screen
 			numAnim++;
 		}
 
-		if (Gdx.input.isTouched())
+		if (Gdx.input.justTouched())
 		{
 			if (onPlay)
 			{
