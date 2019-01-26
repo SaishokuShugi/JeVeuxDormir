@@ -151,6 +151,7 @@ public class Personnage {
 
     public void run(float frameDuration,float xImpulse) {
         changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
+        this.body.applyLinearImpulse(0,-40000f, this.body.getPosition().x, this.body.getPosition().y, false);
         this.body.setLinearVelocity(xImpulse,this.body.getLinearVelocity().y);
     }
 
