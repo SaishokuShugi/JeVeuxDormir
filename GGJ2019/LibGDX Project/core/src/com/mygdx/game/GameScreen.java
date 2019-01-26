@@ -56,8 +56,8 @@ public class GameScreen implements Screen  {
 		Box2D.init();
 		world = new World(new Vector2(0,-9.81f),true);
 		debugRenderer = new Box2DDebugRenderer();
-		blocks.add(new Block("Chaise.png",1,1,2f,2f,0,0,0));
-		blocks.add(new Block("lit.png",1,1,14f,2f,0,0,0));
+		blocks.add(new Block("Chaise.png",1,1,0f,2f,0,0,0));
+		blocks.add(new Block("lit.png",1,1,1f,2f,0,0,0));
 	}
 
 	

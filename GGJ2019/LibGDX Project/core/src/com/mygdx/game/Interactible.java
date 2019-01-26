@@ -22,15 +22,19 @@ public abstract class Interactible {
             }
         }
 
-        BodyDef bd = new BodyDef();
-        bd.type = bodyType;
-        bd.position.set(x * (32 * GameScreen.scale_factor), y * (32 * GameScreen.scale_factor));
-
-        this.body = GameScreen.world.createBody(bd);
-
         PolygonShape box = new PolygonShape();
         Texture img = this.images[0].getTexture();
         box.setAsBox(img.getWidth() / 2 * GameScreen.scale_factor, img.getHeight() / 2 * GameScreen.scale_factor);
+        
+        BodyDef bd = new BodyDef();
+        bd.type = bodyType;
+        x= x *32 +img.getWidth() / 2 ;
+        y= y*32 +img.getHeight()/2;
+        bd.position.set(x*GameScreen.scale_factor, y* GameScreen.scale_factor);
+
+        this.body = GameScreen.world.createBody(bd);
+
+        
 
 
         if (friction == 0 && restitution == 0) {
