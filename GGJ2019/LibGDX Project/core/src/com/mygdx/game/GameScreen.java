@@ -53,7 +53,8 @@ public class GameScreen implements Screen {
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
 	public ArrayList<Interactible> blocks = new ArrayList<Interactible>();
-	public ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+	public ArrayList<Interactible> sensors = new ArrayList<Interactible>();
+	public ArrayList<Collectible> items = new ArrayList<Collectible>();
 	
 	ShaderProgram shader;
 	
@@ -246,7 +247,7 @@ public class GameScreen implements Screen {
 		for(int i =0;i<32*9;batch.draw(staminaE_C, 10+(i+=32), Gdx.graphics.getBackBufferHeight()-50));
 		batch.draw(staminaE_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-50);
 		
-		batch.draw(stamina_L, 10, Gdx.graphics.getBackBufferHeight()-50);
+		if(perso.getStamina()>0)batch.draw(stamina_L, 10, Gdx.graphics.getBackBufferHeight()-50);
 		for(int i =32;i<(int)perso.getStamina()/perso.getStaminaMax()*290;batch.draw(stamina_C, 10+(i++), Gdx.graphics.getBackBufferHeight()-50));
 		if(perso.getStamina()==perso.getStaminaMax())batch.draw(stamina_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-50);
 		
@@ -254,7 +255,7 @@ public class GameScreen implements Screen {
 		for(int i =0;i<32*9;batch.draw(tempE_C, 10+(i+=32), Gdx.graphics.getBackBufferHeight()-100));
 		batch.draw(tempE_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-100);
 		
-		batch.draw(temp_L, 10, Gdx.graphics.getBackBufferHeight()-100);
+		if(perso.getStamina()>0)batch.draw(temp_L, 10, Gdx.graphics.getBackBufferHeight()-100);
 		for(int i =32;i<(int)perso.getFroid()/perso.getFroidMax()*290;batch.draw(temp_C, 10+(i++), Gdx.graphics.getBackBufferHeight()-100));
 		if(perso.getFroid()==perso.getFroidMax())batch.draw(temp_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-100);
 
