@@ -44,7 +44,7 @@ public class GameScreen implements Screen  {
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1280, 720);
+		camera.setToOrtho(false,Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
 	
 
 		cont = Controllers.getControllers().get(0);
