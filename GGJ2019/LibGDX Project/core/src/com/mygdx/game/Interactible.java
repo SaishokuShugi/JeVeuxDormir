@@ -10,16 +10,18 @@ public abstract class Interactible {
     private Fixture fixture;
     public int tile;
 
-    public Interactible(String image, int frame_cols, int frame_rows, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution) {
+    public Interactible(String image, int frame_cols, int frame_rows, int nbFrames, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution) {
         Texture animSheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(animSheet,
                 animSheet.getWidth() / frame_cols,
                 animSheet.getHeight() / frame_rows);
-        this.images = new TextureRegion[frame_cols * frame_rows];
+        this.images = new TextureRegion[nbFrames];
         int index = 0;
         for (int i = 0; i < frame_rows; i++) {
             for (int j = 0; j < frame_cols; j++) {
-                this.images[index++] = tmp[i][j];
+                if (i * j < nbFrames) {
+                    this.images[index++] = tmp[i][j];
+                }
             }
         }
         tile = MyGdxGame.random.nextInt(frame_cols*frame_rows);
