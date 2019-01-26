@@ -8,8 +8,7 @@ public class Movable extends Interactible {
         super(image, frame_cols, frame_rows, BodyDef.BodyType.DynamicBody, x, y, friction, density, restitution);
     }
 
-    @Override
-    public void action(Personnage perso) {
-
+    public void action(Personnage perso, float factor) {
+        perso.setStamina(perso.getStamina() - factor);
     }
 }

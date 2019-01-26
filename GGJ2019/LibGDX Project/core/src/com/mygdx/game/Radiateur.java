@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+
 public class Radiateur extends Block {
 
     public float range;
@@ -9,7 +12,14 @@ public class Radiateur extends Block {
         this.range = range * (32 * GameScreen.scale_factor);
     }
 
-    @Override
-    public void action(Personnage perso) {
+    public void enable() {
+        CircleShape cir = new CircleShape();
+        cir.setRadius(range);
+
+        Fixture fixture = this.getBody().createFixture(cir, 0f);
+    }
+
+    public void inRange(Personnage perso, float factor) {
+        perso.setFroid(perso.getFroid() - factor);
     }
 }

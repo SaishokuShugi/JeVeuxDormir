@@ -8,8 +8,7 @@ public class Chat extends Interactible {
         super(image, frame_cols, frame_rows, BodyDef.BodyType.KinematicBody, x, y, friction, density, restitution);
     }
 
-    @Override
-    public void action(Personnage perso) {
+    public void action() {
 
     }
 

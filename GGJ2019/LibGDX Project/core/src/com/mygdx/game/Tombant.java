@@ -6,8 +6,7 @@ public class Tombant extends Movable {
         super(image, frame_cols, frame_rows, x, y, friction, density, restitution);
     }
 
-    @Override
-    public void action(Personnage perso) {
+    public void action() {
 
     }
 }

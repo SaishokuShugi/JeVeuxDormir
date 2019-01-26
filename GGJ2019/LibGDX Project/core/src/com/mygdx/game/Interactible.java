@@ -83,6 +83,4 @@ public abstract class Interactible {
     public float getBodyYToImage() {
         return this.body.getPosition().y - this.images[0].getRegionHeight() / 2 * GameScreen.scale_factor;
     }
-
-    public abstract void action(Personnage perso);
 }

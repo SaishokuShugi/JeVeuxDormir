@@ -93,6 +93,15 @@ public class Personnage {
     public void createBodyFromAnim(Animation<TextureRegion> anim) {
         TextureRegion[] frames = anim.getKeyFrames();
 
+        BodyDef bd = new BodyDef();
+        bd.type = BodyDef.BodyType.StaticBody;
+        this.body.getPosition().x = this.body.getPosition().x;
+        this.body.getPosition().y = this.body.getPosition().y;
+        bd.position.set(this.body.getPosition().x * GameScreen.scale_factor, this.body.getPosition().y * GameScreen.scale_factor);
+
+        GameScreen.world.destroyBody(this.body);
+        this.body = GameScreen.world.createBody(bd);
+
         PolygonShape box = new PolygonShape();
         TextureRegion img = frames[0];
         box.setAsBox(img.getRegionWidth() / 2 * GameScreen.scale_factor, img.getRegionHeight() / 2 * GameScreen.scale_factor);
@@ -102,15 +111,6 @@ public class Personnage {
         fd.density = this.fixture.getDensity();
         fd.friction = this.fixture.getFriction();
         fd.restitution = this.fixture.getRestitution();
-
-        BodyDef bd = new BodyDef();
-        bd.type = BodyDef.BodyType.StaticBody;
-        this.body.getPosition().x = this.body.getPosition().x * 32 + img.getRegionWidth() / 2;
-        this.body.getPosition().y = this.body.getPosition().y * 32 + img.getRegionHeight() / 2;
-        bd.position.set(this.body.getPosition().x * GameScreen.scale_factor, this.body.getPosition().y * GameScreen.scale_factor);
-
-        GameScreen.world.destroyBody(this.body);
-        this.body = GameScreen.world.createBody(bd);
 
         this.fixture = this.body.createFixture(fd);
     }
