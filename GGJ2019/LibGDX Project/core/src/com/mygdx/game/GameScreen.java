@@ -1,16 +1,13 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -19,7 +16,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
@@ -67,7 +63,7 @@ public class GameScreen implements Screen {
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0));
 		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0, 0, 0));
-		perso = new Personnage(10, 10, 0f, 2f, 1, 10, 0,.5f);
+        perso = new Personnage(10, 10, 0f, 2f, 0, 0, 0, .5f);
 	}
 	
 	
@@ -215,21 +211,8 @@ public class GameScreen implements Screen {
 		batch.end();
 
 		world.step(Math.min(.015f, deltat), 6, 2);
-		controls();
+        perso.controls();
 
-	}
-	
-	void controls() {
-		boolean isLeftPressed = Gdx.input.isKeyPressed(Keys.Q);
-		boolean isRightPressed = Gdx.input.isKeyPressed(Keys.D);
-		boolean isUpPressed = Gdx.input.isKeyPressed(Keys.SPACE);
-		
-		if(isRightPressed)
-			perso.run(.2f);
-		if(!(isRightPressed||isLeftPressed))
-			perso.idle(.5f);
-		if(isUpPressed)
-			perso.jump(.5f);
 	}
 
 	@Override

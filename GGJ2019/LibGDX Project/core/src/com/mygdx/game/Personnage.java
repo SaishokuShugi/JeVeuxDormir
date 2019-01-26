@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -35,6 +37,7 @@ public class Personnage {
         bd.position.set(x * GameScreen.scale_factor, y * GameScreen.scale_factor);
 
         this.body = GameScreen.world.createBody(bd);
+        this.body.setGravityScale(0.1f);
 
         FixtureDef fd = new FixtureDef();
         fd.shape = box;
@@ -146,6 +149,7 @@ public class Personnage {
 
     public void run(float frameDuration) {
         changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
+        this.body.applyLinearImpulse(1000000.0f, 0, this.body.getPosition().x, this.body.getPosition().y, true);
     }
 
     public void idle(float frameDuration) {
@@ -154,6 +158,7 @@ public class Personnage {
 
     public void jump(float frameDuration) {
         changeAnim("Personnage/jump2.png", 1, 1, 1, frameDuration);
+        this.body.setLinearVelocity(this.body.getLinearVelocity().x, 10000f);
     }
 
     public void land(float frameDuration) {
@@ -166,6 +171,23 @@ public class Personnage {
 
     public void air(float frameDuration) {
         changeAnim("Personnage/mid air.png", 2, 1, 2, frameDuration);
+    }
+
+    void controls() {
+        boolean isLeftPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
+        boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
+        boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
+
+        System.out.println(this.body.getLinearVelocity());
+
+        if (isRightPressed)
+            run(.2f);
+        if (!(isRightPressed || isLeftPressed || !(this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)))
+            idle(.5f);
+        if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
+            jump(.5f);
+        }
+
     }
 
 }
