@@ -91,7 +91,7 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		game.batch.dispose();
+		//game.batch.dispose();
 		TitreFont.dispose();
 		SousTitreFont.dispose();
 		
