@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -13,7 +12,7 @@ public abstract class Interactible {
     public int tile;
     Vector2 decal;
 
-    public Interactible(String image, int frame_cols, int frame_rows, int nbFrames, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution) {
+    public Interactible(String image, int frame_cols, int frame_rows, int nbFrames, BodyDef.BodyType bodyType, float x, float y, float friction, float density, float restitution, boolean sensor) {
         Texture animSheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(animSheet,
                 animSheet.getWidth() / frame_cols,
@@ -49,6 +48,7 @@ public abstract class Interactible {
         fd.density = density;
         fd.friction = friction;
         fd.restitution = restitution;
+        fd.isSensor = sensor;
 
         this.fixture = this.body.createFixture(fd);
     }
