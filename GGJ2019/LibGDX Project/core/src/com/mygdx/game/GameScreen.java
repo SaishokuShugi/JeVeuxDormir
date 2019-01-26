@@ -32,7 +32,7 @@ public class GameScreen implements Screen  {
 	Texture img;
 	Texture img2;
 	
-	float scale_factor;
+	public static float scale_factor;
 
 	public static World world;
 	
@@ -56,8 +56,8 @@ public class GameScreen implements Screen  {
 		Box2D.init();
 		world = new World(new Vector2(0,-9.81f),true);
 		debugRenderer = new Box2DDebugRenderer();
-		blocks.add(new Block("Chaise.png",1,1,150,150,0,0,0,scale_factor));
-		blocks.add(new Block("lit.png",1,1,350,150,0,0,0,scale_factor));
+		blocks.add(new Block("Chaise.png",1,1,2f,2f,0,0,0));
+		blocks.add(new Block("lit.png",1,1,14f,2f,0,0,0));
 	}
 
 	
