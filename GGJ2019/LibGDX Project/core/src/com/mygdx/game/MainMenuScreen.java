@@ -51,7 +51,7 @@ public class MainMenuScreen implements Screen
 		return ftfg.generateFont(parameter);
 	}
 
-	BitmapFont TitreFont = createFont(ftfg, 90, false, true);
+	BitmapFont TitreFont = createFont(ftfg, 83, false, true);
 	BitmapFont SousTitreFont = createFont(ftfg, 25, false, true);
 	BitmapFont ButtonFont1 = createFont(ftfg, 30, true, true);
 	BitmapFont ButtonFont2 = createFont(ftfg, 30, false, false);
@@ -119,8 +119,8 @@ public class MainMenuScreen implements Screen
 			game.batch.draw(SolImages[0][0], i * 128, -30, 128, 64);
 			i++;
 		}
-		TitreFont.draw(game.batch, "Je Veux Dormir ", 120, 700);
-		SousTitreFont.draw(game.batch, "A Vegan Product", 140, 615);
+		TitreFont.draw(game.batch, "Je Veux Dormir ", 150, 642);
+		SousTitreFont.draw(game.batch, "My Bed is Home", 335, 544);
 		game.batch.draw(ButtonImage, xButton = 0, yButton = 24, 320, 320);
 
 		game.batch.draw(LitImage, 1280 - 320, 24, 320, 320);
