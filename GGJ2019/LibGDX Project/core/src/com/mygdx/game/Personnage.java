@@ -226,7 +226,14 @@ public class Personnage {
 
     public void checkCollision(Interactible objet, float factor1, float factor2) {
         Fixture fix = objet.getFixture();
-        if (fix.testPoint(this.body.getPosition())) {
+
+        boolean cond = fix.testPoint(this.body.getPosition().add(decal))
+                || fix.testPoint(this.body.getPosition().sub(decal))
+                || fix.testPoint(this.body.getPosition().add(decal.x, -decal.y))
+                || fix.testPoint(this.body.getPosition().add(-decal.x, decal.y))
+                || fix.testPoint(this.body.getPosition().add(0, -decal.y));
+
+        if (cond) {
             if (objet.getClass().hashCode() == Block.class.hashCode()) {
                 Block obj = (Block) objet;
                 obj.action();
