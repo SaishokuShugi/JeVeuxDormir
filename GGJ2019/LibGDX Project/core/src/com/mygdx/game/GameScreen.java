@@ -160,7 +160,8 @@ public class GameScreen implements Screen {
                   + "void main(){                                 											\n"
                   + "vec2 uv = v_texCoords;																	\n"
                   + "vec4 color = texture2D(u_texture, uv);													\n"
-                  + "gl_FragColor = vec4(mix(color.rgb,vec3(1,.9,.8),ray(uv)),1) ;								\n"
+                  + "float r = ray(uv);"
+                  + "gl_FragColor = vec4(mix(color.rgb*vec3(.45,.5,.8),vec3(.7,.7,.8),sqrt(r)),1) ;								\n"
                   + "}";
 	}
 	void  loadShader(String frag) {
