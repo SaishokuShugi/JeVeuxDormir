@@ -739,11 +739,17 @@ public class GameScreen implements Screen {
         		generateMap5();
         		break;
         	case 6:
-        		//generateMap6();
+        		generateMap6();
         		break;
         	case 7:
         		generateMap7();
         		break;
+        	case 8:
+            	generateMap8();
+            	break;
+        	case 9:
+            	//generateMap9();
+            	break;
         		
         	}
         }
