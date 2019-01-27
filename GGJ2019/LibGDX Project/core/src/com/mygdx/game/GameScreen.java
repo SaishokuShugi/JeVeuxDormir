@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameScreen implements Screen {
 	final MyGdxGame game;
@@ -120,7 +121,7 @@ public class GameScreen implements Screen {
         sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0, true));
         blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0, false));
         blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0, false));
-        blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f, 1, 0, false));
+        sensors.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f, 1, 0, false));
         perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
 	}
 
@@ -171,6 +172,34 @@ public class GameScreen implements Screen {
 		
 		//Static
 		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
+		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 11.1f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 9.05f, 1f, 0, 1, 0,false));
+		
+		//Personnage
+        perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
+	}
+    public void generateMap4() {
+		cleanMap();
+		//Mur et sol
+		for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 15f, i++, 0f, 1, 0,false)));
+		
+		//Fleurs
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 8f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 7f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 6f, 2f, 0, 1, 0,false));
+		
+		//Tapis*
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 3f, 2f, 0.1f,0.7f, 0,false));
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 3f, 1f, 0.1f,0.7f, 0,false));
+		
+		//Static
+		sensors.add(new Block("Lit.png", 1, 1, 1, 25f, 1f, 0, 1, 0,true));
 		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 11.1f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
@@ -373,8 +402,9 @@ public class GameScreen implements Screen {
 	}
 	
 	void checkTriggers() {
-		for (Interactible a : sensors) {
-			perso.checkCollision(a, 0, 0, this);
+		Iterator<Interactible> iter = sensors.iterator();
+		while(iter.hasNext()){
+			perso.checkCollision(iter.next(), 0, 0, this);
 		}
 	}
 	
