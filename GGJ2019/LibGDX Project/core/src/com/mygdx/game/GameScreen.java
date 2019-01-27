@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -62,6 +63,10 @@ public class GameScreen implements Screen {
 	public ArrayList<Collectible> items = new ArrayList<Collectible>();
 	
 	ShaderProgram shader;
+	
+	Vector3 posCamera,newPosCamera;
+	Vector3 posCameraInit = new Vector3(7.5f, 4.0f, 0f);
+	int tailleMap3 = 0;
 
 
     public GameScreen(final MyGdxGame game) {
@@ -92,6 +97,7 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 15, 15 * Gdx.graphics.getHeight() / Gdx.graphics.getWidth());
+        
 
 
         if (!Controllers.getControllers().isEmpty())
@@ -122,6 +128,7 @@ public class GameScreen implements Screen {
         blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0, false));
         blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f, 1, 0, false));
         perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
+        
 	}
 
     public void generateMap2() {
@@ -171,7 +178,7 @@ public class GameScreen implements Screen {
 		
 		//Static
 		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
-		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliothï¿½que.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 11.1f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
@@ -295,7 +302,38 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		batch.setShader(null);
-
+		posCamera = camera.position;
+		switch(mapID)
+		{
+			case 1:
+			{
+			}
+			case 2:
+			{
+				camera.position.lerp(posCameraInit, 0.1f);
+				break;
+			}
+			
+			case 3:
+			{
+				if (perso.getBody().getPosition().x<7.5)
+				{
+					camera.position.lerp(posCameraInit, 0.1f);
+				}
+				else if (perso.getBody().getPosition().x<tailleMap3-7.5)
+				{
+					newPosCamera = posCamera;
+					newPosCamera.x = perso.getBody().getPosition().x;
+					camera.position.lerp(newPosCamera, 0.1f);
+				}
+				else
+				{
+					newPosCamera = posCamera;
+					newPosCamera.x = tailleMap3-7.5f;
+					camera.position.lerp(newPosCamera, 0.1f);
+				}
+			}
+		}
 		float deltat = Gdx.graphics.getDeltaTime();
 
 		Gdx.gl.glClearColor(0, 1, 0, 1);
