@@ -8,7 +8,9 @@ public class Block extends Interactible {
         super(image, frame_cols, frame_rows, nbFrames, BodyDef.BodyType.StaticBody, x, y, friction, density, restitution, sensor);
     }
 
-    public void action() {
-
+    public void action(Personnage perso) {
+        perso.setStamina(perso.getStaminaMax());
+        perso.setFroid(perso.getFroidMax());
+        GameScreen.mapID++;
     }
 }
