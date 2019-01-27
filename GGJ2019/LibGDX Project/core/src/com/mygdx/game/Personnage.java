@@ -153,7 +153,6 @@ public class Personnage {
 
     public void run(float frameDuration, float xImpulse) {
         changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
-        //this.body.applyLinearImpulse(0,-4f, this.body.getPosition().x, this.body.getPosition().y, false);
         this.body.setLinearVelocity(xImpulse, this.body.getLinearVelocity().y);
     }
 
@@ -177,7 +176,7 @@ public class Personnage {
 
     public void air(float frameDuration) {
         changeAnim("Personnage/midAir.png", 2, 1, 2, frameDuration);
-        this.body.setLinearVelocity(this.body.getLinearVelocity().x, -500f);
+        this.body.setLinearVelocity(this.body.getLinearVelocity().x, -20f);
     }
 
     void controls() {

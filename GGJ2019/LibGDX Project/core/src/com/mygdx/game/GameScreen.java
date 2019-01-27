@@ -51,6 +51,9 @@ public class GameScreen implements Screen {
 	public static World world;
 
     public static int mapID = 1;
+
+    public static int rayIter = 40;
+
 	float time =0;
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
@@ -107,8 +110,7 @@ public class GameScreen implements Screen {
         blocks.clear();
         sensors.clear();
         items.clear();
-        world= new World(new Vector2(0, -9.81f), true);
-        
+        world = new World(new Vector2(0, -9.81f), true);
     }
     
     public void generateMap1() {
@@ -228,19 +230,19 @@ public class GameScreen implements Screen {
                   		"\n" + 
                   		"	}\n" + 
                   		""
-                  + "const int samples = 80;"
+                  + "const int samples = "+rayIter+";"
                   + "float ray(vec2 uv){																	\n"
                   + "float dith = bayer8(uv*resolution);"
                   + "float a=0;"
                   + "vec2 lp = vec2(.75);"
                   + "vec2 ld = lp-uv;"
-                  + "if(texture2D(u_texture,uv).g>=.8 && length(texture2D(u_texture,uv).rb)<.1)return -1;											\n"
+                + "if(texture2D(u_texture,uv).g>=.8 && length(texture2D(u_texture,uv).rb)<.1)return -1.;											\n"
                   + "uv+=ld/samples*dith;"
                   + "for(int i=0;i++<samples;){"
-                  + "uv+=ld/float(samples);"
                   + "float d = texture2D(u_texture,uv).g>=.8"
                   + "&&length(texture2D(u_texture,uv).rb)<.1?1.:0.;"
                   + "a+=d/float(samples);"
+                  + "uv+=ld/float(samples);"
                   + "}"
                   + "return a;"
                   + "}"
@@ -282,7 +284,6 @@ public class GameScreen implements Screen {
 		if (shader.getLog().length()!=0)
 			System.out.println(shader.getLog());
 	}
-
 
 
 	@Override
