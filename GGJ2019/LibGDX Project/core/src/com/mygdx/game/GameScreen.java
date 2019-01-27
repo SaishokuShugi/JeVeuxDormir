@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
 	Texture temp_L;
 	Texture temp_R;
 
-	Texture froisdq;
+	Texture imback;
 
 	Personnage perso;
 	FrameBuffer Frameb;
@@ -75,7 +75,7 @@ public class GameScreen implements Screen {
         this.game = game;
         // load the images for the monkeys
         img = new TextureRegion();
-        
+        imback = new Texture("backback.png");
 
         staminaE_C = new Texture("EmptyStaminaCenter.png");
         staminaE_L = new Texture("EmptyStaminaLeft.png");
@@ -122,7 +122,6 @@ public class GameScreen implements Screen {
     }
     
     public void generateMap1() {
-    	img2.dispose();
     	img2 = new Texture("Background2.png");
     	cleanMap();
         for (float i = 0; i < 15; blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0, false))) ;
@@ -303,7 +302,7 @@ public class GameScreen implements Screen {
                   + "a+=d/float(samples);"
                   + "uv+=ld/float(samples);"
                   + "}"
-                  + "return m*a+(m-1.)/10.;"
+                  + "return m*a+(m-1.)/4.;"
                   + "}"
                   + "void main(){                                 											\n"
                   + "vec2 uv = v_texCoords;																	\n"
@@ -364,7 +363,7 @@ public class GameScreen implements Screen {
 				break;
 			case 4:
 			{
-				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-8.5f))*scale_factor*32;
+				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-15f))*scale_factor*32;
 			}
 		}
 		float deltat = Gdx.graphics.getDeltaTime();
@@ -380,6 +379,11 @@ public class GameScreen implements Screen {
 		batch.begin();
 		
 		//debugRenderer.render(world, camera.combined);
+		
+		
+		batch.draw(imback,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		
+		
 		batch.draw(img2,0-dep*.9f,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
 			block.getBody().setLinearVelocity(block.getBody().getLinearVelocity().x/1.1f, block.getBody().getLinearVelocity().y);
@@ -510,5 +514,7 @@ public class GameScreen implements Screen {
 		temp_R.dispose();
 
 		img2.dispose();
+		imback.dispose();
+
 	}
 }
