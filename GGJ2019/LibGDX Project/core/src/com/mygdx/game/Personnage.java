@@ -197,7 +197,7 @@ public class Personnage {
     void controls(boolean canGrab) {
         //Update Stamina et Temp�rature
         this.stamina -= 0.001f;
-        this.froid -= 0.005f;
+        this.froid -= 0.004f;
 
         //Controls
         boolean isLeftPressed = Gdx.input.isKeyPressed(Input.Keys.Q)||GameScreen.cont.getAxis(1)<-.1;
