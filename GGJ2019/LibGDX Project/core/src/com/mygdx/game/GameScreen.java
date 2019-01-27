@@ -128,20 +128,39 @@ public class GameScreen implements Screen {
 				  + "varying vec2 v_texCoords;																\n" 
                   + "uniform sampler2D u_texture;															\n"
                   + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");	\n"
+                  		+ "float bayer2(vec2 v)\n" + 
+                  		"{\n" + 
+                  		"    v=floor(v);\n" + 
+                  		" return fract(v.y*v.y*.75+v.x*.5);   \n" + 
+                  		"}\n" + 
+                  		"float bayer4(vec2 v)\n" + 
+                  		"{\n" + 
+                  		"    return bayer2(.5*v)*.25+bayer2(v);\n" + 
+                  		"}\n" + 
+                  		"float bayer8(vec2 v)\n" + 
+                  		"{\n" + 
+                  		"    return bayer4(.5*v)*.25+bayer2(v);\n" + 
+                  		"}"
+                  + "const int samples = 80;"
                   + "float ray(vec2 uv){																	\n"
-                  + "	float a=0;"
-                  + "vec2 ld = normalize(vec2(1));"
-                  + "for(int i=0;i++<10;){"
-                  + "uv+=ld*.5;;"
-                  + "float d = texture2D(u_texture,uv).a;"
-                  + "a+=.1*d;"
+                  + "float dith = bayer8(uv*resolution);"
+                  + "float a=0;"
+                  + "vec2 lp = vec2(.9);"
+                  + "vec2 ld = lp-uv;"
+                  + "if(texture2D(u_texture,uv).g>=.8 && length(texture2D(u_texture,uv).rb)<.1)return 1.;											\n"
+                  + "uv+=ld/samples*dith;"
+                  + "for(int i=0;i++<samples;){"
+                  + "uv+=ld/float(samples);"
+                  + "float d = texture2D(u_texture,uv).g>=.8"
+                  + "&&length(texture2D(u_texture,uv).rb)<.1?1.:0.;"
+                  + "a+=d/float(samples);"
                   + "}"
                   + "return a;"
                   + "}"
                   + "void main(){                                 											\n"
                   + "vec2 uv = v_texCoords;																	\n"
                   + "vec4 color = texture2D(u_texture, uv);													\n"
-                  + "gl_FragColor = vec4(color.rgb,1) ;														\n"
+                  + "gl_FragColor = vec4(mix(color.rgb,vec3(1,.9,.8),ray(uv)),1) ;								\n"
                   + "}";
 	}
 	void  loadShader(String frag) {
@@ -170,7 +189,7 @@ public class GameScreen implements Screen {
 		this.game = game;
 		// load the images for the monkeys
 		img = new TextureRegion();
-		img2 =new Texture("Background.png");
+		img2 =new Texture("Background2.png");
 		
 		staminaE_C = new Texture("EmptyStaminaCenter.png");
 		staminaE_L = new Texture("EmptyStaminaLeft.png");
@@ -220,7 +239,7 @@ public class GameScreen implements Screen {
 
 		float deltat = Gdx.graphics.getDeltaTime();
 
-		Gdx.gl.glClearColor(0, 0, 1f, 1);
+		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		Fbtex = new TextureRegion(Frameb.getColorBufferTexture());
