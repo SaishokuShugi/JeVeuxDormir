@@ -184,7 +184,6 @@ public class Personnage {
 
     public void grab(float frameDuration) {
     	changeAnim("Personnage/ledgeGrab.png",3,2,6,frameDuration);
-    	isGrab=true;
     	this.body.setLinearVelocity(0,0);
     	this.body.setGravityScale(0);
     }
