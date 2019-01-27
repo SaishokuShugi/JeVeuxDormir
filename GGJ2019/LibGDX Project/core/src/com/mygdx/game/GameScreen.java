@@ -53,6 +53,8 @@ public class GameScreen implements Screen {
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
 	public ArrayList<Interactible> blocks = new ArrayList<Interactible>();
+	public ArrayList<Interactible> sensors = new ArrayList<Interactible>();
+	public ArrayList<Collectible> items = new ArrayList<Collectible>();
 	
 	ShaderProgram shader;
 	
@@ -75,7 +77,7 @@ public class GameScreen implements Screen {
 		blocks.add(new Movable("Objet.png", 5, 6, 27, 6f, 3f, 0.1f,1, 0,false));
 		
 		//Static
-		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
+		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 10f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
@@ -85,11 +87,13 @@ public class GameScreen implements Screen {
 	}
 	void cleanMap() {
 		blocks.clear();
+		sensors.clear();
+		items.clear();
 	}
 	void generateMap() {
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0,false)));
 		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f,false));
-		blocks.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0,true));
+		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0,true));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0,false));
 		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f,1, 0,false));
@@ -118,11 +122,22 @@ public class GameScreen implements Screen {
                   + "vec4 color = texture2D(u_texture, uv);														\n"
                   + "gl_FragColor = vec4(mix(blur(fc),vec3(.5*smoothstep(1.5,0.,distance(uv,vec2(.5)))),.7),1);	\n"
                   + "}";
+		
 		gameShader0="#version 120 																			\n"
                   + "uniform float time;																	\n"
 				  + "varying vec2 v_texCoords;																\n" 
                   + "uniform sampler2D u_texture;															\n"
                   + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");	\n"
+                  + "float ray(vec2 uv){																	\n"
+                  + "	float a=0;"
+                  + "vec2 ld = normalize(vec2(1));"
+                  + "for(int i=0;i++<10;){"
+                  + "uv+=ld*.5;;"
+                  + "float d = texture2D(u_texture,uv).a;"
+                  + "a+=.1*d;"
+                  + "}"
+                  + "return a;"
+                  + "}"
                   + "void main(){                                 											\n"
                   + "vec2 uv = v_texCoords;																	\n"
                   + "vec4 color = texture2D(u_texture, uv);													\n"
@@ -222,6 +237,16 @@ public class GameScreen implements Screen {
 			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 		}
+		for (Interactible block : sensors) {
+			img = block.getImages()[block.tile];
+			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
+					img.getRegionHeight() * scale_factor);
+		}
+		for (Interactible block : items) {
+			img = block.getImages()[block.tile];
+			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
+					img.getRegionHeight() * scale_factor);
+		}
 
 
 		perso.setAnimTime(time+=deltat);
@@ -245,7 +270,7 @@ public class GameScreen implements Screen {
 		for(int i =0;i<32*9;batch.draw(staminaE_C, 10+(i+=32), Gdx.graphics.getBackBufferHeight()-50));
 		batch.draw(staminaE_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-50);
 		
-		batch.draw(stamina_L, 10, Gdx.graphics.getBackBufferHeight()-50);
+		if(perso.getStamina()>0)batch.draw(stamina_L, 10, Gdx.graphics.getBackBufferHeight()-50);
 		for(int i =32;i<(int)perso.getStamina()/perso.getStaminaMax()*290;batch.draw(stamina_C, 10+(i++), Gdx.graphics.getBackBufferHeight()-50));
 		if(perso.getStamina()==perso.getStaminaMax())batch.draw(stamina_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-50);
 		
@@ -253,19 +278,27 @@ public class GameScreen implements Screen {
 		for(int i =0;i<32*9;batch.draw(tempE_C, 10+(i+=32), Gdx.graphics.getBackBufferHeight()-100));
 		batch.draw(tempE_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-100);
 		
-		batch.draw(temp_L, 10, Gdx.graphics.getBackBufferHeight()-100);
+		if(perso.getStamina()>0)batch.draw(temp_L, 10, Gdx.graphics.getBackBufferHeight()-100);
 		for(int i =32;i<(int)perso.getFroid()/perso.getFroidMax()*290;batch.draw(temp_C, 10+(i++), Gdx.graphics.getBackBufferHeight()-100));
 		if(perso.getFroid()==perso.getFroidMax())batch.draw(temp_R, 10+32*10, Gdx.graphics.getBackBufferHeight()-100);
 
 
 
 		batch.end();
-
+		
+		checkTriggers();
+		
         perso.controls();
 
 		world.step(Math.min(deltat,.15f), 6, 2);
 	}
-
+	
+	void checkTriggers() {
+		for (Interactible a : sensors) {
+			perso.checkCollision(a, 0, 0);
+		}
+	}
+	
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub

@@ -17,7 +17,7 @@ public class Personnage {
     private Fixture fixture;
     private Animation<TextureRegion> anim;
     private float animTime;
-    private int flip=1;
+    private int flip = 1;
     Vector2 decal;
 
     public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution, float frameDuration) {
@@ -33,11 +33,11 @@ public class Personnage {
         decal = new Vector2(img.getRegionWidth() / 64f, img.getRegionHeight() / 64f);
 
         PolygonShape box = new PolygonShape();
-        box.setAsBox(decal.x,decal.y);
+        box.setAsBox(decal.x, decal.y);
 
         BodyDef bd = new BodyDef();
         bd.type = BodyDef.BodyType.DynamicBody;
-        bd.position.set(x +decal.x, y +decal.y);
+        bd.position.set(x + decal.x, y + decal.y);
 
         this.body = GameScreen.world.createBody(bd);
         //this.body.setGravityScale(0.1f);
@@ -120,14 +120,6 @@ public class Personnage {
         return this.anim.getKeyFrame(this.animTime, true);
     }
 
-    public float getBodyXToImage() {
-        return (this.body.getPosition().x-decal.x) *32 * GameScreen.scale_factor;
-    }
-
-    public float getBodyYToImage() {
-        return (this.body.getPosition().y-decal.y) * 32 * GameScreen.scale_factor;
-    }
-
     public static Animation<TextureRegion> loadAnim(String image, int frame_cols, int frame_rows, int nbFrames, float frameDuration) {
         Texture sheet = new Texture(image);
         TextureRegion[][] tmp = TextureRegion.split(sheet,
@@ -137,7 +129,7 @@ public class Personnage {
         int index = 0;
         for (int i = 0; i < frame_rows; i++) {
             for (int j = 0; j < frame_cols; j++) {
-                if (index< nbFrames) {
+                if (index < nbFrames) {
                     frames[index++] = tmp[i][j];
                 }
             }
@@ -146,15 +138,23 @@ public class Personnage {
         return new Animation<TextureRegion>(frameDuration, frames);
     }
 
+    public float getBodyXToImage() {
+        return (this.body.getPosition().x - decal.x) * 32 * GameScreen.scale_factor;
+    }
+
+    public float getBodyYToImage() {
+        return (this.body.getPosition().y - decal.y) * 32 * GameScreen.scale_factor;
+    }
+
     public void changeAnim(String image, int frame_cols, int frame_rows, int nbFrames, float frameDuration) {
         this.animTime = 0;
         this.anim = loadAnim(image, frame_cols, frame_rows, nbFrames, frameDuration);
     }
 
-    public void run(float frameDuration,float xImpulse) {
+    public void run(float frameDuration, float xImpulse) {
         changeAnim("Personnage/run.png", 4, 2, 8, frameDuration);
         //this.body.applyLinearImpulse(0,-4f, this.body.getPosition().x, this.body.getPosition().y, false);
-        this.body.setLinearVelocity(xImpulse,this.body.getLinearVelocity().y);
+        this.body.setLinearVelocity(xImpulse, this.body.getLinearVelocity().y);
     }
 
     public void idle(float frameDuration) {
@@ -163,7 +163,7 @@ public class Personnage {
 
     public void jump(float frameDuration) {
         changeAnim("Personnage/jump2.png", 1, 1, 1, frameDuration);
-        this.body.applyLinearImpulse(0,15f, this.body.getPosition().x, this.body.getPosition().y, false);
+        this.body.applyLinearImpulse(0, 15f, this.body.getPosition().x, this.body.getPosition().y, false);
     }
 
 
@@ -181,48 +181,83 @@ public class Personnage {
     }
 
     void controls() {
-    	//Update Stamina et Température
-    	this.stamina-=0.001f;
-    	this.froid-=0.001f;
-    	
-    	
-    	//Controls
+        //Update Stamina et Tempï¿½rature
+        this.stamina -= 0.001f;
+        this.froid -= 0.001f;
+
+
+        //Controls
         boolean isLeftPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
         boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
-        
+
         System.out.println(this.body.getPosition());
         if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
             jump(.5f);
         }
-             
-        if (isDownPressed || this.body.getLinearVelocity().y< -10f) {
+
+        if (isDownPressed || this.body.getLinearVelocity().y < -10f) {
             air(.5f);
         }
         if (isRightPressed) {
-            run(.2f,2f);
+            run(.2f, 2f);
             setFlip(1);
-        }
-        else {
-	        if (isLeftPressed) {
-	        	run(.2f,-2f); 
-	        	setFlip(-1);
-	        }else {
-	            this.body.setLinearVelocity(0, this.body.getLinearVelocity().y);
-	        }
+        } else {
+            if (isLeftPressed) {
+                run(.2f, -2f);
+                setFlip(-1);
+            } else {
+                this.body.setLinearVelocity(0, this.body.getLinearVelocity().y);
+            }
         }
         if (!(isRightPressed || isLeftPressed || !(this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)))
             idle(.5f);
-       
+
     }
 
-	public int getFlip() {
-		return flip;
-	}
+    public int getFlip() {
+        return flip;
+    }
 
-	public void setFlip(int flip) {
-		this.flip = flip;
-	}
+    public void setFlip(int flip) {
+        this.flip = flip;
+    }
 
+    public void checkCollision(Interactible objet, float factor1, float factor2) {
+        Fixture fix = objet.getFixture();
+
+        boolean cond = fix.testPoint(this.body.getPosition().add(decal))
+                || fix.testPoint(this.body.getPosition().sub(decal))
+                || fix.testPoint(this.body.getPosition().add(decal.x, -decal.y))
+                || fix.testPoint(this.body.getPosition().add(-decal.x, decal.y))
+                || fix.testPoint(this.body.getPosition().add(0, -decal.y));
+
+        if (cond) {
+            if (objet.getClass().hashCode() == Block.class.hashCode()) {
+                Block obj = (Block) objet;
+                obj.action();
+            }
+            if (objet.getClass().hashCode() == Chat.class.hashCode()) {
+                Chat obj = (Chat) objet;
+                obj.action();
+            }
+            if (objet.getClass().hashCode() == Collectible.class.hashCode()) {
+                Collectible obj = (Collectible) objet;
+                obj.action(this, factor1, factor2);
+            }
+            if (objet.getClass().hashCode() == Movable.class.hashCode()) {
+                Movable obj = (Movable) objet;
+                obj.action(this, factor1);
+            }
+            if (objet.getClass().hashCode() == Radiateur.class.hashCode()) {
+                Radiateur obj = (Radiateur) objet;
+                obj.enable();
+            }
+            if (objet.getClass().hashCode() == Tombant.class.hashCode()) {
+                Tombant obj = (Tombant) objet;
+                obj.action(this, factor1);
+            }
+        }
+    }
 }
