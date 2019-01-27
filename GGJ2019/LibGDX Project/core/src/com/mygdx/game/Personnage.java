@@ -1,13 +1,7 @@
 package com.mygdx.game;
 
-import javax.sound.midi.ControllerEventListener;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerListener;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.controllers.mappings.Ouya;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -279,7 +273,7 @@ public class Personnage {
             }
             if (objet.getClass().hashCode() == Collectible.class.hashCode()) {
                 Collectible obj = (Collectible) objet;
-                obj.action(this, staminaFactor, froidFactor);
+                obj.action(this);
             }
             if (objet.getClass().hashCode() == Movable.class.hashCode()) {
                 Movable obj = (Movable) objet;
