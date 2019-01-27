@@ -428,7 +428,42 @@ public class GameScreen implements Screen {
 		//Personnage
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
-    
+    public void generateMap8()
+    {
+		cleanMap();
+		img2.dispose();
+        img2 = new Texture("BackgroundGrand.png");
+        for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+        for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+        for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 30f, i++, 0f, 1, 0,false)));
+
+        blocks.add(new Block("Armoire.png", 1, 1, 1, 3f, 3f, 0, 1, 0, false));
+        blocks.add(new Block("Armoire.png", 1, 1, 1, 13f, 1f, 0, 1, 0, false));
+        blocks.add(new Block("Armoire.png", 1, 1, 1, 20f, 6f, 0, 1, 0, false));
+        blocks.add(new Block("Armoire.png", 1, 1, 1, 20f, 9f, 0, 1, 0, false));
+        blocks.add(new Block("Sol.png", 2, 2, 4, 5f, 3f, 0, 1, 0,false));
+        blocks.add(new Block("Sol.png", 2, 2, 4, 8f, 5f, 0, 1, 0,false));
+        blocks.add(new Block("Sol.png", 2, 2, 4, 20f, 3f, 0, 1, 0,false));
+        blocks.add(new Block("Sol.png", 2, 2, 4, 21f, 3f, 0, 1, 0,false));
+        blocks.add(new Block("Sol.png", 2, 2, 4, 22f, 3f, 0, 1, 0,false));
+        blocks.add(new Block("Sol.png", 2, 2, 4, 23f, 3f, 0, 1, 0,false));
+        blocks.add(new Block("Sol.png", 2, 2, 4, 24f, 3f, 0, 1, 0,false));
+        blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 13f, 4f, 0, 1, 0,false));
+        blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 13f, 10f, 0, 1, 0,false));
+        blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 3f, 6f, 0, 1, 0,false));
+        blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 18.2f, 4f, 0, 1, 0, false));
+
+        blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 1f, 0, 1, 0,false));
+        blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 2f, 0, 1, 0,false));
+
+        blocks.add(new Movable("Chaise.png", 1, 1, 1, 8f, 6f, 0.1f,0.7f, 0,false));
+        blocks.add(new Movable("Chaise.png", 1, 1, 1, 18f, 9f, 0.1f,0.7f, 0,false));
+
+        sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 13f, 6.75f, 0, 1, 0,true,2f));
+        sensors.add(new Block("Lit.png", 1, 1, 1, 20f, 4f, 0, 1, 0,true));
+
+        perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
+    }
 	String gameShader0;
 	String backMenuShader;
 	
@@ -574,6 +609,7 @@ public class GameScreen implements Screen {
 			case 3:
 				break;
 			case 4:
+			case 8:
 			case 5:
 			{
 				mullx=2;
