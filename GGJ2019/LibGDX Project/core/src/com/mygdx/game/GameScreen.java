@@ -108,7 +108,7 @@ public class GameScreen implements Screen {
         world = new World(new Vector2(0, -9.81f), true);
         debugRenderer = new Box2DDebugRenderer();
 		generateMap1();
-		//mapID=4;
+		//mapID=9;
 
         Frameb = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         loadShader(gameShader0);
@@ -464,6 +464,29 @@ public class GameScreen implements Screen {
 
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
     }
+    public void generateMap9() {
+    	cleanMap();
+    	img2 = new Texture("Background3.png");
+
+        for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+        for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+        for(float i = 0;i<16;blocks.add(new Block("Sol.png", 2, 2, 4, 10f, i++, 0f, 1, 0,false)));
+
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 5f, 1f, 0, 1, 0, false));
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 1f, 3f, 0, 1, 0, false));
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 5f, 5f, 0, 1, 0, false));
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 1f, 7f, 0, 1, 0, false));
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 5f, 9f, 0, 1, 0, false));
+        sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 5f, 11.9f, 0, 1, 0,true,2f));
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 1f, 11f, 0, 1, 0, false));
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 3f, 15f, 0, 1, 0, false));
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 5f, 17f, 0, 1, 0, false));
+    	blocks.add(new Block("Armoire.png", 1, 1, 1, 7f, 19f, 0, 1, 0, false));
+    	blocks.add(new Block("Commode.png", 1, 1, 1, 9f, 19f, 0, 1, 0, false));
+    	blocks.add(new Block("Commode.png", 1, 1, 1, 10f, 19f, 0, 1, 0, false));
+        sensors.add(new Block("Lit.png", 1, 1, 1, 9, 20f, 0, 1, 0,true));
+    	perso = new Personnage(10, 10, 1f, 1f, 1, 3.5f, 0, .5f);
+    }
 	String gameShader0;
 	String backMenuShader;
 	
@@ -625,6 +648,16 @@ public class GameScreen implements Screen {
 				depx = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,29-15f))*scale_factor*32;
 				depy = Math.max(0,Math.min(perso.getBody().getPosition().y-4.22f,10-8.43f))*scale_factor*32;
 			}
+			case 9:
+			{
+				//mull_ = number of meters in the map/ number of meters in the frame
+				mullx=10/15f;
+				mully=30/8.44f;
+
+				//dep_ max(min(0, position- (number of meters in the frame)/2),number of meters in the map-number of meters in the frame)
+				depx = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,10-15f))*scale_factor*32;
+				depy = Math.max(0,Math.min(perso.getBody().getPosition().y-4.22f,30-8.44f))*scale_factor*32;
+			}
 		}
 		float deltat = Gdx.graphics.getDeltaTime();
 
@@ -739,10 +772,16 @@ public class GameScreen implements Screen {
         		generateMap5();
         		break;
         	case 6:
-        		//generateMap6();
+        		generateMap6();
         		break;
         	case 7:
         		generateMap7();
+        		break;
+        	case 8:
+        		generateMap8();
+        		break;
+        	case 9:
+        		generateMap9();
         		break;
         		
         	}

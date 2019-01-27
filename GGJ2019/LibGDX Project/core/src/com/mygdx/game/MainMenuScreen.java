@@ -125,7 +125,7 @@ public class MainMenuScreen implements Screen
 			i++;
 		}
 		TitreFont.draw(game.batch, "Je Veux Dormir ", 150, 642);
-		SousTitreFont.draw(game.batch, "My Bed is Home", 335, 544);
+		SousTitreFont.draw(game.batch, "My Bed is my Home", 290, 544);
 		game.batch.draw(ButtonImage, xButton = 0, yButton = 24, 320, 320);
 
 		game.batch.draw(LitImage, 1280 - 320, 24, 320, 320);
