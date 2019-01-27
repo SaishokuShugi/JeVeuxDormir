@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class GameScreen implements Screen {
@@ -49,6 +50,8 @@ public class GameScreen implements Screen {
 	public static float scale_factor;
 
 	public static World world;
+
+    public static int mapID = 1;
 	float time =0;
 	Controller cont;
 	Box2DDebugRenderer debugRenderer;
@@ -57,47 +60,91 @@ public class GameScreen implements Screen {
 	public ArrayList<Collectible> items = new ArrayList<Collectible>();
 	
 	ShaderProgram shader;
-	
-	void generateMap2() {
+
+
+    public GameScreen(final MyGdxGame game) {
+        this.game = game;
+        // load the images for the monkeys
+        img = new TextureRegion();
+        img2 = new Texture("Background2.png");
+
+        staminaE_C = new Texture("EmptyStaminaCenter.png");
+        staminaE_L = new Texture("EmptyStaminaLeft.png");
+        staminaE_R = new Texture("EmptyStaminaRight.png");
+        stamina_C = new Texture("StaminaCenter.png");
+        stamina_L = new Texture("StaminaLeft.png");
+        stamina_R = new Texture("StaminaRight.png");
+
+        tempE_C = new Texture("EmptyCenter.png");
+        tempE_L = new Texture("EmptyLeft.png");
+        tempE_R = new Texture("EmptyRight.png");
+        temp_C = new Texture("FullCenter.png");
+        temp_L = new Texture("FullLeft.png");
+        temp_R = new Texture("FullRight.png");
+
+        DeclareFragStrings();
+
+        scale_factor = Gdx.graphics.getWidth() / (32 * 15f);
+
+        // create the camera and the SpriteBatch
+        batch = new SpriteBatch();
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 15, 15 * Gdx.graphics.getHeight() / Gdx.graphics.getWidth());
+
+
+        if (!Controllers.getControllers().isEmpty())
+            cont = Controllers.getControllers().get(0);
+        Box2D.init();
+        world = new World(new Vector2(0, -9.81f), true);
+        debugRenderer = new Box2DDebugRenderer();
+        try {
+            this.getClass().getMethod("generateMap" + mapID).invoke(this);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        Frameb = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        loadShader(gameShader0);
+        batch.setShader(null);
+    }
+
+    public void cleanMap() {
+        blocks.clear();
+        sensors.clear();
+        items.clear();
+    }
+
+    public void generateMap2() {
+        cleanMap();
 		//Mur et sol
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 15f, i++, 0f, 1, 0,false)));
-		
+
 		//Fleurs
 		blocks.add(new Movable("Plante.png", 1, 1, 1, 5f, 3f, 0, 1, 0,false));
 		blocks.add(new Movable("Plante.png", 1, 1, 1, 7f, 3f, 0, 1, 0,false));
 		blocks.add(new Movable("Plante.png", 1, 1, 1, 6f, 4f, 0, 1, 0,false));
-		
-		//Tapis*
+
+        //Tapis*
 		blocks.add(new Movable("Objet.png", 5, 6, 27, 4f, 2f, 0.1f,1, 0,false));
 		blocks.add(new Movable("Objet.png", 5, 6, 27, 5f, 2f, 0.1f,1, 0,false));
 		blocks.add(new Movable("Objet.png", 5, 6, 27, 6f, 2f, 0.1f,1, 0,false));
 		blocks.add(new Movable("Objet.png", 5, 6, 27, 7f, 2f, 0.1f,1, 0,false));
 		blocks.add(new Movable("Objet.png", 5, 6, 27, 6f, 3f, 0.1f,1, 0,false));
-		
-		//Static
+
+        //Static
 		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 10f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
-		
-		//Personnage
+
+        //Personnage
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
-	}
-	void cleanMap() {
-		blocks.clear();
-		sensors.clear();
-		items.clear();
-	}
-	void generateMap() {
-		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0,false)));
-		blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f,false));
-		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0,true));
-		blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0,false));
-		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0,false));
-		blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f,1, 0,false));
-        perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
 	}
 	String gameShader0;
 	String backMenuShader;
@@ -203,48 +250,16 @@ public class GameScreen implements Screen {
 		if (shader.getLog().length()!=0)
 			System.out.println(shader.getLog());
 	}
-	
-	
-	public GameScreen(final MyGdxGame game) {
-		this.game = game;
-		// load the images for the monkeys
-		img = new TextureRegion();
-		img2 =new Texture("Background2.png");
-		
-		staminaE_C = new Texture("EmptyStaminaCenter.png");
-		staminaE_L = new Texture("EmptyStaminaLeft.png");
-		staminaE_R = new Texture("EmptyStaminaRight.png");
-		stamina_C = new Texture("StaminaCenter.png");
-		stamina_L = new Texture("StaminaLeft.png");
-		stamina_R = new Texture("StaminaRight.png");
 
-		tempE_C = new Texture("EmptyCenter.png");
-		tempE_L = new Texture("EmptyLeft.png");
-		tempE_R = new Texture("EmptyRight.png");
-		temp_C = new Texture("FullCenter.png");
-		temp_L = new Texture("FullLeft.png");
-		temp_R = new Texture("FullRight.png");
-		
-		DeclareFragStrings();
-
-		scale_factor = Gdx.graphics.getWidth() / (32 * 15f);
-
-		// create the camera and the SpriteBatch
-		batch = new SpriteBatch();
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 15, 15*Gdx.graphics.getHeight()/Gdx.graphics.getWidth());
-
-
-		if (!Controllers.getControllers().isEmpty())
-			cont = Controllers.getControllers().get(0);
-		Box2D.init();
-		world = new World(new Vector2(0, -9.81f ), true);
-		debugRenderer = new Box2DDebugRenderer();
-		generateMap2();
-		
-		Frameb = new FrameBuffer(Format.RGBA8888,Gdx.graphics.getWidth() , Gdx.graphics.getHeight(), false);
-		loadShader(gameShader0);
-		batch.setShader(null);
+    public void generateMap1() {
+        cleanMap();
+        for (float i = 0; i < 15; blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0, false))) ;
+        blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f, false));
+        sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0, true));
+        blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0, false));
+        blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0, false));
+        blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f, 1, 0, false));
+        perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
 	}
 
 	@Override
@@ -326,7 +341,7 @@ public class GameScreen implements Screen {
 		batch.end();
 		
 		checkTriggers();
-		
+
         perso.controls();
 
 		world.step(Math.min(deltat,.15f), 6, 2);

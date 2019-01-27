@@ -192,7 +192,7 @@ public class Personnage {
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
         boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
 
-        System.out.println(this.body.getPosition());
+        //System.out.println(this.body.getPosition());
         if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
             jump(.5f);
         }
@@ -236,7 +236,7 @@ public class Personnage {
         if (cond) {
             if (objet.getClass().hashCode() == Block.class.hashCode()) {
                 Block obj = (Block) objet;
-                obj.action();
+                obj.action(this);
             }
             if (objet.getClass().hashCode() == Chat.class.hashCode()) {
                 Chat obj = (Chat) objet;
