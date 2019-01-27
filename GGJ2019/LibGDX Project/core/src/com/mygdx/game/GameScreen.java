@@ -179,13 +179,21 @@ public class GameScreen implements Screen {
                   		"{\n" + 
                   		"    return bayer4(.5*v)*.25+bayer2(v);\n" + 
                   		"}"
+                  		+ "vec2 hash22(vec2 p)\n" + 
+                  		"	{\n" + 
+                  		"		vec3 p3 = fract(vec3(p.xyx) * vec3(443.897, 441.423, 437.195));\n" + 
+                  		"	    p3 += dot(p3, p3.yzx+19.19);\n" + 
+                  		"	    return fract((p3.xx+p3.yz)*p3.zy)-.5;\n" + 
+                  		"\n" + 
+                  		"	}\n" + 
+                  		""
                   + "const int samples = 80;"
                   + "float ray(vec2 uv){																	\n"
                   + "float dith = bayer8(uv*resolution);"
                   + "float a=0;"
-                  + "vec2 lp = vec2(.9);"
+                  + "vec2 lp = vec2(.75);"
                   + "vec2 ld = lp-uv;"
-                  + "if(texture2D(u_texture,uv).g>=.8 && length(texture2D(u_texture,uv).rb)<.1)return 1.;											\n"
+                  + "if(texture2D(u_texture,uv).g>=.8 && length(texture2D(u_texture,uv).rb)<.1)return -1;											\n"
                   + "uv+=ld/samples*dith;"
                   + "for(int i=0;i++<samples;){"
                   + "uv+=ld/float(samples);"
@@ -199,7 +207,18 @@ public class GameScreen implements Screen {
                   + "vec2 uv = v_texCoords;																	\n"
                   + "vec4 color = texture2D(u_texture, uv);													\n"
                   + "float r = ray(uv);"
-                  + "gl_FragColor = vec4(mix(color.rgb*vec3(.45,.5,.8),vec3(.7,.7,.8),sqrt(r)),1) ;								\n"
+                  + "if(r<0){"
+                  + "vec2 u = floor(uv*20);\n" 
+                  + "vec2 off1 = hash22(u);\n" + 
+                  "vec2 off2 =  vec2(0,1)+hash22(u+vec2(0,1));\n" + 
+                  "vec2 off3 =  vec2(1)+hash22(u+vec2(1));\n" + 
+                  "vec2 off4 =  vec2(1,0)+hash22(u+vec2(1,0));\n"
+                  + "u=fract(uv*20);" + 
+                  "float dist = min(min(distance(u,off1),distance(u,off2)),min(distance(u,off3),distance(u,off4)));"
+                  + "color.rgb=mix(vec3(.1,.1,.3),vec3(1),smoothstep(.06,0,dist));"
+                  + "r=.15;"
+                  + "}"
+                  + "gl_FragColor = vec4(mix(color.rgb*vec3(.45,.5,.8),vec3(.7,.7,.8),pow(r,.85)),1) ;								\n"
                   + "}";
 	}
 	void  loadShader(String frag) {
