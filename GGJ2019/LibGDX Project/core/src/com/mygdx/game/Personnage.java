@@ -203,7 +203,7 @@ public class Personnage {
         boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
         boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
-        boolean isGrabPressed = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
+        boolean isGrabPressed = Gdx.input.isKeyPressed(Input.Keys.Z);
         		
         //Controls
         if(GameScreen.cont!=null) {
