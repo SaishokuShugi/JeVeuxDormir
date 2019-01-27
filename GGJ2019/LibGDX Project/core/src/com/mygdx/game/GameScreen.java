@@ -194,25 +194,38 @@ public class GameScreen implements Screen {
 		//Mur et sol
 		for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
-		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 15f, i++, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 30f, i++, 0f, 1, 0,false)));
 		
 		//Fleurs
-		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 1f, 0, 1, 0,false));
 		blocks.add(new Movable("Plante.png", 1, 1, 1, 8f, 2f, 0, 1, 0,false));
-		blocks.add(new Movable("Plante.png", 1, 1, 1, 7f, 2f, 0, 1, 0,false));
-		blocks.add(new Movable("Plante.png", 1, 1, 1, 6f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 24f, 1f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 24f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 24f, 3f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 24f, 4f, 0, 1, 0,false));
 		
-		//Tapis*
-		blocks.add(new Movable("Chaise.png", 1, 1, 1, 3f, 2f, 0.1f,0.7f, 0,false));
-		blocks.add(new Movable("Chaise.png", 1, 1, 1, 3f, 1f, 0.1f,0.7f, 0,false));
+		//Tapis
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 8f, 1f, 0.1f,0.7f, 0,false));
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 9f, 2f, 0.1f,0.7f, 0,false));
 		
 		//Static
-		sensors.add(new Block("Lit.png", 1, 1, 1, 25f, 1f, 0, 1, 0,true));
-		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
-		blocks.add(new Block("Armoire.png", 1, 1, 1, 11.1f, 1f, 0, 1, 0,false));
-		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
-		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
-		blocks.add(new Block("Commode.png", 1, 1, 1, 9.05f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 2f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 5f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 5f, 2f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 12f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 12f, 2f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 12f, 5f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 12f, 6f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 13f, 6f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 17f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 20f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 21f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 20f, 2f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 28f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 29f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Armoir.png", 1, 1, 1, 28f, 2f, 0, 1, 0,false));
+		sensors.add(new Block("Lit.png", 1, 1, 1, 28f, 5f, 0, 1, 0,true));
 		
 		//Personnage
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
