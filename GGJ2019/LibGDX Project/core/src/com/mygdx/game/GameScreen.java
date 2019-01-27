@@ -442,20 +442,16 @@ public class GameScreen implements Screen {
 	boolean testGrab() {
 		Vector2 dec = perso.decal.cpy();
     	dec.scl(1.1f);
-    	Vector2 p1 = perso.getBody().getPosition().cpy().add(dec);
-    	Vector2 p2 = perso.getBody().getPosition().cpy().add(-dec.x,dec.y);
-    	Vector2 p3 = perso.getBody().getPosition().cpy().add(dec.x,0);
-    	Vector2 p4 = perso.getBody().getPosition().cpy().add(-dec.x,0);
-    	boolean b1 = false,b2=false,b3=false,b4=false;
+    	Vector2 p1 = perso.getBody().getPosition().cpy().add(perso.getFlip()*dec.x,dec.y);
+    	Vector2 p2 = perso.getBody().getPosition().cpy().add(perso.getFlip()*dec.x,0);
+    	boolean b1 = false,b2=false;
     	for (Interactible i : blocks) {
     		Fixture fix = i.getFixture();
     		b1=b1||fix.testPoint(p1);
     		b2=b2||fix.testPoint(p2);
-    		b3=b3||fix.testPoint(p3);
-			b4=b4||fix.testPoint(p4);
 		}
 
-    	return ((!b1&&b3)||(!b2&&b4));
+    	return (!b1&&b2);
 	}
 	
 	

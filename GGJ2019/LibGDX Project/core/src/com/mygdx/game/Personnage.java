@@ -164,6 +164,8 @@ public class Personnage {
     public void jump(float frameDuration) {
         changeAnim("Personnage/jump2.png", 1, 1, 1, frameDuration);
         this.body.applyLinearImpulse(0, 15f, this.body.getPosition().x, this.body.getPosition().y, false);
+        isGrab=false;
+    	this.body.setGravityScale(1);
     }
 
 
