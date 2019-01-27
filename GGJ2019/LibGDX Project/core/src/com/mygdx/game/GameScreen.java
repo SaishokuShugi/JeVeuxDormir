@@ -67,7 +67,7 @@ public class GameScreen implements Screen {
 	
 	Vector3 posCamera,newPosCamera;
 	Vector3 posCameraInit = new Vector3(7.5f, 4.0f, 0f);
-	int tailleMap3 = 0;
+	int tailleMap3 = 30;
 
 
     public GameScreen(final MyGdxGame game) {
@@ -179,7 +179,7 @@ public class GameScreen implements Screen {
 		
 		//Static
 		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
-		blocks.add(new Block("Bibliothï¿½que.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 11.1f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
@@ -207,7 +207,7 @@ public class GameScreen implements Screen {
 		
 		//Static
 		sensors.add(new Block("Lit.png", 1, 1, 1, 25f, 1f, 0, 1, 0,true));
-		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 11.1f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
@@ -335,15 +335,14 @@ public class GameScreen implements Screen {
 		switch(mapID)
 		{
 			case 1:
-			{
-			}
 			case 2:
+			case 3:
 			{
 				camera.position.lerp(posCameraInit, 0.1f);
 				break;
 			}
 			
-			case 3:
+			case 4:
 			{
 				if (perso.getBody().getPosition().x<7.5)
 				{
