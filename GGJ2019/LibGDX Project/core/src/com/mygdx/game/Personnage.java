@@ -228,9 +228,9 @@ public class Personnage {
 
         boolean cond = fix.testPoint(this.body.getPosition().add(decal))
                 || fix.testPoint(this.body.getPosition().sub(decal))
-                || fix.testPoint(this.body.getPosition().add(decal.x, -decal.y))
-                || fix.testPoint(this.body.getPosition().add(-decal.x, decal.y))
-                || fix.testPoint(this.body.getPosition().add(0, -decal.y));
+                || fix.testPoint(this.body.getPosition().add(decal.x + 0.05f, -decal.y - 0.05f))
+                || fix.testPoint(this.body.getPosition().add(-decal.x - 0.05f, decal.y + 0.05f))
+                || fix.testPoint(this.body.getPosition().add(0, -decal.y - 0.05f));
 
         if (cond) {
             if (objet.getClass().hashCode() == Block.class.hashCode()) {
@@ -251,7 +251,7 @@ public class Personnage {
             }
             if (objet.getClass().hashCode() == Radiateur.class.hashCode()) {
                 Radiateur obj = (Radiateur) objet;
-                obj.enable();
+                obj.action(this, factor1);
             }
             if (objet.getClass().hashCode() == Tombant.class.hashCode()) {
                 Tombant obj = (Tombant) objet;
