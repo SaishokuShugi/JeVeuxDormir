@@ -16,7 +16,7 @@ public class OptionScreen implements Screen
     static int xButton = 0;
     static int yButton = 0;
     Vector3 MousePos = new Vector3(0f, 0f, 0f);
-    Boolean onRetour, onMusicUp, onMusicDown, onSoundUp, onSoundDown;
+    Boolean onRetour, onMusicUp, onMusicDown, onSoundUp, onSoundDown, onRayIterUp, onRayIterDown;
 
 	
 	public OptionScreen (final MyGdxGame game) {
@@ -116,6 +116,30 @@ public class OptionScreen implements Screen
             MainMenuScreen.ButtonFont2.draw(game.batch, ">", xButton, yButton);
             onSoundUp = false;
         }
+
+        xButton = (int) (1280 * 0.3);
+        yButton = (int) (720 * 0.4);
+        MainMenuScreen.SousTitreFont.draw(game.batch, "Qualite des shaders", xButton, yButton);
+        xButton = (int) (1280 * 0.6);
+        if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
+                && MousePos.y < yButton + 25) {
+            MainMenuScreen.ButtonFont1.draw(game.batch, "<", xButton, yButton);
+            onRayIterDown = true;
+        } else {
+            MainMenuScreen.ButtonFont2.draw(game.batch, "<", xButton, yButton);
+            onRayIterDown = false;
+        }
+        xButton = (int) (1280 * 0.65);
+        MainMenuScreen.SousTitreFont.draw(game.batch, String.format("%d", GameScreen.rayIter), xButton, yButton);
+        xButton = (int) (1280 * 0.7);
+        if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
+                && MousePos.y < yButton + 25) {
+            MainMenuScreen.ButtonFont1.draw(game.batch, ">", xButton, yButton);
+            onRayIterUp = true;
+        } else {
+            MainMenuScreen.ButtonFont2.draw(game.batch, ">", xButton, yButton);
+            onRayIterUp = false;
+        }
 		game.batch.end();
 
         if (Gdx.input.justTouched()) {
@@ -144,6 +168,16 @@ public class OptionScreen implements Screen
             if (onSoundDown) {
                 if (MainMenuScreen.SoundVolume > 0.01f) {
                     MainMenuScreen.SoundVolume -= 0.01;
+                }
+            }
+            if (onRayIterUp) {
+                if (GameScreen.rayIter < 100) {
+                    GameScreen.rayIter++;
+                }
+            }
+            if (onRayIterDown) {
+                if (GameScreen.rayIter > 4) {
+                    GameScreen.rayIter--;
                 }
             }
         }
