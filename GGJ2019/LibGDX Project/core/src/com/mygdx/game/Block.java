@@ -21,7 +21,7 @@ public class Block extends Interactible {
             gs.mapID++;
             gs.getClass().getMethod("generateMap" + gs.mapID).invoke(gs);
         } catch (NoSuchMethodException e) {
-            gs.game.setScreen(new MainMenuScreen(gs.game));
+            gs.game.setScreen(MyGdxGame.MainMenu);
             gs.dispose();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
