@@ -195,9 +195,9 @@ public class GameScreen implements Screen {
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
     public void generateMap4() {
-    	img2.dispose();
-    	img2 = new Texture("BackgroundGrand.png");
 		cleanMap();
+		img2.dispose();
+    	img2 = new Texture("BackgroundGrand.png");
 		//Mur et sol
 		for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
@@ -232,6 +232,9 @@ public class GameScreen implements Screen {
 		blocks.add(new Block("Commode.png", 1, 1, 1, 28f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Commode.png", 1, 1, 1, 29f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 28f, 2f, 0, 1, 0,false));
+		//Sensors
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 1f, 1f, 0, 1, 0,true,2f));
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 14f, 1f, 0, 1, 0,true,2f));
 		sensors.add(new Block("Lit.png", 1, 1, 1, 28f, 5f, 0, 1, 0,true));
 		
 		//Personnage
@@ -355,6 +358,7 @@ public class GameScreen implements Screen {
 		batch.setShader(null);
 		posCamera = camera.position;
 		float dep =0;
+		float mull=1;
 		switch(mapID)
 		{
 			case 1:
@@ -363,6 +367,7 @@ public class GameScreen implements Screen {
 				break;
 			case 4:
 			{
+				mull=2;
 				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-15f))*scale_factor*32;
 			}
 		}
@@ -384,7 +389,7 @@ public class GameScreen implements Screen {
 		batch.draw(imback,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		
 		
-		batch.draw(img2,0-dep*.9f,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		batch.draw(img2,0-dep*.9f,0,Gdx.graphics.getWidth()*mull,Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
 			block.getBody().setLinearVelocity(block.getBody().getLinearVelocity().x/1.1f, block.getBody().getLinearVelocity().y);
 			img = block.getImages()[block.tile];
@@ -392,9 +397,17 @@ public class GameScreen implements Screen {
 					img.getRegionHeight() * scale_factor);
 		}
 		for (Interactible block : sensors) {
+			if (block instanceof Radiateur) {
+			((Radiateur) block).setAnimTime(time+=deltat);
+			batch.draw(((Radiateur) block).getCurrentFrame(), ((Radiateur) block).getBodyXToImage()-dep, ((Radiateur) block).getBodyYToImage()
+					,((Radiateur) block).getCurrentFrame().getRegionWidth()* scale_factor,((Radiateur) block).getCurrentFrame().getRegionHeight() * scale_factor);
+			
+			}
+			else {
 			img = block.getImages()[block.tile];
 			batch.draw(img, block.getBodyXToImage()-dep, block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
+			}
 		}
 		for (Interactible block : items) {
 			img = block.getImages()[block.tile];
@@ -465,10 +478,15 @@ public class GameScreen implements Screen {
 	
 	void checkTriggers() {
         perso.checkOK(this);
+        Block i = null;
 		Iterator<Interactible> iter = sensors.iterator();
 		while(iter.hasNext()){
-			perso.checkCollision(iter.next(), 0, 0, this);
+			Interactible y=iter.next();
+			perso.checkCollision(y, 0, 0.01f, this);
+			if(Block.faction)i=(Block) y;
+			Block.faction=false;
 		}
+		if(i!=null)i.action2(perso,this);
 	}
 	
 	@Override
