@@ -179,7 +179,7 @@ public class GameScreen implements Screen {
 		
 		//Static
 		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
-		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliothï¿½que.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 11.1f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
