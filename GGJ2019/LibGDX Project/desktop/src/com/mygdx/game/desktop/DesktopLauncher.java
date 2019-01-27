@@ -11,7 +11,7 @@ public class DesktopLauncher {
 	    config.width = 1280;
 	    config.height = 720;
 		config.forceExit = false;
-		config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
+		//config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
 	    config.resizable=false;
 		new LwjglApplication(new MyGdxGame(), config);
 	}

@@ -172,7 +172,7 @@ public class GameScreen implements Screen {
     	img2 = new Texture("Background2.png");
 		cleanMap();
 		//Mur et sol
-		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, -0.05f, 0f, 1, 0,false)));
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 15f, i++, 0f, 1, 0,false)));
 		
@@ -324,7 +324,69 @@ public class GameScreen implements Screen {
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
     
-    
+    public void generateMap6() {
+		cleanMap();
+    	img2 = new Texture("Background2.png");
+		//Mur et sol
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, -1f, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 15f, i++, 0f, 1, 0,false)));
+		
+		//Fleurs
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 1f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 2f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 3f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 4f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 0f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 10f, 1f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 10f, 2f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 10f, 3f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 10f, 4f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 10f, 0f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 11f, 1f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 11f, 2f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 11f, 4f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 11f, 5f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 11f, 0f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 12f, 2f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 12f, 5f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 12f, 0f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 13f, 2f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 13f, 3f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 13f, 4f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 13f, 5f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 14f, 1f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 14f, 2f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 14f, 3f, 0.1f, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 14f, 0f, 0.1f, 1, 0,false));
+		//Tapis
+		
+		//Static
+		blocks.add(new Block("Table.png", 1, 1, 1, 7f, 0f, 0, 1, 0,false));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 7f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 7f, 4.1f, 0, 1, 0,false));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 3f, 3f, 0, 1, 0,false));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 7f, 7.1f, 0, 1, 0,false));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 8f, 7.1f, 0, 1, 0,false));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 9f, 7.1f, 0, 1, 0,false));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 10f, 7.1f, 0, 1, 0,false));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 11f, 7.1f, 0, 1, 0,false));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 12f, 7.1f, 0, 1, 0,false));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 13f, 7.1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 4f, 0f, 0, 1, 0,false));
+		
+		//TablenoHitbox
+		blocks.add(new Block("Table.png", 1, 1, 1, 3f, 2f, 0, 1, 0,true));
+		blocks.add(new Block("Table.png", 1, 1, 1, 3f, 1f, 0, 1, 0,true));
+		blocks.add(new Block("Table.png", 1, 1, 1, 3f, 0f, 0, 1, 0,true));
+		//Sensors
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 0f, -0.1f, 0, 1, 0,true,2f));
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 12f, -0.1f, 0, 1, 0,true,2f));
+		sensors.add(new Block("Lit.png", 1, 1, 1, 12f, 1f, 0, 1, 0,true));
+		
+		//Personnage
+        perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
+    }
 
     public void generateMap7() {
 		cleanMap();
