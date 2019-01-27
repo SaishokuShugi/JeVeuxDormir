@@ -238,7 +238,7 @@ public class Personnage {
         this.flip = flip;
     }
 
-    public void checkCollision(Interactible objet, float factor1, float factor2, GameScreen gs) {
+    public void checkCollision(Interactible objet, float staminaFactor, float froidFactor, GameScreen gs) {
         Fixture fix = objet.getFixture();
 
         boolean cond = fix.testPoint(this.body.getPosition().add(decal))
@@ -258,19 +258,19 @@ public class Personnage {
             }
             if (objet.getClass().hashCode() == Collectible.class.hashCode()) {
                 Collectible obj = (Collectible) objet;
-                obj.action(this, factor1, factor2);
+                obj.action(this, staminaFactor, froidFactor);
             }
             if (objet.getClass().hashCode() == Movable.class.hashCode()) {
                 Movable obj = (Movable) objet;
-                obj.action(this, factor1);
+                obj.action(this, staminaFactor);
             }
             if (objet.getClass().hashCode() == Radiateur.class.hashCode()) {
                 Radiateur obj = (Radiateur) objet;
-                obj.action(this, factor1);
+                obj.action(this, froidFactor);
             }
             if (objet.getClass().hashCode() == Tombant.class.hashCode()) {
                 Tombant obj = (Tombant) objet;
-                obj.action(this, factor1);
+                obj.action(this, staminaFactor);
             }
         }
     }
