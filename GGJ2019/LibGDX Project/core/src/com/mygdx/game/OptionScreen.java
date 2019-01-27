@@ -145,7 +145,7 @@ public class OptionScreen implements Screen
         if (Gdx.input.justTouched()) {
             if (onRetour) {
                 MainMenuScreen.BackMusic.setVolume(MainMenuScreen.MusicVolume);
-                game.setScreen(new MainMenuScreen(game));
+                game.setScreen(MyGdxGame.MainMenu);
                 dispose();
             }
         }
