@@ -197,22 +197,24 @@ public class Personnage {
     void controls(boolean canGrab) {
         //Update Stamina et Temp�rature
         this.stamina -= 0.001f;
-        this.froid -= 0.001f;
+        this.froid -= 0.005f;
 
         //Controls
         boolean isLeftPressed = Gdx.input.isKeyPressed(Input.Keys.Q)||GameScreen.cont.getAxis(1)<-.1;
         boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D)||GameScreen.cont.getAxis(1)>.1;
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE)||GameScreen.cont.getButton(0);
         boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S)||GameScreen.cont.getButton(1);
-        boolean isGrabPressed = Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)||GameScreen.cont.getAxis(4)<-.1;
+        boolean isGrabPressed = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)||GameScreen.cont.getAxis(4)<-.1;
 
         //System.out.println(this.body.getPosition());
         if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
             jump(.5f);
+            this.stamina-=.008f;
         }
 
         if (isDownPressed || this.body.getLinearVelocity().y < -10f) {
             air(.5f);
+            this.stamina-=.01f;
         }
         if (isRightPressed&!isGrab) {
             run(.2f, 2f);
