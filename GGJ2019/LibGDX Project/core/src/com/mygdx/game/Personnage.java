@@ -224,7 +224,7 @@ public class Personnage {
         this.flip = flip;
     }
 
-    public void checkCollision(Interactible objet, float factor1, float factor2) {
+    public void checkCollision(Interactible objet, float factor1, float factor2, GameScreen gs) {
         Fixture fix = objet.getFixture();
 
         boolean cond = fix.testPoint(this.body.getPosition().add(decal))
@@ -236,7 +236,7 @@ public class Personnage {
         if (cond) {
             if (objet.getClass().hashCode() == Block.class.hashCode()) {
                 Block obj = (Block) objet;
-                obj.action(this);
+                obj.action(this, gs);
             }
             if (objet.getClass().hashCode() == Chat.class.hashCode()) {
                 Chat obj = (Chat) objet;
