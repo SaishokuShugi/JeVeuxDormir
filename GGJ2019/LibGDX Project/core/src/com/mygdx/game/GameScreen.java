@@ -107,10 +107,23 @@ public class GameScreen implements Screen {
         blocks.clear();
         sensors.clear();
         items.clear();
+        world= new World(new Vector2(0, -9.81f), true);
+        
     }
+    
+    public void generateMap1() {
+    	cleanMap();
+        for (float i = 0; i < 15; blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0, false))) ;
+        blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f, false));
+        sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0, true));
+        blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0, false));
+        blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0, false));
+        blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f, 1, 0, false));
+        perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
+	}
 
     public void generateMap2() {
-        cleanMap();
+    	cleanMap();
 		//Mur et sol
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
@@ -135,6 +148,34 @@ public class GameScreen implements Screen {
 		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
 
         //Personnage
+        perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
+	}
+    public void generateMap3() {
+		cleanMap();
+		//Mur et sol
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 15f, i++, 0f, 1, 0,false)));
+		
+		//Fleurs
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 9f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 8f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 7f, 2f, 0, 1, 0,false));
+		blocks.add(new Movable("Plante.png", 1, 1, 1, 6f, 2f, 0, 1, 0,false));
+		
+		//Tapis*
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 3f, 2f, 0.1f,0.7f, 0,false));
+		blocks.add(new Movable("Chaise.png", 1, 1, 1, 3f, 1f, 0.1f,0.7f, 0,false));
+		
+		//Static
+		sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 1, 0,true));
+		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 11.1f, 4f, 0, 1, 0,false));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 11.1f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Commode.png", 1, 1, 1, 9.05f, 1f, 0, 1, 0,false));
+		
+		//Personnage
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
 	String gameShader0;
@@ -242,16 +283,7 @@ public class GameScreen implements Screen {
 			System.out.println(shader.getLog());
 	}
 
-    public void generateMap1() {
-        cleanMap();
-        for (float i = 0; i < 15; blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0, false))) ;
-        blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f, false));
-        sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0, true));
-        blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0, false));
-        blocks.add(new Block("Table.png", 1, 1, 1, 4f, 1f, 0, 0, 0, false));
-        blocks.add(new Movable("Commode.png", 1, 1, 1, 4f, 2f, 0.1f, 1, 0, false));
-        perso = new Personnage(10, 10, 0f, 2f, 1, 3.5f, 0, .5f);
-	}
+
 
 	@Override
 	public void show() {
@@ -278,6 +310,7 @@ public class GameScreen implements Screen {
 		//debugRenderer.render(world, camera.combined);
 		batch.draw(img2,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
+			block.getBody().setLinearVelocity(block.getBody().getLinearVelocity().x/1.1f, block.getBody().getLinearVelocity().y);
 			img = block.getImages()[block.tile];
 			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
