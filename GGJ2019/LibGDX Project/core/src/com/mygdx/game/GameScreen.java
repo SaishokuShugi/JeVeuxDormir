@@ -107,8 +107,8 @@ public class GameScreen implements Screen {
         Box2D.init();
         world = new World(new Vector2(0, -9.81f), true);
         debugRenderer = new Box2DDebugRenderer();
-		generateMap1();
-		//mapID=4;
+		generateMap7();
+		mapID=7;
 
         Frameb = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         loadShader(gameShader0);
@@ -325,6 +325,47 @@ public class GameScreen implements Screen {
 	}
     
     
+
+    public void generateMap7() {
+		cleanMap();
+		//img2.dispose();
+    	img2 = new Texture("BackgroundGrand.png");
+		//Mur et sol
+		for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 29f, i++, 0f, 1, 0,false)));
+		
+		//Tapis
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 28f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 27f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 26f, 2.54f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Chaise.png", 5, 6, 27, 27.5f, 2.57f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 25f, 2.6f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Plante.png", 5, 6, 27, 25.2f, 2.1f, 0.1f,1, 0,false));
+		
+		//Static
+		blocks.add(new Block("Commode.png", 1, 1, 1, 3f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 6f, 2f, 0, 1, 0,false));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 11f, 2f, 0, 1, 0,false));
+		blocks.add(new Block("Table.png", 1, 1, 1, 11f, 1f, 0, 1, 0,false));
+		
+		for(float i = 0;i<7;blocks.add(new Block("Sol.png", 2, 2, 4, 14f, 3f+i++, 0, 1, 0,false)));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 15f, 3f, 0, 1, 0,false));
+		blocks.add(new Block("Sol.png", 2, 2, 4, 16f, 3f, 0, 1, 0,false));
+		for(float i = 0;i<4;blocks.add(new Block("Sol.png", 2, 2, 4, 17f, 3f+i++, 0, 1, 0,false)));
+		for(float i = 0;i<10;blocks.add(new Block("Sol.png", 2, 2, 4, 17f+i++,7f, 0, 1, 0,false)));
+		
+		for(float i = 0;i<5;blocks.add(new Block("Sol.png", 2, 2, 4, 28f, 5f+i++, 0, 1, 0,false)));
+		for(float i = 0;i<6;blocks.add(new Block("Sol.png", 2, 2, 4, 23f+i++,4f, 0, 1, 0,false)));
+		
+		//Sensors
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 14f, 0.9f, 0, 1, 0,true,2f));
+		sensors.add(new Block("Lit.png", 1, 1, 1, 15f, 4f, 0, 1, 0,true));
+		
+		//Personnage
+        perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
+	}
     
 	String gameShader0;
 	String backMenuShader;
@@ -401,15 +442,13 @@ public class GameScreen implements Screen {
                   + "if(abs(uv.x-r1.x)<.15){"
                   + "float a=smoothstep(0.0,.1,uv.y-r1.y)*smoothstep(.5,.3,uv.y-r1.y);\n"
                   + "a*=smoothstep(.07,.0,abs(uv.x-r1.x));"
-                  + "a*=sin(uv.y*400.-time*3.);"
-                  + "uv.x+=a*.001;"
+                  + "uv+=a*vec2(sin((uv.y-r1.y)*400.-time*3.)*.001,cos((uv.x-r1.x)*350.-time*2.9)*.0009);"
                   + "}																	\n"
                   + "r1 =rad2/resolution;\n" + 
                   "if(abs(uv.x-r1.x)<.15){\n" + 
                   "float a=smoothstep(0.0,.1,uv.y-r1.y)*smoothstep(.5,.3,uv.y-r1.y);\n" + 
                   "a*=smoothstep(.07,.0,abs(uv.x-r1.x));\n" + 
-                  "a*=sin(uv.y*400.-time*3.);\n" + 
-                  "uv.x+=a*.001;\n" + 
+                  "uv+=a*vec2(sin((uv.y-r1.y)*400.-time*3.)*.001,cos((uv.x-r1.x)*350.-time*2.9)*.0009);\n" + 
                   "}"
                   + "vec4 color = texture2D(u_texture, uv);													\n"
                   + "float r = ray(uv);"
@@ -462,8 +501,10 @@ public class GameScreen implements Screen {
 		Vector2 rad1= new Vector2(-100,-100);
 		Vector2 rad2= rad1.cpy();
 		
-		float dep =0;
-		float mull=1;
+		float depx =0;
+		float depy =0;
+		float mullx=1;
+		float mully=1;
 		switch(mapID)
 		{
 			case 1:
@@ -473,8 +514,18 @@ public class GameScreen implements Screen {
 			case 4:
 			case 5:
 			{
-				mull=2;
-				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-15f))*scale_factor*32;
+				mullx=2;
+				depx = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-15f))*scale_factor*32;
+			}
+			case 7:
+			{
+				//mull_ = number of meters in the map/ number of meters in the frame
+				mullx=29/15f;
+				mully=10/8.44f;
+
+				//dep_ max(min(0, position- (number of meters in the frame)/2),number of meters in the map-number of meters in the frame)
+				depx = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,29-15f))*scale_factor*32;
+				depy = Math.max(0,Math.min(perso.getBody().getPosition().y-4.22f,10-8.43f))*scale_factor*32;
 			}
 		}
 		float deltat = Gdx.graphics.getDeltaTime();
@@ -495,40 +546,41 @@ public class GameScreen implements Screen {
 		batch.draw(imback,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		
 		
-		batch.draw(img2,0-dep*.9f,0,Gdx.graphics.getWidth()*mull,Gdx.graphics.getHeight());
+		batch.draw(img2,0-depx*.9f,0-depy*.9f,Gdx.graphics.getWidth()*mullx,Gdx.graphics.getHeight()*mully);
 		for (Interactible block : blocks) {
 			block.getBody().setLinearVelocity(block.getBody().getLinearVelocity().x/1.1f, block.getBody().getLinearVelocity().y);
 			img = block.getImages()[block.tile];
-			batch.draw(img, block.getBodyXToImage()-dep, block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
+			batch.draw(img, block.getBodyXToImage()-depx, block.getBodyYToImage()-depy, img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 		}
 		for (Interactible block : sensors) {
 			if (block instanceof Radiateur) {
 				if(rad1.x<0.) {
-				rad1 =new Vector2(block.getBody().getPosition().x*scale_factor*32-dep,block.getBody().getPosition().y*scale_factor*32);
+				rad1 =new Vector2(block.getBody().getPosition().x*scale_factor*32-depx,block.getBody().getPosition().y*scale_factor*32-depy);
 				}else {
-				rad2 =new Vector2(block.getBody().getPosition().x*32*scale_factor-dep,block.getBody().getPosition().y*32*scale_factor-dep);
+				rad2 =new Vector2(block.getBody().getPosition().x*32*scale_factor-depx,block.getBody().getPosition().y*32*scale_factor-depy);
 				}
 			((Radiateur) block).setAnimTime(time+=deltat);
-			batch.draw(((Radiateur) block).getCurrentFrame(), ((Radiateur) block).getBodyXToImage()-dep, ((Radiateur) block).getBodyYToImage()
+			batch.draw(((Radiateur) block).getCurrentFrame(), ((Radiateur) block).getBodyXToImage()-depx, ((Radiateur) block).getBodyYToImage()-depy
 					,((Radiateur) block).getCurrentFrame().getRegionWidth()* scale_factor,((Radiateur) block).getCurrentFrame().getRegionHeight() * scale_factor);
 			
 			}
 			else {
 			img = block.getImages()[block.tile];
-			batch.draw(img, block.getBodyXToImage()-dep, block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
+			batch.draw(img, block.getBodyXToImage()-depx, block.getBodyYToImage()-depy, img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 			}
 		}
 		for (Interactible block : items) {
 			img = block.getImages()[block.tile];
-			batch.draw(img, block.getBodyXToImage()-dep, block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
+			batch.draw(img, block.getBodyXToImage()-depx, block.getBodyYToImage()-depy, img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 		}
 
 
 		perso.setAnimTime(time+=deltat);
-		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage()+(1-(perso.getFlip()+1)/2f)*perso.getCurrentFrame().getRegionWidth() * scale_factor-dep, perso.getBodyYToImage()
+		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage()+(1-(perso.getFlip()+1)/2f)*perso.getCurrentFrame().getRegionWidth() * scale_factor-depx,
+				perso.getBodyYToImage()-depy
 				,perso.getCurrentFrame().getRegionWidth()* scale_factor*perso.getFlip(),perso.getCurrentFrame().getRegionHeight() * scale_factor);
 		
 		batch.flush();
@@ -592,7 +644,7 @@ public class GameScreen implements Screen {
         		//generateMap6();
         		break;
         	case 7:
-        		//generateMap7();
+        		generateMap7();
         		break;
         		
         	}
