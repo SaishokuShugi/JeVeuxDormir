@@ -268,12 +268,13 @@ public class GameScreen implements Screen {
                   		"	}\n" + 
                   		""
                   + "const int samples = "+rayIter+";"
+                  		+ "const vec2 lp = vec2(.75);"
                   + "float ray(vec2 uv){																	\n"
                   + "float dith = bayer8(uv*resolution);"
                   + "float a=0;"
-                  + "vec2 lp = vec2(.75);"
                   + "vec2 ld = lp-uv;"
-                + "if(texture2D(u_texture,uv).g>=.8 && length(texture2D(u_texture,uv).rb)<.1)return -1.;											\n"
+                  + "float m=1.;"
+                + "if(texture2D(u_texture,uv).g>=.8 && length(texture2D(u_texture,uv).rb)<.1)m= -1.;											\n"
                   + "uv+=ld/samples*dith;"
                   + "for(int i=0;i++<samples;){"
                   + "float d = texture2D(u_texture,uv).g>=.8"
@@ -281,7 +282,7 @@ public class GameScreen implements Screen {
                   + "a+=d/float(samples);"
                   + "uv+=ld/float(samples);"
                   + "}"
-                  + "return a;"
+                  + "return m*a+(m-1.)/10.;"
                   + "}"
                   + "void main(){                                 											\n"
                   + "vec2 uv = v_texCoords;																	\n"
@@ -295,8 +296,8 @@ public class GameScreen implements Screen {
                   "vec2 off4 =  vec2(1,0)+hash22(u+vec2(1,0));\n"
                   + "u=fract(uv*20);" + 
                   "float dist = min(min(distance(u,off1),distance(u,off2)),min(distance(u,off3),distance(u,off4)));"
-                  + "color.rgb=mix(vec3(.1,.1,.3),vec3(1),smoothstep(.06,0,dist));"
-                  + "r=.15;"
+                  + "color.rgb=mix(vec3(.1,.1,.3),vec3(1),max(smoothstep(.06,0,dist),smoothstep(.06,.05,distance(uv,lp))));"
+                  + "r=.5*-r;"
                   + "}"
                   + "gl_FragColor = vec4(mix(color.rgb*vec3(.45,.5,.8),vec3(.7,.7,.8),pow(r,.85)),1) ;								\n"
                   + "}";
@@ -333,34 +334,16 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		batch.setShader(null);
 		posCamera = camera.position;
+		float dep =0;
 		switch(mapID)
 		{
 			case 1:
 			case 2:
 			case 3:
-			{
-				camera.position.lerp(posCameraInit, 0.1f);
 				break;
-			}
-			
 			case 4:
 			{
-				if (perso.getBody().getPosition().x<7.5)
-				{
-					camera.position.lerp(posCameraInit, 0.1f);
-				}
-				else if (perso.getBody().getPosition().x<tailleMap3-7.5)
-				{
-					newPosCamera = posCamera;
-					newPosCamera.x = perso.getBody().getPosition().x;
-					camera.position.lerp(newPosCamera, 0.1f);
-				}
-				else
-				{
-					newPosCamera = posCamera;
-					newPosCamera.x = tailleMap3-7.5f;
-					camera.position.lerp(newPosCamera, 0.1f);
-				}
+				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-7.5f))*scale_factor*32;
 			}
 		}
 		float deltat = Gdx.graphics.getDeltaTime();
@@ -376,27 +359,27 @@ public class GameScreen implements Screen {
 		batch.begin();
 		
 		//debugRenderer.render(world, camera.combined);
-		batch.draw(img2,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		batch.draw(img2,0-dep*.9f,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		for (Interactible block : blocks) {
 			block.getBody().setLinearVelocity(block.getBody().getLinearVelocity().x/1.1f, block.getBody().getLinearVelocity().y);
 			img = block.getImages()[block.tile];
-			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
+			batch.draw(img, block.getBodyXToImage()-dep, block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 		}
 		for (Interactible block : sensors) {
 			img = block.getImages()[block.tile];
-			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
+			batch.draw(img, block.getBodyXToImage()-dep, block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 		}
 		for (Interactible block : items) {
 			img = block.getImages()[block.tile];
-			batch.draw(img, block.getBodyXToImage(), block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
+			batch.draw(img, block.getBodyXToImage()-dep, block.getBodyYToImage(), img.getRegionWidth() * scale_factor,
 					img.getRegionHeight() * scale_factor);
 		}
 
 
 		perso.setAnimTime(time+=deltat);
-		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage()+(1-(perso.getFlip()+1)/2f)*perso.getCurrentFrame().getRegionWidth() * scale_factor, perso.getBodyYToImage()
+		batch.draw(perso.getCurrentFrame(), perso.getBodyXToImage()+(1-(perso.getFlip()+1)/2f)*perso.getCurrentFrame().getRegionWidth() * scale_factor-dep, perso.getBodyYToImage()
 				,perso.getCurrentFrame().getRegionWidth()* scale_factor*perso.getFlip(),perso.getCurrentFrame().getRegionHeight() * scale_factor);
 		
 		batch.flush();
@@ -443,7 +426,7 @@ public class GameScreen implements Screen {
 		Vector2 dec = perso.decal.cpy();
     	dec.scl(1.1f);
     	Vector2 p1 = perso.getBody().getPosition().cpy().add(perso.getFlip()*dec.x,dec.y);
-    	Vector2 p2 = perso.getBody().getPosition().cpy().add(perso.getFlip()*dec.x,0);
+    	Vector2 p2 = perso.getBody().getPosition().cpy().add(perso.getFlip()*dec.x,dec.y*.5f);
     	boolean b1 = false,b2=false;
     	for (Interactible i : blocks) {
     		Fixture fix = i.getFixture();
