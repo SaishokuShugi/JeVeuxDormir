@@ -227,7 +227,7 @@ public class GameScreen implements Screen {
                   + "color.rgb=mix(vec3(.1,.1,.3),vec3(1),smoothstep(.06,0,dist));"
                   + "r=.15;"
                   + "}"
-                  + "gl_FragColor = vec4(mix(color.rgb*vec3(.45,.5,.8),vec3(.7,.7,.8),sqrt(r)),1) ;								\n"
+                  + "gl_FragColor = vec4(mix(color.rgb*vec3(.45,.5,.8),vec3(.7,.7,.8),pow(r,.85)),1) ;								\n"
                   + "}";
 	}
 	void  loadShader(String frag) {
