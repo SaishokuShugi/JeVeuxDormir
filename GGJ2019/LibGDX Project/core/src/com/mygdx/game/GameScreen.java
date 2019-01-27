@@ -439,6 +439,7 @@ public class GameScreen implements Screen {
 	
 	
 	void checkTriggers() {
+        perso.checkOK(this);
 		Iterator<Interactible> iter = sensors.iterator();
 		while(iter.hasNext()){
 			perso.checkCollision(iter.next(), 0, 0, this);
