@@ -222,7 +222,7 @@ public class Personnage {
         if (!(isRightPressed || isLeftPressed || !(this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)))
             idle(.5f);
 
-        if(isGrab=canGrab&isGrabPressed|isGrab) {
+        if(isGrab=canGrab&(isGrabPressed|isGrab)) {
         	grab(.5f);
         }
 
