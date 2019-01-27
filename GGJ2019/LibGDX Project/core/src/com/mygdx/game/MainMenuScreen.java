@@ -69,7 +69,7 @@ public class MainMenuScreen implements Screen
 	Texture Fall = new Texture(Gdx.files.internal("Personnage/jump2.png"));
 
 	static Music BackMusic = Gdx.audio.newMusic(Gdx.files.internal("Back.ogg"));
-	Sound RonfleSound = Gdx.audio.newSound(Gdx.files.internal("Ronflement.ogg"));
+	Sound RonfleSound = Gdx.audio.newSound(Gdx.files.internal("Ronflement.wav"));
 	
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
 	static Vector2 PersoPos = new Vector2(-210, 24);
@@ -191,7 +191,7 @@ public class MainMenuScreen implements Screen
 				game.batch.draw(Fallen, PersoPos.x, PersoPos.y, 155, 0, 200, 400, 1, 1, -80);
 				if (!IsRonfle)
 				{
-					RonfleSound.loop(SoundVolume, 1.5f, 0f);
+					RonfleSound.loop(SoundVolume*2, 1.5f, 0f);
 					IsRonfle = true;
 				}
 				
