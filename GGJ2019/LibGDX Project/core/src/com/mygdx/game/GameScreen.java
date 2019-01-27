@@ -125,7 +125,9 @@ public class GameScreen implements Screen {
     public void generateMap1() {
     	img2 = new Texture("Background2.png");
     	cleanMap();
-        for (float i = 0; i < 15; blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0, false))) ;
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 15f, i++, 0f, 1, 0,false)));
         blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f, false));
         sensors.add(new Block("Lit.png", 1, 1, 1, 13f, 1f, 0, 0, 0, true));
         blocks.add(new Block("Armoire.png", 1, 1, 1, 8f, 1f, 0, 0, 0, false));
@@ -234,8 +236,88 @@ public class GameScreen implements Screen {
 		blocks.add(new Block("Commode.png", 1, 1, 1, 29f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 28f, 2f, 0, 1, 0,false));
 		//Sensors
-		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 1f, 1f, 0, 1, 0,true,2f));
-		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 14f, 1f, 0, 1, 0,true,2f));
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 0f, 0.9f, 0, 1, 0,true,2f));
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 14f, 0.9f, 0, 1, 0,true,2f));
+		sensors.add(new Block("Lit.png", 1, 1, 1, 28f, 5f, 0, 1, 0,true));
+		
+		//Personnage
+        perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
+	}
+    
+    public void generateMap5() {
+		cleanMap();
+		img2.dispose();
+    	img2 = new Texture("BackgroundGrand.png");
+		//Mur et sol
+		for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, -1f, i++, 0f, 1, 0,false)));
+		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, 30f, i++, 0f, 1, 0,false)));
+		
+		//Tapis
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 2f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 3f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 4f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 5f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 2.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 3.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 4.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 3f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 4f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 3.5f, 4f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 13f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 14f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 15f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 16f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 13.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 14.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 15.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 14f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 15f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 14.5f, 4f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 17f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 18f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 19f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 20f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 17.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 18.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 19.5f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 18f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 20f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 19f, 4f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 21f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 22f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 23f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 24f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 25f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 26f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 27f, 1f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 21f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 22f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 23f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 24f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 25f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 26f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 27f, 2f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 24f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 25f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 26f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 27f, 3f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 25f, 4f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 26f, 4f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 27f, 4f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 26f, 5f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 27f, 5f, 0.1f,1, 0,false));
+		blocks.add(new Movable("Objet.png", 5, 6, 27, 27f, 6f, 0.1f,1, 0,false));
+		
+		//Static
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 8f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 8f, 4f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 12f, 1f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 12f, 4f, 0, 1, 0,false));
+		
+		//Sensors
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 0f, 0.9f, 0, 1, 0,true,2f));
+		sensors.add(new Radiateur("Radiateur.png", 5, 5, 22, 24f, 0.9f, 0, 1, 0,true,2f));
 		sensors.add(new Block("Lit.png", 1, 1, 1, 28f, 5f, 0, 1, 0,true));
 		
 		//Personnage
@@ -386,6 +468,11 @@ public class GameScreen implements Screen {
 			case 3:
 				break;
 			case 4:
+			{
+				mull=2;
+				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-15f))*scale_factor*32;
+			}
+			case 5:
 			{
 				mull=2;
 				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-15f))*scale_factor*32;
