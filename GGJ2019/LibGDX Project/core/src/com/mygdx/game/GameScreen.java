@@ -468,10 +468,6 @@ public class GameScreen implements Screen {
 			case 3:
 				break;
 			case 4:
-			{
-				mull=2;
-				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-15f))*scale_factor*32;
-			}
 			case 5:
 			{
 				mull=2;
