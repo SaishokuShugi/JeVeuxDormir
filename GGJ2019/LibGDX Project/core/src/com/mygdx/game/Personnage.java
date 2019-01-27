@@ -274,4 +274,11 @@ public class Personnage {
             }
         }
     }
+
+    public void checkOK(GameScreen gs) {
+        if (this.froid < 0 || this.stamina < 0) {
+            gs.game.setScreen(new MainMenuScreen(gs.game));
+            gs.dispose();
+        }
+    }
 }
