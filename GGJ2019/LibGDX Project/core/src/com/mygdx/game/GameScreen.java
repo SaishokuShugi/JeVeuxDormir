@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
 
     public static int mapID = 1;
 
-    public static int rayIter = 4;
+    public static int rayIter = 40;
 
 	float time =0;
 	Controller cont;
@@ -191,7 +191,7 @@ public class GameScreen implements Screen {
                   		"\n" + 
                   		"	}\n" + 
                   		""
-                  + "const int samples = 80;"
+                  + "const int samples = "+rayIter+";"
                   + "float ray(vec2 uv){																	\n"
                   + "float dith = bayer8(uv*resolution);"
                   + "float a=0;"
@@ -200,10 +200,10 @@ public class GameScreen implements Screen {
                 + "if(texture2D(u_texture,uv).g>=.8 && length(texture2D(u_texture,uv).rb)<.1)return -1.;											\n"
                   + "uv+=ld/samples*dith;"
                   + "for(int i=0;i++<samples;){"
-                  + "uv+=ld/float(samples);"
                   + "float d = texture2D(u_texture,uv).g>=.8"
                   + "&&length(texture2D(u_texture,uv).rb)<.1?1.:0.;"
                   + "a+=d/float(samples);"
+                  + "uv+=ld/float(samples);"
                   + "}"
                   + "return a;"
                   + "}"
