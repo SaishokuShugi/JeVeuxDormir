@@ -19,6 +19,7 @@ public class Personnage {
     private float animTime;
     private int flip = 1;
     Vector2 decal;
+    boolean isGrab;
 
     public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution, float frameDuration) {
         this.staminaMax = staminaMax;
@@ -179,7 +180,14 @@ public class Personnage {
         this.body.setLinearVelocity(this.body.getLinearVelocity().x, -20f);
     }
 
-    void controls() {
+    public void grab(float frameDuration) {
+    	changeAnim("Personnage/ledgeGrab.png",3,2,6,frameDuration);
+    	isGrab=true;
+    	this.body.setLinearVelocity(0,0);
+    	this.body.setGravityScale(0);
+    }
+
+    void controls(boolean canGrab) {
         //Update Stamina et Temp�rature
         this.stamina -= 0.001f;
         this.froid -= 0.001f;
@@ -190,6 +198,7 @@ public class Personnage {
         boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
         boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
+        boolean isGrabPressed = Gdx.input.isKeyJustPressed(Input.Keys.E);
 
         //System.out.println(this.body.getPosition());
         if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
@@ -213,7 +222,12 @@ public class Personnage {
         if (!(isRightPressed || isLeftPressed || !(this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)))
             idle(.5f);
 
+        if(isGrab=canGrab&isGrabPressed|isGrab) {
+        	grab(.5f);
+        }
+
     }
+
 
     public int getFlip() {
         return flip;

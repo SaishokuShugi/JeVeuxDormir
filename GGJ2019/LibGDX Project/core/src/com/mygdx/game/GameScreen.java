@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.ArrayList;
@@ -433,10 +434,30 @@ public class GameScreen implements Screen {
 		
 		checkTriggers();
 
-        perso.controls();
+        perso.controls(testGrab());
 
 		world.step(Math.min(deltat,.15f), 6, 2);
 	}
+
+	boolean testGrab() {
+		Vector2 dec = perso.decal.cpy();
+    	dec.scl(1.1f);
+    	Vector2 p1 = perso.getBody().getPosition().cpy().add(dec);
+    	Vector2 p2 = perso.getBody().getPosition().cpy().add(-dec.x,dec.y);
+    	Vector2 p3 = perso.getBody().getPosition().cpy().add(dec.x,0);
+    	Vector2 p4 = perso.getBody().getPosition().cpy().add(-dec.x,0);
+    	boolean b1 = false,b2=false,b3=false,b4=false;
+    	for (Interactible i : blocks) {
+    		Fixture fix = i.getFixture();
+    		b1=b1||fix.testPoint(p1);
+    		b2=b2||fix.testPoint(p2);
+    		b3=b3||fix.testPoint(p3);
+			b4=b4||fix.testPoint(p4);
+		}
+
+    	return ((!b1&&b3)||(!b2&&b4));
+	}
+	
 	
 	void checkTriggers() {
 		Iterator<Interactible> iter = sensors.iterator();
