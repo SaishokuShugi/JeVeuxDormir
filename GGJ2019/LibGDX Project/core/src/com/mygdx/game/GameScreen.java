@@ -107,8 +107,8 @@ public class GameScreen implements Screen {
         Box2D.init();
         world = new World(new Vector2(0, -9.81f), true);
         debugRenderer = new Box2DDebugRenderer();
-		generateMap7();
-		mapID=7;
+		generateMap1();
+		//mapID=4;
 
         Frameb = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         loadShader(gameShader0);
@@ -328,7 +328,7 @@ public class GameScreen implements Screen {
 
     public void generateMap7() {
 		cleanMap();
-		//img2.dispose();
+		img2.dispose();
     	img2 = new Texture("BackgroundGrand.png");
 		//Mur et sol
 		for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
