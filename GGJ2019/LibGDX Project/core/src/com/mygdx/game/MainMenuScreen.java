@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -17,6 +15,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+
+import java.util.ArrayList;
 
 public class MainMenuScreen implements Screen
 {
@@ -74,7 +74,7 @@ public class MainMenuScreen implements Screen
 	Vector3 MousePos = new Vector3(0f, 0f, 0f);
 	static Vector2 PersoPos = new Vector2(-210, 24);
 
-	Boolean onPlay, onOption, IsRonfle = false;
+    Boolean onPlay, onOption, IsRonfle = false, onQuit;
 
 	static int xButton = 0;
 	static int yButton = 0;
@@ -152,6 +152,17 @@ public class MainMenuScreen implements Screen
 			onOption = false;
 		}
 
+        xButton = (int) (1280 * 0.8);
+        yButton = (int) (720 * 0.2);
+        if (MousePos.x > xButton - 30 && MousePos.x < xButton + 100 && MousePos.y > yButton - 30
+                && MousePos.y < yButton + 30) {
+            MainMenuScreen.ButtonFont1.draw(game.batch, "Quitter", xButton, yButton);
+            onQuit = true;
+        } else {
+            MainMenuScreen.ButtonFont2.draw(game.batch, "Quitter", xButton, yButton);
+            onQuit = false;
+        }
+
 		stateTime += Gdx.graphics.getDeltaTime();
 		stateTime2 += Gdx.graphics.getDeltaTime();
 		sum += Gdx.graphics.getDeltaTime()/15;
@@ -212,6 +223,9 @@ public class MainMenuScreen implements Screen
 				game.setScreen(new OptionScreen(game));
 				dispose();
 			}
+            if (onQuit) {
+                Gdx.app.exit();
+            }
 		}
 		
 		BackMusic.setVolume(MusicVolume*sum);
