@@ -24,7 +24,7 @@ public class OptionScreen implements Screen
 		// create the camera and the SpriteBatch
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false,Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
+		camera.setToOrtho(false,1280 , 720);
 	}
 
 	@Override
@@ -69,10 +69,10 @@ public class OptionScreen implements Screen
             onRetour = false;
         }
 
-        xButton = (int) (Gdx.graphics.getWidth() * 0.3);
-        yButton = (int) (Gdx.graphics.getHeight() * 0.6);
+        xButton = (int) (1280 * 0.3);
+        yButton = (int) (720 * 0.6);
         MainMenuScreen.SousTitreFont.draw(game.batch, "Volume de la musique", xButton, yButton);
-        xButton = (int) (Gdx.graphics.getWidth() * 0.6);
+        xButton = (int) (1280 * 0.6);
         if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
                 && MousePos.y < yButton + 25) {
             MainMenuScreen.ButtonFont1.draw(game.batch, "<", xButton, yButton);
@@ -81,9 +81,9 @@ public class OptionScreen implements Screen
             MainMenuScreen.ButtonFont2.draw(game.batch, "<", xButton, yButton);
             onMusicDown = false;
         }
-        xButton = (int) (Gdx.graphics.getWidth() * 0.65);
+        xButton = (int) (1280 * 0.65);
         MainMenuScreen.SousTitreFont.draw(game.batch, String.format("%.0f", MainMenuScreen.MusicVolume * 100), xButton, yButton);
-        xButton = (int) (Gdx.graphics.getWidth() * 0.7);
+        xButton = (int) (1280 * 0.7);
         if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
                 && MousePos.y < yButton + 25) {
             MainMenuScreen.ButtonFont1.draw(game.batch, ">", xButton, yButton);
@@ -93,10 +93,10 @@ public class OptionScreen implements Screen
             onMusicUp = false;
         }
 
-        xButton = (int) (Gdx.graphics.getWidth() * 0.3);
-        yButton = (int) (Gdx.graphics.getHeight() * 0.5);
+        xButton = (int) (1280 * 0.3);
+        yButton = (int) (720 * 0.5);
         MainMenuScreen.SousTitreFont.draw(game.batch, "Volume des sons", xButton, yButton);
-        xButton = (int) (Gdx.graphics.getWidth() * 0.6);
+        xButton = (int) (1280 * 0.6);
         if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
                 && MousePos.y < yButton + 25) {
             MainMenuScreen.ButtonFont1.draw(game.batch, "<", xButton, yButton);
@@ -105,9 +105,9 @@ public class OptionScreen implements Screen
             MainMenuScreen.ButtonFont2.draw(game.batch, "<", xButton, yButton);
             onSoundDown = false;
         }
-        xButton = (int) (Gdx.graphics.getWidth() * 0.65);
+        xButton = (int) (1280 * 0.65);
         MainMenuScreen.SousTitreFont.draw(game.batch, String.format("%.0f", MainMenuScreen.SoundVolume * 100), xButton, yButton);
-        xButton = (int) (Gdx.graphics.getWidth() * 0.7);
+        xButton = (int) (1280 * 0.7);
         if (MousePos.x > xButton - 25 && MousePos.x < xButton + 25 && MousePos.y > yButton - 25
                 && MousePos.y < yButton + 25) {
             MainMenuScreen.ButtonFont1.draw(game.batch, ">", xButton, yButton);
