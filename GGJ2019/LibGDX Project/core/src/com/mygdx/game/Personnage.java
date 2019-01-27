@@ -209,11 +209,11 @@ public class Personnage {
         if (isDownPressed || this.body.getLinearVelocity().y < -10f) {
             air(.5f);
         }
-        if (isRightPressed) {
+        if (isRightPressed&!isGrab) {
             run(.2f, 2f);
             setFlip(1);
         } else {
-            if (isLeftPressed) {
+            if (isLeftPressed&!isGrab) {
                 run(.2f, -2f);
                 setFlip(-1);
             } else {
