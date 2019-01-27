@@ -26,6 +26,8 @@ public class Personnage {
     private int flip = 1;
     Vector2 decal;
     boolean isGrab;
+    
+    public boolean triggerReset=false;
 
     public Personnage(float staminaMax, float froidMax, float x, float y, float friction, float density, float restitution, float frameDuration) {
         this.staminaMax = staminaMax;
@@ -204,6 +206,7 @@ public class Personnage {
         boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
         boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
         boolean isGrabPressed = Gdx.input.isKeyPressed(Input.Keys.Z);
+        boolean isResetPressed = Gdx.input.isKeyPressed(Input.Keys.ESCAPE);
         		
         //Controls
         if(GameScreen.cont!=null) {
@@ -212,8 +215,11 @@ public class Personnage {
          isUpPressed =isUpPressed||GameScreen.cont.getButton(0);
          isDownPressed = isDownPressed||GameScreen.cont.getButton(1);
          isGrabPressed = isGrabPressed||GameScreen.cont.getAxis(4)<-.1;
+         isResetPressed=isResetPressed||GameScreen.cont.getButton(3);
         }
 
+        triggerReset=isResetPressed;
+        
         //System.out.println(this.body.getPosition());
         if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {
             jump(.5f);

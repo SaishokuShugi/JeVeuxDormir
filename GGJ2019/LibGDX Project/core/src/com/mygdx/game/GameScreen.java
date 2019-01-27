@@ -571,6 +571,32 @@ public class GameScreen implements Screen {
 		checkTriggers();
 
         perso.controls(testGrab());
+        if(perso.triggerReset) {
+        	switch(mapID) {
+        	case 1:
+        		generateMap1();
+        		break;
+        	case 2:
+        		generateMap2();
+        		break;
+        	case 3:
+        		generateMap3();
+        		break;
+        	case 4:
+        		generateMap4();
+        		break;
+        	case 5:
+        		generateMap5();
+        		break;
+        	case 6:
+        		//generateMap6();
+        		break;
+        	case 7:
+        		//generateMap7();
+        		break;
+        		
+        	}
+        }
 
 		world.step(Math.min(deltat,.15f), 6, 2);
 	}
