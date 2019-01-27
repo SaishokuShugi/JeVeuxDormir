@@ -783,7 +783,8 @@ public class GameScreen implements Screen {
         	case 9:
         		generateMap9();
         		break;
-        		
+
+       		
         	}
         }
 
