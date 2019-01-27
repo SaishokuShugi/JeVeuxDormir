@@ -197,7 +197,7 @@ public class GameScreen implements Screen {
 		//Personnage
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
-    public void generateMap4() {
+    public void generateMap5() {
 		cleanMap();
 		img2.dispose();
     	img2 = new Texture("BackgroundGrand.png");
@@ -244,7 +244,7 @@ public class GameScreen implements Screen {
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
     
-    public void generateMap5() {
+    public void generateMap4() {
 		cleanMap();
 		img2.dispose();
     	img2 = new Texture("BackgroundGrand.png");
@@ -323,6 +323,9 @@ public class GameScreen implements Screen {
 		//Personnage
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
+    
+    
+    
 	String gameShader0;
 	String backMenuShader;
 	
