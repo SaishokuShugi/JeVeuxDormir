@@ -75,7 +75,7 @@ public class GameScreen implements Screen {
         this.game = game;
         // load the images for the monkeys
         img = new TextureRegion();
-        img2 = new Texture("Background2.png");
+        
 
         staminaE_C = new Texture("EmptyStaminaCenter.png");
         staminaE_L = new Texture("EmptyStaminaLeft.png");
@@ -122,6 +122,8 @@ public class GameScreen implements Screen {
     }
     
     public void generateMap1() {
+    	img2.dispose();
+    	img2 = new Texture("Background2.png");
     	cleanMap();
         for (float i = 0; i < 15; blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0.5f, 1, 0, false))) ;
         blocks.add(new Movable("Chaise.png", 1, 1, 1, 1.58f, 3f, 0, 1, .5f, false));
@@ -134,6 +136,8 @@ public class GameScreen implements Screen {
 	}
 
     public void generateMap2() {
+    	img2.dispose();
+    	img2 = new Texture("Background2.png");
     	cleanMap();
 		//Mur et sol
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
@@ -162,6 +166,8 @@ public class GameScreen implements Screen {
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
     public void generateMap3() {
+    	img2.dispose();
+    	img2 = new Texture("Background2.png");
 		cleanMap();
 		//Mur et sol
 		for(float i = 0;i<15;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
@@ -190,6 +196,8 @@ public class GameScreen implements Screen {
         perso = new Personnage(10, 10, 2f, 1f, 1, 3.5f, 0, .5f);
 	}
     public void generateMap4() {
+    	img2.dispose();
+    	img2 = new Texture("BackgroundGrand.png");
 		cleanMap();
 		//Mur et sol
 		for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
@@ -212,7 +220,7 @@ public class GameScreen implements Screen {
 		blocks.add(new Block("Commode.png", 1, 1, 1, 2f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Commode.png", 1, 1, 1, 5f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Commode.png", 1, 1, 1, 6f, 1f, 0, 1, 0,false));
-		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 5f, 2f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 5f, 2f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 12f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Armoire.png", 1, 1, 1, 12f, 2f, 0, 1, 0,false));
 		blocks.add(new Block("Table.png", 1, 1, 1, 12f, 5f, 0, 1, 0,false));
@@ -221,10 +229,10 @@ public class GameScreen implements Screen {
 		blocks.add(new Block("Commode.png", 1, 1, 1, 17f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Commode.png", 1, 1, 1, 20f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Commode.png", 1, 1, 1, 21f, 1f, 0, 1, 0,false));
-		blocks.add(new Block("Bibliothèque.png", 1, 1, 1, 20f, 2f, 0, 1, 0,false));
+		blocks.add(new Block("Bibliotheque.png", 1, 1, 1, 20f, 2f, 0, 1, 0,false));
 		blocks.add(new Block("Commode.png", 1, 1, 1, 28f, 1f, 0, 1, 0,false));
 		blocks.add(new Block("Commode.png", 1, 1, 1, 29f, 1f, 0, 1, 0,false));
-		blocks.add(new Block("Armoir.png", 1, 1, 1, 28f, 2f, 0, 1, 0,false));
+		blocks.add(new Block("Armoire.png", 1, 1, 1, 28f, 2f, 0, 1, 0,false));
 		sensors.add(new Block("Lit.png", 1, 1, 1, 28f, 5f, 0, 1, 0,true));
 		
 		//Personnage
@@ -356,7 +364,7 @@ public class GameScreen implements Screen {
 				break;
 			case 4:
 			{
-				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-7.5f))*scale_factor*32;
+				dep = Math.max(0,Math.min(perso.getBody().getPosition().x-7.5f,30-8.5f))*scale_factor*32;
 			}
 		}
 		float deltat = Gdx.graphics.getDeltaTime();
