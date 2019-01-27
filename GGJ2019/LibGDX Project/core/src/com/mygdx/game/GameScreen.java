@@ -17,7 +17,6 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class GameScreen implements Screen {
@@ -97,15 +96,7 @@ public class GameScreen implements Screen {
         Box2D.init();
         world = new World(new Vector2(0, -9.81f), true);
         debugRenderer = new Box2DDebugRenderer();
-        try {
-            this.getClass().getMethod("generateMap" + mapID).invoke(this);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+		generateMap1();
 
         Frameb = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         loadShader(gameShader0);
@@ -349,7 +340,7 @@ public class GameScreen implements Screen {
 	
 	void checkTriggers() {
 		for (Interactible a : sensors) {
-			perso.checkCollision(a, 0, 0);
+			perso.checkCollision(a, 0, 0, this);
 		}
 	}
 	
