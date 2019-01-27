@@ -1,7 +1,13 @@
 package com.mygdx.game;
 
+import javax.sound.midi.ControllerEventListener;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.mappings.Ouya;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -193,13 +199,12 @@ public class Personnage {
         this.stamina -= 0.001f;
         this.froid -= 0.001f;
 
-
         //Controls
-        boolean isLeftPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
-        boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
-        boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE);
-        boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S);
-        boolean isGrabPressed = Gdx.input.isKeyJustPressed(Input.Keys.E);
+        boolean isLeftPressed = Gdx.input.isKeyPressed(Input.Keys.Q)||GameScreen.cont.getAxis(1)<-.1;
+        boolean isRightPressed = Gdx.input.isKeyPressed(Input.Keys.D)||GameScreen.cont.getAxis(1)>.1;
+        boolean isUpPressed = Gdx.input.isKeyPressed(Input.Keys.SPACE)||GameScreen.cont.getButton(0);
+        boolean isDownPressed = Gdx.input.isKeyPressed(Input.Keys.S)||GameScreen.cont.getButton(1);
+        boolean isGrabPressed = Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)||GameScreen.cont.getAxis(4)<-.1;
 
         //System.out.println(this.body.getPosition());
         if (isUpPressed && (this.body.getLinearVelocity().y < 0.001f && this.body.getLinearVelocity().y > -0.001f)) {

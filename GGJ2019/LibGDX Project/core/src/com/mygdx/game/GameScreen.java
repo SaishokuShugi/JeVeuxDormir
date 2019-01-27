@@ -58,7 +58,7 @@ public class GameScreen implements Screen {
     public static int rayIter = 40;
 
 	float time =0;
-	Controller cont;
+	public static Controller cont;
 	Box2DDebugRenderer debugRenderer;
 	public ArrayList<Interactible> blocks = new ArrayList<Interactible>();
 	public ArrayList<Interactible> sensors = new ArrayList<Interactible>();
@@ -107,7 +107,8 @@ public class GameScreen implements Screen {
         Box2D.init();
         world = new World(new Vector2(0, -9.81f), true);
         debugRenderer = new Box2DDebugRenderer();
-		generateMap1();
+		generateMap4();
+		mapID=4;
 
         Frameb = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         loadShader(gameShader0);
@@ -196,7 +197,7 @@ public class GameScreen implements Screen {
 	}
     public void generateMap4() {
 		cleanMap();
-		img2.dispose();
+		//img2.dispose();
     	img2 = new Texture("BackgroundGrand.png");
 		//Mur et sol
 		for(float i = 0;i<30;blocks.add(new Block("Sol.png", 2, 2, 4, i++, 0f, 0f, 1, 0,false)));
@@ -268,6 +269,8 @@ public class GameScreen implements Screen {
                   + "uniform float time;																	\n"
 				  + "varying vec2 v_texCoords;																\n" 
                   + "uniform sampler2D u_texture;															\n"
+                  + "uniform vec2 rad1;\n"
+                  + "uniform vec2 rad2;\n"
                   + "const vec2 resolution= vec2("+Gdx.graphics.getWidth()+","+Gdx.graphics.getHeight()+");	\n"
                   		+ "float bayer2(vec2 v)\n" + 
                   		"{\n" + 
@@ -308,7 +311,21 @@ public class GameScreen implements Screen {
                   + "return m*a+(m-1.)/4.;"
                   + "}"
                   + "void main(){                                 											\n"
-                  + "vec2 uv = v_texCoords;																	\n"
+                  + "vec2 uv = v_texCoords;"
+                  + "vec2 r1 =rad1/resolution;"
+                  + "if(abs(uv.x-r1.x)<.15){"
+                  + "float a=smoothstep(0.0,.1,uv.y-r1.y)*smoothstep(.5,.3,uv.y-r1.y);\n"
+                  + "a*=smoothstep(.07,.0,abs(uv.x-r1.x));"
+                  + "a*=sin(uv.y*400.-time*3.);"
+                  + "uv.x+=a*.001;"
+                  + "}																	\n"
+                  + "r1 =rad2/resolution;\n" + 
+                  "if(abs(uv.x-r1.x)<.15){\n" + 
+                  "float a=smoothstep(0.0,.1,uv.y-r1.y)*smoothstep(.5,.3,uv.y-r1.y);\n" + 
+                  "a*=smoothstep(.07,.0,abs(uv.x-r1.x));\n" + 
+                  "a*=sin(uv.y*400.-time*3.);\n" + 
+                  "uv.x+=a*.001;\n" + 
+                  "}"
                   + "vec4 color = texture2D(u_texture, uv);													\n"
                   + "float r = ray(uv);"
                   + "if(r<0){"
@@ -357,6 +374,9 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		batch.setShader(null);
 		posCamera = camera.position;
+		Vector2 rad1= new Vector2(-100,-100);
+		Vector2 rad2= rad1.cpy();
+		
 		float dep =0;
 		float mull=1;
 		switch(mapID)
@@ -398,6 +418,11 @@ public class GameScreen implements Screen {
 		}
 		for (Interactible block : sensors) {
 			if (block instanceof Radiateur) {
+				if(rad1.x<0.) {
+				rad1 =new Vector2(block.getBody().getPosition().x*scale_factor*32-dep,block.getBody().getPosition().y*scale_factor*32);
+				}else {
+				rad2 =new Vector2(block.getBody().getPosition().x*32*scale_factor-dep,block.getBody().getPosition().y*32*scale_factor-dep);
+				}
 			((Radiateur) block).setAnimTime(time+=deltat);
 			batch.draw(((Radiateur) block).getCurrentFrame(), ((Radiateur) block).getBodyXToImage()-dep, ((Radiateur) block).getBodyYToImage()
 					,((Radiateur) block).getCurrentFrame().getRegionWidth()* scale_factor,((Radiateur) block).getCurrentFrame().getRegionHeight() * scale_factor);
@@ -428,7 +453,11 @@ public class GameScreen implements Screen {
 		float[] t = new float[1];
 		t[0]=time;
 	    shader.setUniform1fv( shader.getUniformLocation("time"),t, 0, 1);
-	    
+	    float[] r1 = {rad1.x,rad1.y};
+	    shader.setUniform2fv( shader.getUniformLocation("rad1"),r1, 0, 2);
+	    float[] r2 = {rad2.x,rad2.y};
+	    shader.setUniform2fv( shader.getUniformLocation("rad2"),r2, 0, 2);
+
 		batch.draw(Fbtex, 0, 0);
 
 		batch.setShader(null);
