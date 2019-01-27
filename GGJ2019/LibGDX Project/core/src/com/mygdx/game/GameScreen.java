@@ -288,7 +288,7 @@ public class GameScreen implements Screen {
                   + "vec2 uv = v_texCoords;																	\n"
                   + "vec4 color = texture2D(u_texture, uv);													\n"
                   + "float r = ray(uv);"
-                  + "if(r<0){\n"
+                  + "if(r<0){"
                   + "vec2 u = floor(uv*20);\n" 
                   + "vec2 off1 = hash22(u);\n" + 
                   "vec2 off2 =  vec2(0,1)+hash22(u+vec2(0,1));\n" + 
